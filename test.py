@@ -19,6 +19,27 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 import enigma
 
+# Component rotation
+assert "EKMFLGDQVZNTOWYHXUSPAIBRCJ" == enigma._comps["I"].mapping(1, enigma.FWD)
+assert "QGCLFMUKTWZDNJYVOESIBPRAHX" == enigma._comps["II"].mapping(-1, enigma.FWD)
+assert "CEGIKBOQSWUYMXDHVFZJLTRPNA"== enigma._comps["III"].mapping(2, enigma.FWD)
+assert "PZEHVRYSCMDBTXLUKAOQIWJNGF" == enigma._comps["IV"].mapping(-2, enigma.FWD)
+
+assert "RVHKXCSFBUMPJWNEGZYDIQOTLA" == enigma._comps["VIII"].mapping(11, enigma.REV)
+assert "XZVROSMPJIWNGLEHUDFYQCKATB" == enigma._comps["B"].mapping(-12, enigma.REV)
+assert "DUEACLXWRVPFZTSKYIONBJHGQM" == enigma._comps["C"].mapping(17, enigma.REV)
+assert "MTPRJAYQKZLHUGFNWOCIXBVESD" == enigma._comps["V"].mapping(-8, enigma.REV)
+
+# EnigmaConfig stepping
+cfg = enigma.EnigmaConfig("B-III-VI-VII", "EZU", "", "14.22.11")
+assert [str(ec.windows()) for ec in cfg.stepped_configs(99)] == ["EZU","FAV","FAW","FAX","FAY","FAZ","FBA","FBB","FBC","FBD","FBE","FBF","FBG","FBH","FBI","FBJ","FBK","FBL","FBM","FCN","FCO","FCP","FCQ","FCR","FCS","FCT","FCU","FCV","FCW","FCX","FCY","FCZ","FDA","FDB","FDC","FDD","FDE","FDF","FDG","FDH","FDI","FDJ","FDK","FDL","FDM","FEN","FEO","FEP","FEQ","FER","FES","FET","FEU","FEV","FEW","FEX","FEY","FEZ","FFA","FFB","FFC","FFD","FFE","FFF","FFG","FFH","FFI","FFJ","FFK","FFL","FFM","FGN","FGO","FGP","FGQ","FGR","FGS","FGT","FGU","FGV","FGW","FGX","FGY","FGZ","FHA","FHB","FHC","FHD","FHE","FHF","FHG","FHH","FHI","FHJ","FHK","FHL","FHM","FIN","FIO","FIP"]
+cfg = enigma.EnigmaConfig("c-γ-I-VIII-III", "UYZO", "UX.MI", "03.22.04.09")
+assert [str(ec.windows()) for ec in cfg.stepped_configs(99)] == ["UYZO","UZAP","UZAQ","UZAR","UZAS","UZAT","UZAU","UZAV","UZBW","UZBX","UZBY","UZBZ","UZBA","UZBB","UZBC","UZBD","UZBE","UZBF","UZBG","UZBH","UZBI","UZBJ","UZBK","UZBL","UZBM","UZBN","UZBO","UZBP","UZBQ","UZBR","UZBS","UZBT","UZBU","UZBV","UZCW","UZCX","UZCY","UZCZ","UZCA","UZCB","UZCC","UZCD","UZCE","UZCF","UZCG","UZCH","UZCI","UZCJ","UZCK","UZCL","UZCM","UZCN","UZCO","UZCP","UZCQ","UZCR","UZCS","UZCT","UZCU","UZCV","UZDW","UZDX","UZDY","UZDZ","UZDA","UZDB","UZDC","UZDD","UZDE","UZDF","UZDG","UZDH","UZDI","UZDJ","UZDK","UZDL","UZDM","UZDN","UZDO","UZDP","UZDQ","UZDR","UZDS","UZDT","UZDU","UZDV","UZEW","UZEX","UZEY","UZEZ","UZEA","UZEB","UZEC","UZED","UZEE","UZEF","UZEG","UZEH","UZEI","UZEJ"]
+cfg = enigma.EnigmaConfig("b-γ-V-VIII-II", "LEZO", "UX.MO.KZ.AY.EF.PL", "03.17.04.11")
+assert [str(ec.windows()) for ec in cfg.stepped_configs(99)] == ["LEZO","LFAP","LFAQ","LFAR","LFAS","LFAT","LFAU","LFAV","LFAW","LFAX","LFAY","LFAZ","LFAA","LFAB","LFAC","LFAD","LFAE","LFBF","LFBG","LFBH","LFBI","LFBJ","LFBK","LFBL","LFBM","LFBN","LFBO","LFBP","LFBQ","LFBR","LFBS","LFBT","LFBU","LFBV","LFBW","LFBX","LFBY","LFBZ","LFBA","LFBB","LFBC","LFBD","LFBE","LFCF","LFCG","LFCH","LFCI","LFCJ","LFCK","LFCL","LFCM","LFCN","LFCO","LFCP","LFCQ","LFCR","LFCS","LFCT","LFCU","LFCV","LFCW","LFCX","LFCY","LFCZ","LFCA","LFCB","LFCC","LFCD","LFCE","LFDF","LFDG","LFDH","LFDI","LFDJ","LFDK","LFDL","LFDM","LFDN","LFDO","LFDP","LFDQ","LFDR","LFDS","LFDT","LFDU","LFDV","LFDW","LFDX","LFDY","LFDZ","LFDA","LFDB","LFDC","LFDD","LFDE","LFEF","LFEG","LFEH","LFEI","LFEJ"]
+
+
+
 ec = enigma.EnigmaConfig("c-γ-I-VIII-III", "UYZO", "UX.MI", "03.22.04.09")
 print(ec.components)
 print(ec.rings)
@@ -33,6 +54,24 @@ print(ec.stages)
 # print(ec._window_letter(st) in enigma.component(ec.components[st]).turnovers)
 
 print([str(ec.windows())] + [str(ec.step().windows()) for _ in xrange (99)])
+
+cfg = enigma.EnigmaConfig("c-γ-I-VIII-III", "UYZO", "UX.MI", "03.22.04.09")
+print([str(ec.windows()) for ec in cfg.stepped_configs(0)])
+print([str(ec.windows()) for ec in cfg.stepped_configs(99)])
+
+
+print(enigma._comps["I"].mapping(1, enigma.FWD))
+print(enigma._comps["II"].mapping(-1, enigma.FWD))
+print(enigma._comps["III"].mapping(2, enigma.FWD))
+print(enigma._comps["IV"].mapping(-2, enigma.FWD))
+
+print(enigma._comps["VIII"].mapping(11, enigma.REV))
+print(enigma._comps["B"].mapping(-12, enigma.REV))
+print(enigma._comps["C"].mapping(17, enigma.REV))
+print(enigma._comps["V"].mapping(-8, enigma.REV))
+
+
+
 
 # print(ec.windows())
 # for i in range(99):
