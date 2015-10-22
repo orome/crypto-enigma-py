@@ -9,6 +9,7 @@ Description
 """
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
+import warnings
 
 from itertools import cycle, islice
 
@@ -27,6 +28,18 @@ def chr_A0(n):
 
 def ordering(items):
     return [i[1] for i in sorted(zip(items,range(0,len(items))))]
+
+
+# standard simple-substitution cypher encoding
+def encode_char(mapping, ch):
+    if ch == ' ':
+        return ' '
+    else:
+        return mapping[num_A0(ch)]
+
+
+def encode_string(mapping, string):
+        return ''.join([encode_char(mapping, ch) for ch in string])
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -102,11 +115,10 @@ rotors = _rots.keys()
 reflectors = _refs.keys()
 
 def component(name):
-    if name in _comps.keys():
-        return _comps[name]
-    else:
+    if name not in _comps.keys():
         # TBD - Generate wiring for plugboard <<<
         _comps[name] = Component(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
+    return _comps[name]
 
 
 class EnigmaConfig(object):
@@ -123,12 +135,20 @@ class EnigmaConfig(object):
     def rings(self):
         return self._rings
 
+    # REV - Possibly not needed (also possibly not needed in Haskell? Used for printing though.)
     @property
     def stages(self):
         return self._stages
 
-    # TBD - Make this configEnigma and replace this with direct consructor (for use in step?)
-    def __init__(self, rotor_names, window_letters, plugs, rings):
+    # TBD - Make private somehow? <<<
+    def __init__(self, components, positions, rings):
+        self._components = components
+        self._positions = positions
+        self._rings = rings
+        self._stages = range(0,len(self._components))
+
+    @staticmethod
+    def config_enigma(rotor_names, window_letters, plugs, rings):
 
         comps = list(reversed((rotor_names+'-'+plugs).split('-')))
         winds = list(reversed([num_A0(c) for c in 'A'+window_letters+'A']))
@@ -141,10 +161,7 @@ class EnigmaConfig(object):
         assert all(1 <= rng <= 26 for rng in rngs)
         assert all(chr_A0(wind) in LETTERS for wind in winds)
 
-        self._components = comps
-        self._positions = map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs)
-        self._rings = rngs
-        self._stages = range(0,len(self._components))
+        return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
 
     def _window_letter(self, st):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
@@ -152,8 +169,6 @@ class EnigmaConfig(object):
     def windows(self):
         return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
 
-    # TBD - Should be something I can do with iterators here (use step to implement next?) <<<
-    # TBD - Decide on best strategy for iteration and on whether EnigmaConfig should be mutable (or step returns new) <<<
     def step(self):
 
         def is_turn(stg):
@@ -173,14 +188,47 @@ class EnigmaConfig(object):
             else:
                 return 0
 
-        self._positions = [((self._positions[stage] + pos_inc(stage) - 1) % 26) + 1 for stage in self.stages]
-        return self
+        stepped_positions = [((self._positions[stage] + pos_inc(stage) - 1) % 26) + 1 for stage in self._stages]
 
-    def stepped_configs(self, steps):
+        return EnigmaConfig(self._components, stepped_positions, self._rings)
+
+    def stepped_configs(self, steps=None):
+        cur_config = self
         cur_step = 0
-        while cur_step <= steps:
-            if cur_step == 0:
-                yield self
-            else:
-                yield self.step()
+        while steps is None or cur_step <= steps:
+            if cur_step > 0:
+                cur_config = cur_config.step()
+            yield cur_config
             cur_step += 1
+
+    def stage_mapping_list(self):
+
+        return ([component(comp).mapping(pos, FWD) for (comp, pos) in zip(self._components, self._positions)] +
+                [component(comp).mapping(pos, REV) for (comp, pos) in reversed(zip(self._components, self._positions)[:-1])])
+
+    # TBD - Manybe not needed; no scan in Python -- see http://stackoverflow.com/a/24503765/656912 <<<
+    def enigma_mapping_list(self):
+        """
+        .. deprecated:: 0.00.001
+           This function unused in this implementation.
+           See the `Haskall version <https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html#v:stageMappingList>`_ of this package, where it is.
+        """
+        warnings.warn("Function 'enigma_mapping_list' is not implemented.", DeprecationWarning)
+        #raise NotImplementedError
+
+    # REV - Just last of enigma_mapping_list() if implemented
+    def enigma_mapping(self):
+        return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
+
+        #encode_string(mapping, string)
+#enigmaMappingList ec = scanl1 (flip encode') (stageMappingList ec)
+
+    # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
+    def __unicode__(self):
+        return "{0} {1} {2} {3}".format('-'.join(reversed(self._components[1:])),
+                                        self.windows(),
+                                        self._components[0],
+                                        '.'.join(reversed(['{:02d}'.format(r) for r in self._rings[1:-1]])))
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
