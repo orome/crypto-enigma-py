@@ -8,6 +8,13 @@ Description
     Any additional note.
 """
 
+
+# REV - Additional performance improvements
+# A large improvement comes from caching the encodings of rotors when first computed for a given position.
+# This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
+# because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
+# Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the loss
+# of clarity.
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 import warnings
 
@@ -21,11 +28,6 @@ REV = -1
 def num_A0(c):
     return ord(c) - ord('A')
 
-#
-# num_A0 = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9, 'K': 10,
-#           'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21,
-#           'W': 22, 'X': 23, 'Y': 24, 'Z': 25, ' ': -33}
-
 
 def chr_A0(n):
     return chr(n + ord('A'))
@@ -34,6 +36,7 @@ def chr_A0(n):
 def ordering(items):
     return [i[1] for i in sorted(zip(items,range(0,len(items))))]
 
+
 # standard simple-substitution cypher encoding
 def encode_char(mapping, ch):
     if ch == ' ':
@@ -41,11 +44,9 @@ def encode_char(mapping, ch):
     else:
         return mapping[num_A0(ch)]
 
+
 def encode_string(mapping, string):
         return ''.join([encode_char(mapping, ch) for ch in string])
-
-
-
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -64,23 +65,23 @@ class Component(object):
     def turnovers(self):
         return self._turnovers
 
-    # REV - Use lists rather than strings (strings only for display)? See how much conversion happens.
     def __init__(self, name, wiring, turnovers):
 
-        # TBD - Decide what design goal to pursue here; thos won't map directly to Haskell (http://stackoverflow.com/a/25041285/656912)
+        # REV - Decide what goal to prusue here. What kind of flexibility to allow in creating Components
         assert name not in _comps.keys()
 
         self._name = name
         self._wiring = wiring
         self._turnovers = turnovers
+
         # Some ugly caching; see mapping()
-        self.__cached_mappings = dict()
-        self.__cached_mappings[FWD] = dict()
-        self.__cached_mappings[REV] = dict()
+        self.__cached_mappings = {FWD: {}, REV: {}}
+        # self.__cached_mappings[FWD] = dict()
+        # self.__cached_mappings[REV] = dict()
 
     def mapping(self, position, direction=FWD):
 
-        assert direction in [FWD,REV]
+        assert direction in [FWD, REV]
 
         # REV - Smarter handling of edge cases and bounds?
         def rot_map(mp, st):
@@ -92,15 +93,19 @@ class Component(object):
             steps = position - 1
 
             # REV - Use list comprehensions instead of map?
-            # Some ugly caching, since upper rotors change slowly and coputing mappings is time consuming
-            # TBD - Make less ugly by trapping inexing?
+            # Some ugly caching, since upper rotors change slowly (few will be needed) and computing mappings is time consuming
             if direction == REV:
                 self.__cached_mappings[REV][position] = ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
             else:
                 self.__cached_mappings[FWD][position] = ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
 
-        return  self.__cached_mappings[direction][position]
+        return self.__cached_mappings[direction][position]
 
+    def __unicode__(self):
+        return "{0} {1} {2}".format(self._name, self._wiring, self._turnovers)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
 # REV - Better way to initialize and store these as constants? <<<
 _comps = dict()
@@ -108,14 +113,14 @@ _comps = dict()
 _rots = dict()
 _comps['I'] = _rots['I'] = Component('I', 'EKMFLGDQVZNTOWYHXUSPAIBRCJ','Q')
 _comps['II'] = _rots['II'] = Component('II','AJDKSIRUXBLHWTMCQGZNPYFVOE','E')
-_comps['III'] = _rots['III'] = Component('III', 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'V') 
+_comps['III'] = _rots['III'] = Component('III', 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'V')
 _comps['IV'] = _rots['IV'] = Component('IV', 'ESOVPZJAYQUIRHXLNFTGKDCMWB', 'J')
 _comps['V'] = _rots['V'] = Component('V', 'VZBRGITYUPSDNHLXAWMJQOFECK', 'Z')
-_comps['VI'] = _rots['VI'] = Component('VI', 'JPGVOUMFYQBENHZRDKASXLICTW', 'ZM') 
-_comps['VII'] = _rots['VII'] = Component('VII', 'NZJHGRCXMYSWBOUFAIVLPEKQDT', 'ZM') 
-_comps['VIII'] = _rots['VIII'] = Component('VIII', 'FKQHTLXOCBJSPDZRAMEWNIUYGV', 'ZM') 
-_comps['β'] = _rots['β'] = Component('β', 'LEYJVCNIXWPBQMDRTAKZGFUHOS', '') 
-_comps['γ'] = _rots['γ'] = Component('γ', 'FSOKANUERHMBTIYCWLQPZXVGJD', '') 
+_comps['VI'] = _rots['VI'] = Component('VI', 'JPGVOUMFYQBENHZRDKASXLICTW', 'ZM')
+_comps['VII'] = _rots['VII'] = Component('VII', 'NZJHGRCXMYSWBOUFAIVLPEKQDT', 'ZM')
+_comps['VIII'] = _rots['VIII'] = Component('VIII', 'FKQHTLXOCBJSPDZRAMEWNIUYGV', 'ZM')
+_comps['β'] = _rots['β'] = Component('β', 'LEYJVCNIXWPBQMDRTAKZGFUHOS', '')
+_comps['γ'] = _rots['γ'] = Component('γ', 'FSOKANUERHMBTIYCWLQPZXVGJD', '')
 
 _refs = dict()
 _comps['A'] = _refs['A'] = Component('A', 'EJMZALYXVBWFCRQUONTSPIKHGD', '')
@@ -245,7 +250,7 @@ class EnigmaConfig(object):
 
     def enigma_encoding(self, message):
 
-        assert  all(letter in LETTERS for letter in message)
+        assert all(letter in LETTERS for letter in message)
 
         return ''.join([encode_char(step_config.enigma_mapping(), letter) for
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
