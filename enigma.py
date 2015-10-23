@@ -34,7 +34,7 @@ def chr_A0(n):
 
 
 def ordering(items):
-    return [i[1] for i in sorted(zip(items,range(0,len(items))))]
+    return [i[1] for i in sorted(zip(items, range(0, len(items))))]
 
 
 # standard simple-substitution cypher encoding
@@ -46,13 +46,12 @@ def encode_char(mapping, ch):
 
 
 def encode_string(mapping, string):
-        return ''.join([encode_char(mapping, ch) for ch in string])
+    return ''.join([encode_char(mapping, ch) for ch in string])
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
 # TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
-
     @property
     def name(self):
         return self._name
@@ -86,7 +85,7 @@ class Component(object):
         # REV - Smarter handling of edge cases and bounds?
         def rot_map(mp, st):
             st %= 26
-            return list(islice(cycle(mp), st, 26+st))
+            return list(islice(cycle(mp), st, 26 + st))
 
         if position not in self.__cached_mappings[direction].keys():
 
@@ -95,9 +94,11 @@ class Component(object):
             # REV - Use list comprehensions instead of map?
             # Some ugly caching, since upper rotors change slowly (few will be needed) and computing mappings is time consuming
             if direction == REV:
-                self.__cached_mappings[REV][position] = ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
+                self.__cached_mappings[REV][position] = ''.join(
+                    map(chr_A0, ordering(self.mapping(position, FWD))))
             else:
-                self.__cached_mappings[FWD][position] = ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
+                self.__cached_mappings[FWD][position] = ''.join(
+                    map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
 
         return self.__cached_mappings[direction][position]
 
@@ -107,12 +108,13 @@ class Component(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
+
 # REV - Better way to initialize and store these as constants? <<<
 _comps = dict()
 
 _rots = dict()
-_comps['I'] = _rots['I'] = Component('I', 'EKMFLGDQVZNTOWYHXUSPAIBRCJ','Q')
-_comps['II'] = _rots['II'] = Component('II','AJDKSIRUXBLHWTMCQGZNPYFVOE','E')
+_comps['I'] = _rots['I'] = Component('I', 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 'Q')
+_comps['II'] = _rots['II'] = Component('II', 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 'E')
 _comps['III'] = _rots['III'] = Component('III', 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'V')
 _comps['IV'] = _rots['IV'] = Component('IV', 'ESOVPZJAYQUIRHXLNFTGKDCMWB', 'J')
 _comps['V'] = _rots['V'] = Component('V', 'VZBRGITYUPSDNHLXAWMJQOFECK', 'Z')
@@ -137,7 +139,6 @@ reflectors = _refs.keys()
 
 
 def component(name):
-
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
             return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
@@ -150,7 +151,6 @@ def component(name):
 
 
 class EnigmaConfig(object):
-
     @property
     def components(self):
         return self._components
@@ -173,14 +173,14 @@ class EnigmaConfig(object):
         self._components = tuple(components)
         self._positions = tuple(positions)
         self._rings = tuple(rings)
-        self._stages = tuple(range(0,len(self._components)))
+        self._stages = tuple(range(0, len(self._components)))
 
     @staticmethod
     def config_enigma(rotor_names, window_letters, plugs, rings):
 
-        comps = list(reversed((rotor_names+'-'+plugs).split('-')))
-        winds = list(reversed([num_A0(c) for c in 'A'+window_letters+'A']))
-        rngs = list(reversed([int(x) for x in ('01.'+rings+'.01').split('.')]))
+        comps = list(reversed((rotor_names + '-' + plugs).split('-')))
+        winds = list(reversed([num_A0(c) for c in 'A' + window_letters + 'A']))
+        rngs = list(reversed([int(x) for x in ('01.' + rings + '.01').split('.')]))
 
         # TBD - Assertions for validation; plugboard <<<
         assert all(name in rotors for name in comps[1:-1])
@@ -211,7 +211,7 @@ class EnigmaConfig(object):
                 return 1
             elif stg == 2 and is_turn(2):
                 return 1
-            elif is_turn(stg-1):
+            elif is_turn(stg - 1):
                 return 1
             else:
                 return 0
@@ -231,8 +231,10 @@ class EnigmaConfig(object):
 
     def stage_mapping_list(self):
 
-        return ([component(comp).mapping(pos, FWD) for (comp, pos) in zip(self._components, self._positions)] +
-                [component(comp).mapping(pos, REV) for (comp, pos) in reversed(zip(self._components, self._positions)[:-1])])
+        return ([component(comp).mapping(pos, FWD) for (comp, pos) in
+                 zip(self._components, self._positions)] +
+                [component(comp).mapping(pos, REV) for (comp, pos) in
+                 reversed(zip(self._components, self._positions)[:-1])])
 
     # TBD - Maybe not needed; no scan in Python -- see http://stackoverflow.com/a/24503765/656912 <<<
     def enigma_mapping_list(self):
@@ -242,7 +244,7 @@ class EnigmaConfig(object):
            See the `Haskall version <https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html#v:stageMappingList>`_ of this package, where it is.
         """
         warnings.warn("Function 'enigma_mapping_list' is not implemented.", DeprecationWarning)
-        #raise NotImplementedError
+        # raise NotImplementedError
 
     # REV - Just last of enigma_mapping_list() if implemented
     def enigma_mapping(self):
