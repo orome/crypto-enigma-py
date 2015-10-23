@@ -34,7 +34,6 @@ def chr_A0(n):
 def ordering(items):
     return [i[1] for i in sorted(zip(items,range(0,len(items))))]
 
-
 # standard simple-substitution cypher encoding
 def encode_char(mapping, ch):
     if ch == ' ':
@@ -42,17 +41,9 @@ def encode_char(mapping, ch):
     else:
         return mapping[num_A0(ch)]
 
-def encode_num(mapping, num):
-    if num == -33:
-        return -33
-    else:
-        return mapping[num]
-
 def encode_string(mapping, string):
         return ''.join([encode_char(mapping, ch) for ch in string])
 
-def encode_nums(mapping, nums):
-        return ''.join([encode_num(mapping, num) for num in nums])
 
 
 
