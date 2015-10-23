@@ -114,10 +114,17 @@ _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 rotors = _rots.keys()
 reflectors = _refs.keys()
 
+
 def component(name):
+
+    def plug(letters, swap):
+        if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
+            return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
+        else:
+            return letters
+
     if name not in _comps.keys():
-        # TBD - Generate wiring for plugboard <<<
-        _comps[name] = Component(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
+        _comps[name] = Component(name, ''.join(reduce(plug, name.split('.'), list(LETTERS))), '')
     return _comps[name]
 
 
@@ -206,7 +213,7 @@ class EnigmaConfig(object):
         return ([component(comp).mapping(pos, FWD) for (comp, pos) in zip(self._components, self._positions)] +
                 [component(comp).mapping(pos, REV) for (comp, pos) in reversed(zip(self._components, self._positions)[:-1])])
 
-    # TBD - Manybe not needed; no scan in Python -- see http://stackoverflow.com/a/24503765/656912 <<<
+    # TBD - Maybe not needed; no scan in Python -- see http://stackoverflow.com/a/24503765/656912 <<<
     def enigma_mapping_list(self):
         """
         .. deprecated:: 0.00.001
@@ -220,8 +227,12 @@ class EnigmaConfig(object):
     def enigma_mapping(self):
         return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
 
-        #encode_string(mapping, string)
-#enigmaMappingList ec = scanl1 (flip encode') (stageMappingList ec)
+    def enigma_encoding(self, message):
+
+        assert  all(letter in LETTERS for letter in message)
+
+        return ''.join([encode_char(step_config.enigma_mapping(), letter) for
+                        (letter, step_config) in zip(message, self.step().stepped_configs())])
 
     # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
     def __unicode__(self):
