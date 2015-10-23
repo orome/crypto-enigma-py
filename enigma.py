@@ -21,6 +21,11 @@ REV = -1
 def num_A0(c):
     return ord(c) - ord('A')
 
+#
+# num_A0 = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9, 'K': 10,
+#           'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21,
+#           'W': 22, 'X': 23, 'Y': 24, 'Z': 25, ' ': -33}
+
 
 def chr_A0(n):
     return chr(n + ord('A'))
@@ -37,9 +42,19 @@ def encode_char(mapping, ch):
     else:
         return mapping[num_A0(ch)]
 
+def encode_num(mapping, num):
+    if num == -33:
+        return -33
+    else:
+        return mapping[num]
 
 def encode_string(mapping, string):
         return ''.join([encode_char(mapping, ch) for ch in string])
+
+def encode_nums(mapping, nums):
+        return ''.join([encode_num(mapping, num) for num in nums])
+
+
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -67,6 +82,10 @@ class Component(object):
         self._name = name
         self._wiring = wiring
         self._turnovers = turnovers
+        # Some ugly caching; see mapping()
+        self.__cached_mappings = dict()
+        self.__cached_mappings[FWD] = dict()
+        self.__cached_mappings[REV] = dict()
 
     def mapping(self, position, direction=FWD):
 
@@ -77,13 +96,19 @@ class Component(object):
             st %= 26
             return list(islice(cycle(mp), st, 26+st))
 
-        steps = position - 1
+        if position not in self.__cached_mappings[direction].keys():
 
-        # REV - Use list comprehensions instead of map?
-        if direction == REV:
-            return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
-        else:
-            return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self.wiring, steps)))
+            steps = position - 1
+
+            # REV - Use list comprehensions instead of map?
+            # Some ugly caching, since upper rotors change slowly and coputing mappings is time consuming
+            # TBD - Make less ugly by trapping inexing?
+            if direction == REV:
+                self.__cached_mappings[REV][position] = ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
+            else:
+                self.__cached_mappings[FWD][position] = ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
+
+        return  self.__cached_mappings[direction][position]
 
 
 # REV - Better way to initialize and store these as constants? <<<
@@ -149,10 +174,10 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
-        self._components = components
-        self._positions = positions
-        self._rings = rings
-        self._stages = range(0,len(self._components))
+        self._components = tuple(components)
+        self._positions = tuple(positions)
+        self._rings = tuple(rings)
+        self._stages = tuple(range(0,len(self._components)))
 
     @staticmethod
     def config_enigma(rotor_names, window_letters, plugs, rings):
