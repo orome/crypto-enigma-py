@@ -266,3 +266,46 @@ class EnigmaConfig(object):
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+    @staticmethod
+    def _marked_mapping(mapping, i, marked_char=lambda c: c + '\u0332\u0305'):
+
+        return mapping[:i] + marked_char(mapping[i]) + mapping[i+1:] if 0 <= i <= 25 else mapping
+
+    @staticmethod
+    def _locate_letter(mapping, letter, string):
+        #locate the index of the encoding with mapping of letter, in string
+        return string.index(encode_char(mapping, letter)) if letter in string else -1
+
+    def _config_string(self, letter):
+
+        enigma_mapping = self.enigma_mapping()
+
+        return '{0} {1}  {2}  {3}'.format(letter + ' >' if letter in LETTERS else '   ',
+                                          EnigmaConfig._marked_mapping(enigma_mapping,
+                                                                       EnigmaConfig._locate_letter(enigma_mapping,
+                                                                                                   letter,
+                                                                                                   enigma_mapping)),
+                                          self.windows(),
+                                          ' '.join(['{:02d}'.format(p) for p in reversed(self.positions[1:-1])]))
+
+    # TBD - HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< <<<
+    def _config_string_internal(self, letter):
+        return encode_char(self.enigma_mapping(), letter)
+
+    # ASK - How to pass a method that may use differnet instances?
+    # def _print_operation(self, message, configstring=_config_string):
+    #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
+    #         print(configstring(cfg, letter))
+    #     print(' ')
+
+    def print_operation(self, message):
+        for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
+            print(cfg._config_string(letter))
+        print(' ')
+
+    def print_operation_internal(self, message):
+        for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
+            print(cfg._config_string_internal(letter))
+        print(' ')
+

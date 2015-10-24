@@ -111,6 +111,27 @@ print([ec[1].windows() for ec in zip([1, 2, 3],cfg.stepped_configs())])
 cfg = enigma.EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LEZO", "UX.MO.KZ.AY.EF.PL", "03.17.04.11")
 print([ec[1].windows() for ec in zip([1, 2, 3],[i for i in cfg.stepped_configs(3)])])
 
+print(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 3))
+print(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 0))
+print(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 10))
+print(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 25))
+print(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 25, lambda c: '[' + c + ']'))
+
+print(len(enigma.LETTERS))
+print(len(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 3)))
+print(len(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 25, lambda c: '[' + c + ']')))
+
+print(cfg)
+print(cfg._config_string('A'))
+print(cfg._config_string(' '))
+print(cfg._config_string('Z'))
+print(cfg._config_string('K'))
+print()
+cfg.print_operation("ABCDE")
+cfg.print_operation_internal("ABCDE")
+
+
+
 # cfg = enigma.EnigmaConfig.config_enigma("c-β-V-VI-VIII", enigma.EnigmaConfig.config_enigma("c-β-V-VI-VIII", "NAEM", "AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW", "05.16.05.12").enigma_encoding("QEOB"), "AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW", "05.16.05.12")
 # cProfile.run('cfg.enigma_encoding("KRKRALLEXXFOLGENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBEBEFEHLERHALTENXXJANSTERLEDESBISHERIGXNREICHSMARSCHALLSJGOERINGJSETZTDERFUEHRERSIEYHVRRGRZSSADMIRALYALSSEINENNACHFOLGEREINXSCHRIFTLSCHEVOLLMACHTUNTERWEGSXABSOFORTSOLLENSIESAEMTLICHEMASSNAHMENVERFUEGENYDIESICHAUSDERGEGENWAERTIGENLAGEERGEBENXGEZXREICHSLEITEIKKTULPEKKJBORMANNJXXOBXDXMMMDURNHFKSTXKOMXADMXUUUBOOIEXKP")')
 # cProfile.run('[str(ec.windows()) for ec in cfg.stepped_configs(10000)]')
