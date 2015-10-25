@@ -8,7 +8,7 @@ Description
     Any additional note.
 """
 
-
+# TBD - Changer list(reverse( conversions to [::-1] throughout <<<
 # REV - Additional performance improvements
 # A large improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
@@ -47,6 +47,15 @@ def encode_char(mapping, ch):
 
 def encode_string(mapping, string):
     return ''.join([encode_char(mapping, ch) for ch in string])
+
+
+def accumulate(l, f):
+    it = iter(l)
+    total = next(it)
+    yield total
+    for element in it:
+        total = f(total, element)
+        yield total
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -236,15 +245,8 @@ class EnigmaConfig(object):
                 [component(comp).mapping(pos, REV) for (comp, pos) in
                  reversed(zip(self._components, self._positions)[:-1])])
 
-    # TBD - Maybe not needed; no scan in Python -- see http://stackoverflow.com/a/24503765/656912 <<<
     def enigma_mapping_list(self):
-        """
-        .. deprecated:: 0.00.001
-           This function unused in this implementation.
-           See the `Haskall version <https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html#v:stageMappingList>`_ of this package, where it is.
-        """
-        warnings.warn("Function 'enigma_mapping_list' is not implemented.", DeprecationWarning)
-        # raise NotImplementedError
+        return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
 
     # REV - Just last of enigma_mapping_list() if implemented
     def enigma_mapping(self):
@@ -289,9 +291,40 @@ class EnigmaConfig(object):
                                           self.windows(),
                                           ' '.join(['{:02d}'.format(p) for p in reversed(self.positions[1:-1])]))
 
-    # TBD - HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< <<<
     def _config_string_internal(self, letter):
-        return encode_char(self.enigma_mapping(), letter)
+
+        cfg_mapping = self.enigma_mapping()
+        cfg_mapping_list = self.enigma_mapping_list()
+        stg_mapping_list = self.stage_mapping_list()
+
+        def reflect_info(stg_info): return stg_info + stg_info[::-1][1:]
+
+        def pad_info(stg_info, pad): return [pad] + stg_info + ([pad] * len(self.positions))
+
+        # REV - Better way that avoids recalcs of cfg_mapping and cfg_mapping_list?
+        letter_locations = [EnigmaConfig._locate_letter(m, l, s) for (m, l, s) in
+                            zip([LETTERS] + cfg_mapping_list + [cfg_mapping],
+                                [letter] * (len(self.stages)*2+1),
+                                [LETTERS] + stg_mapping_list + [cfg_mapping])]
+
+        stg_labels = reflect_info(['P'] + list(self.stages)[1:-1] + ['R'])
+        stg_mappings = [EnigmaConfig._marked_mapping(m, i) for (m, i) in zip(stg_mapping_list,
+                                                                             letter_locations[1:-1])]
+        stg_windows = pad_info(list(self.windows())[::-1], ' ')
+        stg_positions = pad_info(['{:02d}'.format(p) for p in self.positions][1:-1], '  ')
+        stg_coponents = reflect_info(self.components)
+
+        return ("{0}  {1}\n".format(letter + ' >' if letter in LETTERS else '   ',
+                                    EnigmaConfig._marked_mapping(LETTERS,letter_locations[1])) +
+                ''.join(['  {0}  {1}  {2}  {3}  {4}\n'.format(stg_lbl, stg_map, stg_wind, stg_pos, stg_comp)
+                         for (stg_lbl, stg_map, stg_wind, stg_pos, stg_comp) in zip(stg_labels,
+                                                                                    stg_mappings,
+                                                                                    stg_windows,
+                                                                                    stg_positions,
+                                                                                    stg_coponents)]) +
+                "{0}  {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
+                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1]))
+                )
 
     # ASK - How to pass a method that may use differnet instances?
     # def _print_operation(self, message, configstring=_config_string):
@@ -302,10 +335,21 @@ class EnigmaConfig(object):
     def print_operation(self, message):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
             print(cfg._config_string(letter))
-        print(' ')
+        #print(' ')
 
     def print_operation_internal(self, message):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
             print(cfg._config_string_internal(letter))
-        print(' ')
+            print(' ')
+
+# TBD - Clean up testing script <<<
+# TBD - Check spacing of lines, esp at end <<<
+# TBD - Testing for enigma encoding list <<<
+# REV - Caching of encoding lists and encoding? (allows use of last in enigma_encoding too and doesn't need to be cahced) <<<
+# ASK - Idiom for printing loops
+# ASK - Reversing arguments (like swap)
+# ASK - Passing a method as an argument
+# ASK - Actual unicode sting length as displayed <<<
+# TBD - Fix passing of marking as arugment (needs to percolate up in api hierarchy)
+# TBD - Test [x] markup (and others)
 
