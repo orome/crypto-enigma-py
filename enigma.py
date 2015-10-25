@@ -48,7 +48,7 @@ def encode_char(mapping, ch):
 def encode_string(mapping, string):
     return ''.join([encode_char(mapping, ch) for ch in string])
 
-
+# scan, becaus it's missing from Python; implemented to anticipate Python 3
 def accumulate(l, f):
     it = iter(l)
     total = next(it)
@@ -239,18 +239,27 @@ class EnigmaConfig(object):
             cur_step += 1
 
     def stage_mapping_list(self):
-
-        return ([component(comp).mapping(pos, FWD) for (comp, pos) in
+        # REV - Could use this approach; also in caching of Component __cached_mappings <<<
+        try:
+            return self.__stage_mapping_list
+        except AttributeError:
+            self.__stage_mapping_list = ([component(comp).mapping(pos, FWD) for (comp, pos) in
                  zip(self._components, self._positions)] +
                 [component(comp).mapping(pos, REV) for (comp, pos) in
                  reversed(zip(self._components, self._positions)[:-1])])
+            return self.__stage_mapping_list
 
     def enigma_mapping_list(self):
-        return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
+        try:
+            return self.__enigma_mapping_list
+        except AttributeError:
+            self.__enigma_mapping_list = list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
+            return self.__enigma_mapping_list
 
     # REV - Just last of enigma_mapping_list() if implemented
     def enigma_mapping(self):
-        return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
+        #return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
+        return self.enigma_mapping_list()[-1]
 
     def enigma_encoding(self, message):
 
@@ -279,19 +288,19 @@ class EnigmaConfig(object):
         #locate the index of the encoding with mapping of letter, in string
         return string.index(encode_char(mapping, letter)) if letter in string else -1
 
-    def _config_string(self, letter):
+    def config_string(self, letter):
 
-        enigma_mapping = self.enigma_mapping()
+        cfg_mapping = self.enigma_mapping()
 
         return '{0} {1}  {2}  {3}'.format(letter + ' >' if letter in LETTERS else '   ',
-                                          EnigmaConfig._marked_mapping(enigma_mapping,
-                                                                       EnigmaConfig._locate_letter(enigma_mapping,
+                                          EnigmaConfig._marked_mapping(cfg_mapping,
+                                                                       EnigmaConfig._locate_letter(cfg_mapping,
                                                                                                    letter,
-                                                                                                   enigma_mapping)),
+                                                                                                   cfg_mapping)),
                                           self.windows(),
                                           ' '.join(['{:02d}'.format(p) for p in reversed(self.positions[1:-1])]))
 
-    def _config_string_internal(self, letter):
+    def config_string_internal(self, letter):
 
         cfg_mapping = self.enigma_mapping()
         cfg_mapping_list = self.enigma_mapping_list()
@@ -334,14 +343,15 @@ class EnigmaConfig(object):
 
     def print_operation(self, message):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg._config_string(letter))
+            print(cfg.config_string(letter))
         #print(' ')
 
     def print_operation_internal(self, message):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg._config_string_internal(letter))
+            print(cfg.config_string_internal(letter))
             print(' ')
 
+# ASK - Ask about memoizing decorator for costly to compute values (that may or many nto be needed)
 # TBD - Clean up testing script <<<
 # TBD - Check spacing of lines, esp at end <<<
 # TBD - Testing for enigma encoding list <<<

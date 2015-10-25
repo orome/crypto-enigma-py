@@ -122,17 +122,17 @@ print(len(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 3)))
 print(len(enigma.EnigmaConfig._marked_mapping(enigma.LETTERS, 25, lambda c: '[' + c + ']')))
 
 print(cfg)
-print(cfg._config_string('A'))
-print(cfg._config_string(' '))
-print(cfg._config_string('Z'))
-print(cfg._config_string('K'))
+print(cfg.config_string('A'))
+print(cfg.config_string(' '))
+print(cfg.config_string('Z'))
+print(cfg.config_string('K'))
 print()
 cfg.print_operation("ABCDE")
 cfg.print_operation_internal("ABCDE")
 cfg = enigma.EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAQ", "UX.MO.KZ.AY.EF.PL", "03.17.04.11")
 print(cfg.enigma_mapping_list())
-print(cfg._config_string_internal('Q'))
-print(cfg._config_string_internal(' '))
+print(cfg.config_string_internal('Q'))
+print(cfg.config_string_internal(' '))
 
 
 
