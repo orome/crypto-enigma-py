@@ -8,7 +8,7 @@ Description
     Any additional note.
 """
 
-# TBD - Changer list(reverse( conversions to [::-1] throughout <<<
+# TBD - Change list(reverse( conversions to [::-1] throughout? <<<
 # REV - Additional performance improvements
 # A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
@@ -19,6 +19,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 from cachetools import cached
 from itertools import cycle, islice
+
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1
@@ -47,6 +48,7 @@ def encode_char(mapping, ch):
 
 def encode_string(mapping, string):
     return ''.join([encode_char(mapping, ch) for ch in string])
+
 
 # scan, becaus it's missing from Python; implemented to anticipate Python 3
 def accumulate(l, f):
@@ -134,8 +136,8 @@ _comps['c'] = _refs['c'] = Component('c', 'RDOBJNTKVEHMLFCWZAXGYIPSUQ', '')
 _kbd = dict()
 _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 
-rotors = _rots.keys()
-reflectors = _refs.keys()
+rotors = sorted(_rots.keys())
+reflectors = sorted(_refs.keys())
 
 
 def component(name):
@@ -310,15 +312,15 @@ class EnigmaConfig(object):
         stg_positions = pad_info(['{:02d}'.format(p) for p in self.positions][1:-1], '  ')
         stg_coponents = reflect_info(self.components)
 
-        return ("{0}  {1}\n".format(letter + ' >' if letter in LETTERS else '   ',
+        return ("{0} {1}\n".format(letter + ' >' if letter in LETTERS else '   ',
                                     EnigmaConfig._marked_mapping(LETTERS,letter_locations[1])) +
-                ''.join(['  {0}  {1}  {2}  {3}  {4}\n'.format(stg_lbl, stg_map, stg_wind, stg_pos, stg_comp)
+                ''.join(['  {0} {1}  {2}  {3}  {4}\n'.format(stg_lbl, stg_map, stg_wind, stg_pos, stg_comp)
                          for (stg_lbl, stg_map, stg_wind, stg_pos, stg_comp) in zip(stg_labels,
                                                                                     stg_mappings,
                                                                                     stg_windows,
                                                                                     stg_positions,
                                                                                     stg_coponents)]) +
-                "{0}  {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
+                "{0} {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
                                   EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1]))
                 )
 
@@ -339,12 +341,14 @@ class EnigmaConfig(object):
             print(' ')
 
 # TBD - Clean up testing script <<<
-# TBD - Check spacing of lines, esp at end <<<
+# TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
+# TBD - Formatted encoding of message (final API) <<<
+# TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
 # TBD - Testing for enigma encoding list <<<
-# ASK - Idiom for printing loops
-# ASK - Reversing arguments (like swap)
-# ASK - Passing a method as an argument
+# ASK - Idiom for printing loops?
+# ASK - Reversing arguments (like swap)?
+# ASK - Passing a method as an argument?
 # ASK - Actual unicode sting length as displayed <<<
-# TBD - Fix passing of marking as arugment (needs to percolate up in api hierarchy)
+# TBD - Fix passing of marking as argument (needs to percolate up in api hierarchy)
 # TBD - Test [x] markup (and others)
 
