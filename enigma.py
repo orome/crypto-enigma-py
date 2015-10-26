@@ -10,14 +10,14 @@ Description
 
 # TBD - Changer list(reverse( conversions to [::-1] throughout <<<
 # REV - Additional performance improvements
-# A large improvement comes from caching the encodings of rotors when first computed for a given position.
+# A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
 # because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
 # Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the loss
 # of clarity.
 from __future__ import (absolute_import, print_function, division, unicode_literals)
-import warnings
 
+from cachetools import cached
 from itertools import cycle, islice
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -82,11 +82,7 @@ class Component(object):
         self._wiring = wiring
         self._turnovers = turnovers
 
-        # Some ugly caching; see mapping()
-        self.__cached_mappings = {FWD: {}, REV: {}}
-        # self.__cached_mappings[FWD] = dict()
-        # self.__cached_mappings[REV] = dict()
-
+    @cached({})
     def mapping(self, position, direction=FWD):
 
         assert direction in [FWD, REV]
@@ -96,20 +92,15 @@ class Component(object):
             st %= 26
             return list(islice(cycle(mp), st, 26 + st))
 
-        if position not in self.__cached_mappings[direction].keys():
+        steps = position - 1
 
-            steps = position - 1
-
-            # REV - Use list comprehensions instead of map?
-            # Some ugly caching, since upper rotors change slowly (few will be needed) and computing mappings is time consuming
-            if direction == REV:
-                self.__cached_mappings[REV][position] = ''.join(
-                    map(chr_A0, ordering(self.mapping(position, FWD))))
-            else:
-                self.__cached_mappings[FWD][position] = ''.join(
-                    map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
-
-        return self.__cached_mappings[direction][position]
+        # REV - Use list comprehensions instead of map?
+        if direction == REV:
+            #return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
+            return ''.join([chr_A0(p) for p in ordering(self.mapping(position, FWD))])
+        else:
+            #return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
+            return ''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)])
 
     def __unicode__(self):
         return "{0} {1} {2}".format(self._name, self._wiring, self._turnovers)
@@ -150,7 +141,8 @@ reflectors = _refs.keys()
 def component(name):
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
-            return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
+            #return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
+            return [swap[0] if c == swap[1] else swap[1] if c == swap[0] else c for c in letters]
         else:
             return letters
 
@@ -172,7 +164,7 @@ class EnigmaConfig(object):
     def rings(self):
         return self._rings
 
-    # REV - Possibly not needed (also possibly not needed in Haskell? Used for printing though.)
+    # REV - Not used here except for display; possibly not needed in Haskell version either?
     @property
     def stages(self):
         return self._stages
@@ -198,13 +190,15 @@ class EnigmaConfig(object):
         assert all(1 <= rng <= 26 for rng in rngs)
         assert all(chr_A0(wind) in LETTERS for wind in winds)
 
-        return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
+        #return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
+        return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     def _window_letter(self, st):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
 
     def windows(self):
         return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
+        #return ''.join([self._window_letter(st) for st in self._stages][-1:1:-1])
 
     def step(self):
 
@@ -238,25 +232,18 @@ class EnigmaConfig(object):
             yield cur_config
             cur_step += 1
 
+    @cached({})
     def stage_mapping_list(self):
-        # REV - Could use this approach; also in caching of Component __cached_mappings <<<
-        try:
-            return self.__stage_mapping_list
-        except AttributeError:
-            self.__stage_mapping_list = ([component(comp).mapping(pos, FWD) for (comp, pos) in
-                 zip(self._components, self._positions)] +
-                [component(comp).mapping(pos, REV) for (comp, pos) in
-                 reversed(zip(self._components, self._positions)[:-1])])
-            return self.__stage_mapping_list
+            return ([component(comp).mapping(pos, FWD) for (comp, pos) in
+                     zip(self._components, self._positions)] +
+                    [component(comp).mapping(pos, REV) for (comp, pos) in
+                     reversed(zip(self._components, self._positions)[:-1])])
 
+    @cached({})
     def enigma_mapping_list(self):
-        try:
-            return self.__enigma_mapping_list
-        except AttributeError:
-            self.__enigma_mapping_list = list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
-            return self.__enigma_mapping_list
+            return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
 
-    # REV - Just last of enigma_mapping_list() if implemented
+
     def enigma_mapping(self):
         #return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
         return self.enigma_mapping_list()[-1]
@@ -351,11 +338,9 @@ class EnigmaConfig(object):
             print(cfg.config_string_internal(letter))
             print(' ')
 
-# ASK - Ask about memoizing decorator for costly to compute values (that may or many nto be needed)
 # TBD - Clean up testing script <<<
 # TBD - Check spacing of lines, esp at end <<<
 # TBD - Testing for enigma encoding list <<<
-# REV - Caching of encoding lists and encoding? (allows use of last in enigma_encoding too and doesn't need to be cahced) <<<
 # ASK - Idiom for printing loops
 # ASK - Reversing arguments (like swap)
 # ASK - Passing a method as an argument
