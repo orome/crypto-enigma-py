@@ -84,6 +84,7 @@ class Component(object):
         self._wiring = wiring
         self._turnovers = turnovers
 
+    # Caching here is essential; see general not on caching.
     @cached({})
     def mapping(self, position, direction=FWD):
 
@@ -235,6 +236,7 @@ class EnigmaConfig(object):
             yield cur_config
             cur_step += 1
 
+    # REV - Caching here isn't really needed
     @cached({})
     def stage_mapping_list(self):
             return ([component(comp).mapping(pos, FWD) for (comp, pos) in
@@ -242,6 +244,7 @@ class EnigmaConfig(object):
                     [component(comp).mapping(pos, REV) for (comp, pos) in
                      zip(self._components, self._positions)][:-1][::-1])
 
+    # REV - Caching here isn't really needed
     @cached({})
     def enigma_mapping_list(self):
             return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
@@ -345,7 +348,6 @@ class EnigmaConfig(object):
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
 # TBD - Formatted encoding of message (final API) <<<
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
-# TBD - Testing for enigma encoding list <<<
 # ASK - Idiom for printing loops?
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
