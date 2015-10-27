@@ -8,7 +8,6 @@ Description
     Any additional note.
 """
 
-# REV - Keep list(reverse( conversions as [::-1] throughout?
 # REV - Additional performance improvements
 # A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
@@ -83,7 +82,7 @@ class Component(object):
 
     def __init__(self, name, wiring, turnovers):
 
-        # REV - Decide what goal to prusue here. What kind of flexibility to allow in creating Components
+        # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
         assert name not in _comps.keys()
 
         self._name = name
@@ -344,13 +343,6 @@ class EnigmaConfig(object):
                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1], mark_func))
                 )
 
-    # ASK - How to pass a method that may use differnet instances?
-    # def _print_operation(self, message, configstring=_config_string):
-    #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-    #         print(configstring(cfg, letter))
-    #     print(' ')
-
-
     @staticmethod
     def preprocess(msg):
 
@@ -360,6 +352,12 @@ class EnigmaConfig(object):
                 ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
 
         return filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
+
+    # ASK - How to pass a method that may use differnet instances?
+    # def _print_operation(self, message, configstring=_config_string):
+    #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
+    #         print(configstring(cfg, letter))
+    #     print(' ')
 
     def print_operation(self, message, mark_func=None):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
@@ -387,3 +385,4 @@ class EnigmaConfig(object):
 # ASK - Idiom for printing loops?
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
+# REV - Keep list(reverse( conversions as [::-1] throughout?
