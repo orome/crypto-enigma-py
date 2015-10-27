@@ -23,7 +23,6 @@ from cachetools import cached
 from itertools import cycle, islice
 from unicodedata import combining
 
-
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1
 REV = -1
@@ -53,7 +52,7 @@ def encode_string(mapping, string):
     return ''.join([encode_char(mapping, ch) for ch in string])
 
 
-# scan, becaus it's missing from Python; implemented to anticipate Python 3
+# scan, because it's missing from Python; implemented to anticipate Python 3
 def accumulate(l, f):
     it = iter(l)
     total = next(it)
@@ -61,6 +60,10 @@ def accumulate(l, f):
     for element in it:
         total = f(total, element)
         yield total
+
+# also missing from Python
+def chunk_of(it, n):
+    return [it[i:i+n] for i in range(0, len(it), n)]
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -102,10 +105,10 @@ class Component(object):
 
         # REV - Use list comprehensions instead of map?
         if direction == REV:
-            #return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
+            # return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
             return ''.join([chr_A0(p) for p in ordering(self.mapping(position, FWD))])
         else:
-            #return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
+            # return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
             return ''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)])
 
     def __unicode__(self):
@@ -147,7 +150,7 @@ reflectors = sorted(_refs.keys())
 def component(name):
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
-            #return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
+            # return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
             return [swap[0] if c == swap[1] else swap[1] if c == swap[0] else c for c in letters]
         else:
             return letters
@@ -196,16 +199,16 @@ class EnigmaConfig(object):
         assert all(1 <= rng <= 26 for rng in rngs)
         assert all(chr_A0(wind) in LETTERS for wind in winds)
 
-        #return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
+        # return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     def _window_letter(self, st):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
 
     def windows(self):
-        #return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
+        # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
         return ''.join([self._window_letter(st) for st in self._stages][1:-1][::-1])
-        #return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
+        # return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
 
     def step(self):
 
@@ -242,19 +245,18 @@ class EnigmaConfig(object):
     # REV - Caching here isn't really needed
     @cached({})
     def stage_mapping_list(self):
-            return ([component(comp).mapping(pos, FWD) for (comp, pos) in
-                     zip(self._components, self._positions)] +
-                    [component(comp).mapping(pos, REV) for (comp, pos) in
-                     zip(self._components, self._positions)][:-1][::-1])
+        return ([component(comp).mapping(pos, FWD) for (comp, pos) in
+                 zip(self._components, self._positions)] +
+                [component(comp).mapping(pos, REV) for (comp, pos) in
+                 zip(self._components, self._positions)][:-1][::-1])
 
     # REV - Caching here isn't really needed
     @cached({})
     def enigma_mapping_list(self):
-            return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
-
+        return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
 
     def enigma_mapping(self):
-        #return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
+        # return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
         return self.enigma_mapping_list()[-1]
 
     def enigma_encoding(self, message):
@@ -285,13 +287,13 @@ class EnigmaConfig(object):
             else:
                 return mark_func(c)
 
-        pads = ' ' * ((sum(not combining(c) for c in marked_char('A')) - 1)//2)
+        pads = ' ' * ((sum(not combining(c) for c in marked_char('A')) - 1) // 2)
 
-        return mapping[:i] + marked_char(mapping[i]) + mapping[i+1:] if 0 <= i <= 25 else pads + mapping + pads
+        return mapping[:i] + marked_char(mapping[i]) + mapping[i + 1:] if 0 <= i <= 25 else pads + mapping + pads
 
     @staticmethod
     def _locate_letter(mapping, letter, string):
-        #locate the index of the encoding with mapping of letter, in string
+        # locate the index of the encoding with mapping of letter, in string
         return string.index(encode_char(mapping, letter)) if letter in string else -1
 
     def config_string(self, letter, mark_func=None):
@@ -320,7 +322,7 @@ class EnigmaConfig(object):
         # REV - Better way that avoids recalcs of cfg_mapping and cfg_mapping_list?
         letter_locations = [EnigmaConfig._locate_letter(m, l, s) for (m, l, s) in
                             zip([LETTERS] + cfg_mapping_list + [cfg_mapping],
-                                [letter] * (len(self.stages)*2+1),
+                                [letter] * (len(self.stages) * 2 + 1),
                                 [LETTERS] + stg_mapping_list + [cfg_mapping])]
 
         stg_labels = reflect_info(['P'] + list(self.stages)[1:-1] + ['R'])
@@ -331,7 +333,7 @@ class EnigmaConfig(object):
         stg_coponents = reflect_info(self.components)
 
         return ("{0} {1}\n".format(letter + ' >' if letter in LETTERS else '   ',
-                                    EnigmaConfig._marked_mapping(LETTERS, letter_locations[1], mark_func)) +
+                                   EnigmaConfig._marked_mapping(LETTERS, letter_locations[1], mark_func)) +
                 ''.join(['  {0} {1}  {2}  {3}  {4}\n'.format(stg_lbl, stg_map, stg_wind, stg_pos, stg_comp)
                          for (stg_lbl, stg_map, stg_wind, stg_pos, stg_comp) in zip(stg_labels,
                                                                                     stg_mappings,
@@ -339,7 +341,7 @@ class EnigmaConfig(object):
                                                                                     stg_positions,
                                                                                     stg_coponents)]) +
                 "{0} {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
-                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1], mark_func))
+                                 EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1], mark_func))
                 )
 
     # ASK - How to pass a method that may use differnet instances?
@@ -348,22 +350,40 @@ class EnigmaConfig(object):
     #         print(configstring(cfg, letter))
     #     print(' ')
 
+    # REV - Have these preprocess the message? Sync with Haskell version of so
     def print_operation(self, message, mark_func=None):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
             print(cfg.config_string(letter, mark_func))
-        #print(' ')
+            # print(' ')
 
     def print_operation_internal(self, message, mark_func=None):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
             print(cfg.config_string_internal(letter, mark_func))
             print(' ')
 
+    @staticmethod
+    def preprocess(msg):
+
+        subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
+                ('?', 'UD'), ('-', 'YY'), (':', 'XX'), ('(', 'KK'), (')', 'KK'),
+                ('1', 'YQ'), ('2', 'YW'), ('3', 'YE'), ('4', 'YR'), ('5', 'YT'),
+                ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
+
+        return filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
+
+    @staticmethod
+    def postprocess(msg):
+        return '\n'.join(chunk_of(' '.join(chunk_of(msg, 4)), 60))
+
+    def print_encoding(self, message):
+        print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.preprocess(message))))
+
+
+
+
 # TBD - Clean up testing script <<<
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
-# TBD - Formatted encoding of message (final API) <<<
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
 # ASK - Idiom for printing loops?
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
-
-
