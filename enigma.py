@@ -181,9 +181,9 @@ class EnigmaConfig(object):
     @staticmethod
     def config_enigma(rotor_names, window_letters, plugs, rings):
 
-        comps = list(reversed((rotor_names + '-' + plugs).split('-')))
-        winds = list(reversed([num_A0(c) for c in 'A' + window_letters + 'A']))
-        rngs = list(reversed([int(x) for x in ('01.' + rings + '.01').split('.')]))
+        comps = (rotor_names + '-' + plugs).split('-')[::-1]
+        winds = [num_A0(c) for c in 'A' + window_letters + 'A'][::-1]
+        rngs = [int(x) for x in ('01.' + rings + '.01').split('.')][::-1]
 
         # TBD - Assertions for validation; plugboard <<<
         assert all(name in rotors for name in comps[1:-1])
@@ -199,8 +199,9 @@ class EnigmaConfig(object):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
 
     def windows(self):
-        return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
-        #return ''.join([self._window_letter(st) for st in self._stages][-1:1:-1])
+        #return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
+        return ''.join([self._window_letter(st) for st in self._stages][1:-1][::-1])
+        #return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
 
     def step(self):
 
@@ -239,7 +240,7 @@ class EnigmaConfig(object):
             return ([component(comp).mapping(pos, FWD) for (comp, pos) in
                      zip(self._components, self._positions)] +
                     [component(comp).mapping(pos, REV) for (comp, pos) in
-                     reversed(zip(self._components, self._positions)[:-1])])
+                     zip(self._components, self._positions)][:-1][::-1])
 
     @cached({})
     def enigma_mapping_list(self):
@@ -259,10 +260,10 @@ class EnigmaConfig(object):
 
     # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
     def __unicode__(self):
-        return "{0} {1} {2} {3}".format('-'.join(reversed(self._components[1:])),
+        return "{0} {1} {2} {3}".format('-'.join(self._components[1:][::-1]),
                                         self.windows(),
                                         self._components[0],
-                                        '.'.join(reversed(['{:02d}'.format(r) for r in self._rings[1:-1]])))
+                                        '.'.join(['{:02d}'.format(r) for r in self._rings[1:-1]][::-1]))
 
     def __str__(self):
         return unicode(self).encode('utf-8')
@@ -287,7 +288,7 @@ class EnigmaConfig(object):
                                                                                                    letter,
                                                                                                    cfg_mapping)),
                                           self.windows(),
-                                          ' '.join(['{:02d}'.format(p) for p in reversed(self.positions[1:-1])]))
+                                          ' '.join(['{:02d}'.format(p) for p in self.positions[1:-1]][::-1]))
 
     def config_string_internal(self, letter):
 
