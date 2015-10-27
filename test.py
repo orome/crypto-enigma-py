@@ -79,9 +79,11 @@ assert cfg.enigma_encoding(msg) == enc
 # USE - Haskell output for first and last lines needs to be trimmed to match; marked output needs \818\773 replaced with ̲̅
 cfg = EnigmaConfig.config_enigma('c-β-V-II-III', 'KFIE', 'IO.QW.AG.DX.ZR', '11.19.21.16')
 assert cfg.config_string(' ') == '    OGUSZKBIHVFPXTALWYDNCJQMRE  KFIE  01 14 15 16'
+assert cfg.config_string(' ', lambda c: '[' + c + ']') == '     OGUSZKBIHVFPXTALWYDNCJQMRE   KFIE  01 14 15 16'
 assert cfg.config_string('J') == 'J > OGUSZKBIHV̲̅FPXTALWYDNCJQMRE  KFIE  01 14 15 16' #J > OGUSZKBIHV̲̅FPXTALWYDNCJQMRE  KFIE  01 14 15 16
 assert cfg.config_string_internal(' ').split('\n') == ['    ABCDEFGHIJKLMNOPQRSTUVWXYZ','  P GBCXEFAHOJKLMNIPWZSTUVQDYR         IO.QW.AG.DX.ZR','  1 PTHRLVXFDBZMOQSUWNACEIGKYJ  E  16  III','  2 YOCSLZBKRHAQMVPWEUDGJNXTIF  I  15  II','  3 UYKNJZWDBSRPXIMOETVGLHCFQA  F  14  V','  4 LEYJVCNIXWPBQMDRTAKZGFUHOS  K  01  β','  R RDOBJNTKVEHMLFCWZAXGYIPSUQ         c','  4 RLFOBVUXHDSANGYKMPZQWEJICT         β','  3 ZIWHQXTVNECUODPLYKJRASGMBF         V','  2 KGCSQZTJYUHEMVBOLIDXRNPWAF         II','  1 SJTIUHWCVZXELRMANDOBPFQGYK         III','  P GBCXEFAHOJKLMNIPWZSTUVQDYR         IO.QW.AG.DX.ZR','    OGUSZKBIHVFPXTALWYDNCJQMRE']
 assert cfg.config_string_internal('Y').split('\n') == ['Y > ABCDEFGHIJKLMNOPQRSTUVWXY̲̅Z','  P GBCXEFAHOJKLMNIPWZSTUVQDY̲̅R         IO.QW.AG.DX.ZR','  1 PTHRLVXFDBZMOQSUWNACEIGKY̲̅J  E  16  III','  2 YOCSLZBKRHAQMVPWEUDGJNXTI̲̅F  I  15  II','  3 UYKNJZWDB̲̅SRPXIMOETVGLHCFQA  F  14  V','  4 LE̲̅YJVCNIXWPBQMDRTAKZGFUHOS  K  01  β','  R RDOBJ̲̅NTKVEHMLFCWZAXGYIPSUQ         c','  4 RLFOBVUXHD̲̅SANGYKMPZQWEJICT         β','  3 ZIWH̲̅QXTVNECUODPLYKJRASGMBF         V','  2 KGCSQZTJ̲̅YUHEMVBOLIDXRNPWAF         II','  1 SJTIUHWCVZ̲̅XELRMANDOBPFQGYK         III','  P GBCXEFAHOJKLMNIPWZSTUVQDYR̲̅         IO.QW.AG.DX.ZR','R < OGUSZKBIHVFPXTALWYDNCJQMR̲̅E']
+assert cfg.config_string_internal('L', lambda c: '[' + c + ']').split('\n') == [u'L > ABCDEFGHIJK[L]MNOPQRSTUVWXYZ', u'  P GBCXEFAHOJK[L]MNIPWZSTUVQDYR         IO.QW.AG.DX.ZR', u'  1 PTHRLVXFDBZ[M]OQSUWNACEIGKYJ  E  16  III', u'  2 YOCSLZBKRHAQ[M]VPWEUDGJNXTIF  I  15  II', u'  3 UYKNJZWDBSRP[X]IMOETVGLHCFQA  F  14  V', u'  4 LEYJVCNIXWPBQMDRTAKZGFU[H]OS  K  01  β', u'  R RDOBJNT[K]VEHMLFCWZAXGYIPSUQ         c', u'  4 RLFOBVUXHD[S]ANGYKMPZQWEJICT         β', u'  3 ZIWHQXTVNECUODPLYK[J]RASGMBF         V', u'  2 KGCSQZTJY[U]HEMVBOLIDXRNPWAF         II', u'  1 SJTIUHWCVZXELRMANDOB[P]FQGYK         III', u'  P GBCXEFAHOJKLMNI[P]WZSTUVQDYR         IO.QW.AG.DX.ZR', u'P < OGUSZKBIHVF[P]XTALWYDNCJQMRE']
 print(['Y > ABCDEFGHIJKLMNOPQRSTUVWXY̲̅Z','  P GBCXEFAHOJKLMNIPWZSTUVQDY̲̅R         IO.QW.AG.DX.ZR','  1 PTHRLVXFDBZMOQSUWNACEIGKY̲̅J  E  16  III','  2 YOCSLZBKRHAQMVPWEUDGJNXTI̲̅F  I  15  II','  3 UYKNJZWDB̲̅SRPXIMOETVGLHCFQA  F  14  V','  4 LE̲̅YJVCNIXWPBQMDRTAKZGFUHOS  K  01  \946','  R RDOBJ̲̅NTKVEHMLFCWZAXGYIPSUQ         c','  4 RLFOBVUXHD̲̅SANGYKMPZQWEJICT         \946','  3 ZIWH̲̅QXTVNECUODPLYKJRASGMBF         V','  2 KGCSQZTJ̲̅YUHEMVBOLIDXRNPWAF         II','  1 SJTIUHWCVZ̲̅XELRMANDOBPFQGYK         III','  P GBCXEFAHOJKLMNIPWZSTUVQDYR̲̅         IO.QW.AG.DX.ZR','R < OGUSZKBIHVFPXTALWYDNCJQMR̲̅E'])
 cfg = EnigmaConfig.config_enigma('C-I-III-VIII', 'ALO', 'GH.QW.LK.ZM.XN.CV', '01.21.01')
 assert cfg.config_string(' ') == '    YEHSBIOCFTPVRZGKXMDJWLUQAN  ALO  01 18 15'
@@ -165,19 +167,24 @@ print(cfg.config_string('A'))
 print(cfg.config_string(' '))
 print(cfg.config_string('Z'))
 print(cfg.config_string('K'))
-print()
-cfg.print_operation('ABCDE')
-cfg.print_operation_internal('ABCDE')
+
 cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11')
 print(cfg.enigma_mapping_list())
 print(cfg.config_string_internal('Q'))
 print(cfg.config_string_internal(' '))
 
+print('----------------------------------------------------------------------------------------')
+cfg.print_operation('ABCDE', lambda c: '[' + c + ']')
+cfg.print_operation_internal('ABCDE', lambda c: '(' + c + ')')
+print('========================================================================================')
+#print(EnigmaConfig._marked_mapping(LETTERS, 2, lambda c: c + '[' + c + ']'))
+print(cfg.config_string_internal('G', lambda c: '[' + c + ']'))
 
-
-cfg = EnigmaConfig.config_enigma('c-β-V-VI-VIII', EnigmaConfig.config_enigma('c-β-V-VI-VIII', 'NAEM', 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12').enigma_encoding('QEOB'), 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12')
-cProfile.run("cfg.enigma_encoding('KRKRALLEXXFOLGENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBEBEFEHLERHALTENXXJANSTERLEDESBISHERIGXNREICHSMARSCHALLSJGOERINGJSETZTDERFUEHRERSIEYHVRRGRZSSADMIRALYALSSEINENNACHFOLGEREINXSCHRIFTLSCHEVOLLMACHTUNTERWEGSXABSOFORTSOLLENSIESAEMTLICHEMASSNAHMENVERFUEGENYDIESICHAUSDERGEGENWAERTIGENLAGEERGEBENXGEZXREICHSLEITEIKKTULPEKKJBORMANNJXXOBXDXMMMDURNHFKSTXKOMXADMXUUUBOOIEXKP')")
-cProfile.run('[str(ec.windows()) for ec in cfg.stepped_configs(10000)]')
+cfg = EnigmaConfig.config_enigma('c-β-V-II-III', 'KFIE', 'IO.QW.AG.DX.ZR', '11.19.21.16')
+print(cfg.config_string_internal('L', lambda c: '[' + c + ']').split('\n'))
+# cfg = EnigmaConfig.config_enigma('c-β-V-VI-VIII', EnigmaConfig.config_enigma('c-β-V-VI-VIII', 'NAEM', 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12').enigma_encoding('QEOB'), 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12')
+# cProfile.run("cfg.enigma_encoding('KRKRALLEXXFOLGENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBEBEFEHLERHALTENXXJANSTERLEDESBISHERIGXNREICHSMARSCHALLSJGOERINGJSETZTDERFUEHRERSIEYHVRRGRZSSADMIRALYALSSEINENNACHFOLGEREINXSCHRIFTLSCHEVOLLMACHTUNTERWEGSXABSOFORTSOLLENSIESAEMTLICHEMASSNAHMENVERFUEGENYDIESICHAUSDERGEGENWAERTIGENLAGEERGEBENXGEZXREICHSLEITEIKKTULPEKKJBORMANNJXXOBXDXMMMDURNHFKSTXKOMXADMXUUUBOOIEXKP')")
+# cProfile.run('[str(ec.windows()) for ec in cfg.stepped_configs(10000)]')
 
 # print(num_A0(' '))
 # for let in LETTERS:

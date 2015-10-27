@@ -8,17 +8,20 @@ Description
     Any additional note.
 """
 
-# TBD - Change list(reverse( conversions to [::-1] throughout? <<<
+# REV - Keep list(reverse( conversions as [::-1] throughout?
 # REV - Additional performance improvements
 # A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
 # because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
 # Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the loss
 # of clarity.
+# The mark_func argument should take a single character and return a string representing that character, "marked" to
+# highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 from cachetools import cached
 from itertools import cycle, islice
+from unicodedata import combining
 
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -272,16 +275,26 @@ class EnigmaConfig(object):
         return unicode(self).encode('utf-8')
 
     @staticmethod
-    def _marked_mapping(mapping, i, marked_char=lambda c: c + '\u0332\u0305'):
+    def _marked_mapping(mapping, i, mark_func=None):
 
-        return mapping[:i] + marked_char(mapping[i]) + mapping[i+1:] if 0 <= i <= 25 else mapping
+        def marked_char(c):
+            if mark_func is None:
+                return c + '\u0332\u0305'
+                # REV - Would be nice, but has limited support: http://www.fileformat.info/info/unicode/char/20de/
+                # return c + u'\u20DE'
+            else:
+                return mark_func(c)
+
+        pads = ' ' * ((sum(not combining(c) for c in marked_char('A')) - 1)//2)
+
+        return mapping[:i] + marked_char(mapping[i]) + mapping[i+1:] if 0 <= i <= 25 else pads + mapping + pads
 
     @staticmethod
     def _locate_letter(mapping, letter, string):
         #locate the index of the encoding with mapping of letter, in string
         return string.index(encode_char(mapping, letter)) if letter in string else -1
 
-    def config_string(self, letter):
+    def config_string(self, letter, mark_func=None):
 
         cfg_mapping = self.enigma_mapping()
 
@@ -289,11 +302,12 @@ class EnigmaConfig(object):
                                           EnigmaConfig._marked_mapping(cfg_mapping,
                                                                        EnigmaConfig._locate_letter(cfg_mapping,
                                                                                                    letter,
-                                                                                                   cfg_mapping)),
+                                                                                                   cfg_mapping),
+                                                                       mark_func),
                                           self.windows(),
                                           ' '.join(['{:02d}'.format(p) for p in self.positions[1:-1]][::-1]))
 
-    def config_string_internal(self, letter):
+    def config_string_internal(self, letter, mark_func=None):
 
         cfg_mapping = self.enigma_mapping()
         cfg_mapping_list = self.enigma_mapping_list()
@@ -310,14 +324,14 @@ class EnigmaConfig(object):
                                 [LETTERS] + stg_mapping_list + [cfg_mapping])]
 
         stg_labels = reflect_info(['P'] + list(self.stages)[1:-1] + ['R'])
-        stg_mappings = [EnigmaConfig._marked_mapping(m, i) for (m, i) in zip(stg_mapping_list,
-                                                                             letter_locations[1:-1])]
+        stg_mappings = [EnigmaConfig._marked_mapping(m, i, mark_func) for (m, i) in zip(stg_mapping_list,
+                                                                                        letter_locations[1:-1])]
         stg_windows = pad_info(list(self.windows())[::-1], ' ')
         stg_positions = pad_info(['{:02d}'.format(p) for p in self.positions][1:-1], '  ')
         stg_coponents = reflect_info(self.components)
 
         return ("{0} {1}\n".format(letter + ' >' if letter in LETTERS else '   ',
-                                    EnigmaConfig._marked_mapping(LETTERS,letter_locations[1])) +
+                                    EnigmaConfig._marked_mapping(LETTERS, letter_locations[1], mark_func)) +
                 ''.join(['  {0} {1}  {2}  {3}  {4}\n'.format(stg_lbl, stg_map, stg_wind, stg_pos, stg_comp)
                          for (stg_lbl, stg_map, stg_wind, stg_pos, stg_comp) in zip(stg_labels,
                                                                                     stg_mappings,
@@ -325,7 +339,7 @@ class EnigmaConfig(object):
                                                                                     stg_positions,
                                                                                     stg_coponents)]) +
                 "{0} {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
-                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1]))
+                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1], mark_func))
                 )
 
     # ASK - How to pass a method that may use differnet instances?
@@ -334,14 +348,14 @@ class EnigmaConfig(object):
     #         print(configstring(cfg, letter))
     #     print(' ')
 
-    def print_operation(self, message):
+    def print_operation(self, message, mark_func=None):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg.config_string(letter))
+            print(cfg.config_string(letter, mark_func))
         #print(' ')
 
-    def print_operation_internal(self, message):
+    def print_operation_internal(self, message, mark_func=None):
         for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg.config_string_internal(letter))
+            print(cfg.config_string_internal(letter, mark_func))
             print(' ')
 
 # TBD - Clean up testing script <<<
@@ -351,7 +365,5 @@ class EnigmaConfig(object):
 # ASK - Idiom for printing loops?
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
-# ASK - Actual unicode sting length as displayed <<<
-# TBD - Fix passing of marking as argument (needs to percolate up in api hierarchy)
-# TBD - Test [x] markup (and others)
+
 
