@@ -350,16 +350,6 @@ class EnigmaConfig(object):
     #         print(configstring(cfg, letter))
     #     print(' ')
 
-    # REV - Have these preprocess the message? Sync with Haskell version of so
-    def print_operation(self, message, mark_func=None):
-        for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg.config_string(letter, mark_func))
-            # print(' ')
-
-    def print_operation_internal(self, message, mark_func=None):
-        for (cfg, letter) in zip(self.stepped_configs(), ' ' + message):
-            print(cfg.config_string_internal(letter, mark_func))
-            print(' ')
 
     @staticmethod
     def preprocess(msg):
@@ -370,6 +360,16 @@ class EnigmaConfig(object):
                 ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
 
         return filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
+
+    def print_operation(self, message, mark_func=None):
+        for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
+            print(cfg.config_string(letter, mark_func))
+            # print(' ')
+
+    def print_operation_internal(self, message, mark_func=None):
+        for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
+            print(cfg.config_string_internal(letter, mark_func))
+            print(' ')
 
     @staticmethod
     def postprocess(msg):
