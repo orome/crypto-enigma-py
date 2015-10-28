@@ -386,3 +386,17 @@ class EnigmaConfig(object):
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
 # REV - Keep list(reverse( conversions as [::-1] throughout?
+
+# TBD - Package strucutre and submission testing:
+#       http://peterdowns.com/posts/first-time-with-pypi.html
+#       http://python-packaging.readthedocs.org/en/latest/everything.html
+#       https://pypi.python.org/pypi/python_boilerplate_template
+#       http://docs.travis-ci.com/user/languages/python/
+#       http://docs.travis-ci.com/user/deployment/pypi/
+#       Names for files and packages; directory an file structure (split utils) <<<
+#       Add build tools for deployment and test deployment (and opening the project page) <<<
+#       Where do the docs go?
+#       Where do tests go; how are the run and when
+#       Travis
+#       Switch to .md README (for GitHub)?
+#       Does pacage name need to underscore-separated?
