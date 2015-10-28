@@ -10,7 +10,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 import cProfile
 
-from enigma import *
+from enigma.machine import *
 
 # Comparing output with output generated from Haskell version
 # USE - Replace greek letters in Haskell-generated output
