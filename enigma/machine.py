@@ -275,6 +275,8 @@ class EnigmaConfig(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
+    __repr__ = __str__
+
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):
 
@@ -396,6 +398,8 @@ class EnigmaConfig(object):
 #       Names for files and packages; directory an file structure (split utils) <<<
 #       Add build tools for deployment and test deployment (and opening the project page) <<<
 #       Where do the docs go?
+#       Changelog <<<
+#       Versioning (sync with Haskell?) <<<
 #       Where do tests go; how are the run and when
 #       Travis
 #       Switch to .md README (for GitHub)?

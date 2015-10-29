@@ -29,7 +29,7 @@ setup(
     license='BSD',
     description='An Enigma machine simulation library.',
     long_description=open(join(dirname(__file__), 'README.txt')).read(),
-    packages=['enigma'],
+    packages=['enigma', 'enigma.tests'],
     # package_data=dict(enigma=['examples/*.py',
     #                           'docs/source/*.rst',
     #                           'docs/source/*.py',

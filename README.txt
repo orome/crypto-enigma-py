@@ -6,7 +6,7 @@ An Enigma machine simulator for Python 2.7
 
 :Author: Roy Levien <royl@aldaron.com>
 :Version: 0.1
-:Date: June 5, 2012
+:Date: 2015-10-29
 :Home Page:
 :License: BSD License (see LICENSE.txt)
 :Documentation:
