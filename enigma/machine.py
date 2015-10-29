@@ -18,9 +18,9 @@ Description
 # highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
-from cachetools import cached
 from itertools import cycle, islice
 from unicodedata import combining
+from cachetools import cached
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1
@@ -275,7 +275,10 @@ class EnigmaConfig(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-    __repr__ = __str__
+    #__repr__ = __str__
+    def __repr__(self):
+        #return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
+        return '{0} ({1})'.format(object.__repr__(self), str(self))
 
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):
@@ -380,8 +383,8 @@ class EnigmaConfig(object):
 
 
 
+# TBD - Put basic functional version w/o documentation on PyPi; README that explains lack of docs
 
-# TBD - Clean up testing script <<<
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
 # ASK - Idiom for printing loops?
@@ -400,7 +403,6 @@ class EnigmaConfig(object):
 #       Where do the docs go?
 #       Changelog <<<
 #       Versioning (sync with Haskell?) <<<
-#       Where do tests go; how are the run and when
-#       Travis
+#       Travis: first host on GitHub (remame and make public)
 #       Switch to .md README (for GitHub)?
-#       Does pacage name need to underscore-separated?
+#       Does package name need to underscore-separated?
