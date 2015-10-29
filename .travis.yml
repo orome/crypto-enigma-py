@@ -1,0 +1,15 @@
+language: python
+
+python:
+  - "2.7"
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install pytest
+
+# command to run tests
+script:
+  - py.test --cache-clear -v --color=yes --exitfirst --showlocals --durations=5
+
+# TBD - Automatic deployment? - http://docs.travis-ci.com/user/deployment/pypi/ <<<
