@@ -34,7 +34,8 @@ setup(
     #                           'docs/source/*.rst',
     #                           'docs/source/*.py',
     #                          ]),
-    scripts=['test.py'],
+    scripts=[],
+    #scripts=['test.py'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python',
