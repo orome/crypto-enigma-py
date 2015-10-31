@@ -191,7 +191,7 @@ class EnigmaConfig(object):
         winds = [num_A0(c) for c in 'A' + window_letters + 'A'][::-1]
         rngs = [int(x) for x in ('01.' + rings + '.01').split('.')][::-1]
 
-        # TBD - Assertions for validation; plugboard <<<
+        # TBD - Assertions plugboard <<<
         assert all(name in rotors for name in comps[1:-1])
         assert comps[-1] in reflectors
         assert len(rngs) == len(winds) == len(comps)
@@ -200,6 +200,36 @@ class EnigmaConfig(object):
 
         # return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
+
+    @staticmethod
+    def config_enigma_from_string(string):
+
+        # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
+        # TBD - Remove multiple spaces <<<
+        rotor_names, window_letters, plugs, rings = string.decode('utf-8').split(' ')
+
+        rotor_names_list = rotor_names.split('-')
+        ring_numbers = [int(x) for x in rings.split('.')]
+
+        # TBD - Validation for plugboard <<<
+        # A bunch of checks to provide better feedback than assertions
+        for name in rotor_names_list[1:]:
+            if name not in rotors:
+                raise EnigmaError('Bad configuration - Invalid rotor name, {0}'.format(name))
+        if rotor_names_list[0] not in reflectors:
+            raise EnigmaError('Bad configuration: invalid reflector name, {0}'.format(rotor_names_list[0]))
+        if not (len(ring_numbers) == len(window_letters) == len(rotor_names_list)-1):
+            raise EnigmaError('Bad configuration: number rotors ({0}), rings ({1}), and window letters ({2}) must match'.format(
+                len(rotor_names_list)-1, len(ring_numbers), len(window_letters)
+            ))
+        for rng in ring_numbers:
+            if not (1 <= rng <= 26):
+                raise EnigmaError('Bad configuration: invalid ring position number, {0}'.format(rng))
+        for wind in window_letters:
+            if not wind in LETTERS:
+                raise EnigmaError('Bad configuration: window letter, {0}'.format(wind))
+
+        return EnigmaConfig.config_enigma(rotor_names, window_letters, plugs, rings)
 
     def _window_letter(self, st):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
@@ -260,7 +290,8 @@ class EnigmaConfig(object):
 
     def enigma_encoding(self, message):
 
-        assert all(letter in LETTERS for letter in message)
+        message = EnigmaConfig._make_valid_string(message)
+        #assert all(letter in LETTERS for letter in message)
 
         return ''.join([encode_char(step_config.enigma_mapping(), letter) for
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
@@ -275,9 +306,9 @@ class EnigmaConfig(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-    #__repr__ = __str__
+    # __repr__ = __str__
     def __repr__(self):
-        #return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
+        # return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
         return '{0} ({1})'.format(object.__repr__(self), str(self))
 
     @staticmethod
@@ -297,11 +328,32 @@ class EnigmaConfig(object):
 
     @staticmethod
     def _locate_letter(mapping, letter, string):
+
+        assert EnigmaConfig._is_valid_letter(letter)
+        #assert letter in string
         # locate the index of the encoding with mapping of letter, in string
         return string.index(encode_char(mapping, letter)) if letter in string else -1
 
+    # Ensures a single uppercase character ("those that are valid Enigma input") or space, defaulting to a space
+    @staticmethod
+    def _make_valid_letter(letter):
+        return filter(lambda l: l in LETTERS + ' ', (letter + ' ').upper())[0]
+
+    @staticmethod
+    def _make_valid_string(string):
+        return ''.join([EnigmaConfig._make_valid_letter(l) for l in string])
+
+    @staticmethod
+    def _is_valid_letter(letter):
+        return len(letter) == 1 and letter in LETTERS + ' '
+
+    @staticmethod
+    def _is_valid_string(string):
+        return all(EnigmaConfig._is_valid_letter(l) for l in string)
+
     def config_string(self, letter, mark_func=None):
 
+        letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
 
         return '{0} {1}  {2}  {3}'.format(letter + ' >' if letter in LETTERS else '   ',
@@ -315,6 +367,7 @@ class EnigmaConfig(object):
 
     def config_string_internal(self, letter, mark_func=None):
 
+        letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
         cfg_mapping_list = self.enigma_mapping_list()
         stg_mapping_list = self.stage_mapping_list()
@@ -356,7 +409,10 @@ class EnigmaConfig(object):
                 ('1', 'YQ'), ('2', 'YW'), ('3', 'YE'), ('4', 'YR'), ('5', 'YT'),
                 ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
 
-        return filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
+        msg = filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
+        assert EnigmaConfig._is_valid_string(msg)
+
+        return msg
 
     # ASK - How to pass a method that may use differnet instances?
     # def _print_operation(self, message, configstring=_config_string):
@@ -382,6 +438,9 @@ class EnigmaConfig(object):
         print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.preprocess(message))))
 
 
+class EnigmaError(Exception):
+    pass
+
 
 # TBD - Put basic functional version w/o documentation on PyPi; README that explains lack of docs
 
@@ -391,6 +450,8 @@ class EnigmaConfig(object):
 # ASK - Reversing arguments (like swap)?
 # ASK - Passing a method as an argument?
 # REV - Keep list(reverse( conversions as [::-1] throughout?
+# TBD - Break out heavy validation stuff into another layer to keep core functionality seperate?
+# REV - Use of EnigmaError vs. assert (be systematic about distinction) <<<
 
 # TBD - Package strucutre and submission testing:
 #       http://peterdowns.com/posts/first-time-with-pypi.html
