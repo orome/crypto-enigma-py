@@ -119,9 +119,6 @@ if __name__ == '__main__':
                                      # description='description, some commands to choose from',
                                      metavar=fmt_arg('command')
                                      )
-    # parser.add_argument('config', metavar=fmt_arg('config'),
-    #                          action='store',
-    #                          help='the machine configuration to %(dest)s')
 
     # Display machine state
     show_parser = commands.add_parser('show', parents=[parent_parser],
@@ -141,7 +138,6 @@ if __name__ == '__main__':
                                          'configuration, coerced to valid Enigma characters (uppercase letters); '
                                          'defaults to nothing; strings will be truncated at the first letter')
     show_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-    # group = parser.add_mutually_exclusive_group()
 
     # Show machine operation
     run_parser = commands.add_parser('run', parents=[parent_parser],
@@ -152,11 +148,20 @@ if __name__ == '__main__':
                                       formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = 'the machine setup at the start of operation'
     run_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    run_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
-                             help='a message to encode')
+
     run_display_group = run_parser.add_argument_group(**_DISPLAY_KWARGS)
     _FORMAT_KWARGS['help'] = 'the format to use to show each configuration; see below'
     run_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
+    run_display_group.add_argument('--no-initial', '-n', dest='initial', action='store_false',
+                                     help="don't show the initial starting step as well")
+    run_display_group.add_argument('--overwrite', '-o', action='store_true',
+                                     help='overwrite each step')
+    run_display_group.add_argument('--message', '-m', metavar=fmt_arg('message'), action='store',
+                                   nargs='?', default=None, const=None,
+                             help='a message to encode')
+    run_display_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
+                                    nargs='?', default=None, const=1, type=int,
+                             help='a number of steps to run')
     run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Encode a message
@@ -175,25 +180,6 @@ if __name__ == '__main__':
     encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true')
     encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
-    # Show result of stepping the machine
-    step_parser = commands.add_parser('step', help='step the configuration once', parents=[parent_parser],
-                                      add_help=False)
-    _CONFIG_KWARGS['help'] = 'the machine configuration to begin stepping from'
-    step_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    steps_display_group = step_parser.add_argument_group(title='stepping arguments',
-                                                         description='optional stepping arguments')
-    steps_display_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
-                                     nargs='?', default=1, const=1, type=int,
-                                     help='number of steps to preform; default is 1')
-    steps_display_group.add_argument('--initial', '-i', action='store_true',
-                                     help='show the initial starting step as well')
-    steps_display_group.add_argument('--overwrite', '-o', action='store_true',
-                                     help='overwrite each step')
-    steps_display_group.add_argument('--all', '-a', action='store_true', help='show all steps')
-    _FORMAT_KWARGS['help'] = 'the format to use to show the stepped configuration(s); see below'
-    steps_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
-    step_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-
     # Just show the package version
     _HELP_VERSION = 'Show the package version and exit'
     version_parser = commands.add_parser('version', help=_HELP_VERSION.lower(), add_help=False,
@@ -211,82 +197,25 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    _FMTS_INTERNAL = ['internal', 'detailed', 'schematic']
-    _FMTS_SINGLE = ['single', 'encoding', 'summary']
-    _FMTS_WINDOWS = ['windows', 'winds']
-    _FMTS_CONFIG = ['config', 'configuration', 'spec', 'specification']
-    _FMTS_DEBUG = ['debug']
-
     try:
-        # TBD - Add encoding note to config and windows (e.g with P > K) <<<
-        # TBD - Add components format that lists the components and their attributes <<<
+        # TBD - Add mark_func <<<
         if args.command == 'version':
             print('{0}'.format(__version__))
         else:
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
-            if fmt in _FMTS_INTERNAL + _FMTS_SINGLE + _FMTS_WINDOWS + _FMTS_CONFIG + _FMTS_DEBUG or fmt in [True, False]:
-                if args.command == 'show':
-                    let = args.letter
-                    if fmt in _FMTS_INTERNAL:
-                        print(cfg.config_string_internal(let))
-                    elif fmt in _FMTS_SINGLE:
-                        print(cfg.config_string(let))
-                    # TBD - Another version that prints spec on individual lines; or list or elements?
-                    elif fmt in _FMTS_WINDOWS:
-                        print(cfg.windows())
-                    elif fmt in _FMTS_CONFIG:
-                        print(cfg)
-                    # Hidden option for debugging
-                    elif fmt in _FMTS_DEBUG:
-                        print(cfg.__repr__())
-                elif args.command == 'run':
-                    msg = args.message
-                    if fmt in _FMTS_INTERNAL:
-                        cfg.print_operation_internal(msg)
-                    elif fmt in _FMTS_SINGLE:
-                        cfg.print_operation(msg)
-                    # TBD - Another version that prints spec on individual lines; or list or elements?
-                    elif fmt in _FMTS_WINDOWS:
-                        print('TBD')
-                    elif fmt in _FMTS_CONFIG:
-                        print('TBD')
-                    # Hidden option for debugging
-                    elif fmt in _FMTS_DEBUG:
-                        print('TBD')
-                elif args.command == 'encode':
-                    msg = args.message
-                    if fmt:
-                        cfg.print_encoding(msg)
-                    else:
-                        print(cfg.enigma_encoding(msg))
-                # TBD - Formatting and all handling
-                elif args.command == 'step':
-                    steps = args.steps
-                    all = args.all
-                    if False:
-                        print(cfg.step())
-                    else:
-                        # TBD - Move and focus imports <<<
-                        import time
-                        import sys
-                        si = 0
-                        for s in cfg.stepped_configs(steps):
-                            if si != 0 or args.initial:
-                                print(s, end=('\r' if si < steps and args.overwrite else None))
-                                if args.overwrite:
-                                    sys.stdout.flush() # Otherwise sleep will prevent printing
-                                    time.sleep(0.5 if si < steps else 0)
-                            si += 1
-
-
-                # TBD - Should share same arguments and same stucture with show <<<
-                elif args.command == 'step':
-                    print(cfg.step())
-            else:
-                print('Bad argument - Unrecognized format, {0}'.format(fmt))
-                exit(1)
-
+            if args.command == 'show':
+                let = args.letter
+                print(cfg.config_string(let, fmt))
+            elif args.command == 'run':
+                cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
+                                    format=args.format, initial=args.initial)
+            elif args.command == 'encode':
+                msg = args.message
+                if fmt:
+                    cfg.print_encoding(msg)
+                else:
+                    print(cfg.enigma_encoding(msg))
     except EnigmaError as e:
         print(e.message)
         exit(1)

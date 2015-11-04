@@ -22,6 +22,10 @@ from itertools import cycle, islice
 from unicodedata import combining
 from cachetools import cached
 
+# TBD - Only used by display; isolate <<<
+import time
+import sys
+
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1
 REV = -1
@@ -317,6 +321,7 @@ class EnigmaConfig(object):
         def marked_char(c):
             if mark_func is None:
                 return c + '\u0332\u0305'
+                #return '[' + c + ']'
                 # REV - Would be nice, but has limited support: http://www.fileformat.info/info/unicode/char/20de/
                 # return c + u'\u20DE'
             else:
@@ -351,7 +356,7 @@ class EnigmaConfig(object):
     def _is_valid_string(string):
         return all(EnigmaConfig._is_valid_letter(l) for l in string)
 
-    def config_string(self, letter, mark_func=None):
+    def _config_string(self, letter, mark_func=None):
 
         letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
@@ -365,7 +370,7 @@ class EnigmaConfig(object):
                                           self.windows(),
                                           ' '.join(['{:02d}'.format(p) for p in self.positions[1:-1]][::-1]))
 
-    def config_string_internal(self, letter, mark_func=None):
+    def _config_string_internal(self, letter, mark_func=None):
 
         letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
@@ -414,21 +419,79 @@ class EnigmaConfig(object):
 
         return msg
 
-    # ASK - How to pass a method that may use differnet instances?
+    # ASK - How to pass a method that may use different instances?
     # def _print_operation(self, message, configstring=_config_string):
     #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
     #         print(configstring(cfg, letter))
     #     print(' ')
 
-    def print_operation(self, message, mark_func=None):
-        for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
-            print(cfg.config_string(letter, mark_func))
-            # print(' ')
+    # TBD - Additional formats, e.g., components listed, etc.
+    _FMTS_INTERNAL = ['internal', 'detailed', 'schematic']
+    _FMTS_SINGLE = ['single', 'encoding', 'summary']
+    _FMTS_WINDOWS = ['windows', 'winds']
+    _FMTS_CONFIG = ['config', 'configuration', 'spec', 'specification']
+    _FMTS_DEBUG = ['debug']
 
+    # TBD - Add encoding note to config and windows (e.g with P > K) <<<
+    # TBD - Add components format that lists the components and their attributes <<<
+    # TBD - Add step number? <<<
+    def config_string(self, letter='', format='single', mark_func=None):
+            if format in EnigmaConfig._FMTS_INTERNAL:
+                return self._config_string_internal(letter, mark_func)
+            elif format in EnigmaConfig._FMTS_SINGLE:
+                return self._config_string(letter, mark_func)
+            elif format in EnigmaConfig._FMTS_WINDOWS:
+                return self.windows()
+            elif format in EnigmaConfig._FMTS_CONFIG:
+                return str(self)
+            elif format in EnigmaConfig._FMTS_DEBUG:
+                return self.__repr__()
+            else:
+                raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
+
+    # TBD - Deprecate? just here for compatibility with Haskell
+    def config_string_internal(self, letter='', mark_func=None):
+        return self.config_string(letter, format='internal', mark_func=mark_func)
+
+    def print_operation(self, message=None, steps=None, overwrite=False, format='single', initial=True,
+                        mark_func=None):
+
+        def print_config_string(config_string):
+            if step_num != 0 or initial:
+                print(config_string, end=('\r' if step_num < steps and overwrite else None))
+                if format in EnigmaConfig._FMTS_INTERNAL and step_num < steps and overwrite:
+                    print("\033[F" * (config_string.count('\n')+1))
+                if overwrite:
+                    sys.stdout.flush() # Otherwise sleep will prevent printing
+                    time.sleep(0.2 if step_num < steps else 0)
+                elif format=='internal' and step_num != steps:
+                    print('')
+
+        if message is not None:
+            message = EnigmaConfig.preprocess(message)
+            steps = len(message) if steps is None else min(steps, len(message))
+        elif steps is not None:
+            message = ' ' * steps
+        else:
+            message = ' '
+            steps = 1
+
+        for (step_num, cfg, letter) in zip(range(0, steps+1), self.stepped_configs(), ' ' + message[:steps]):
+            if not initial and step_num == 0:
+                continue
+            print_config_string(cfg.config_string(letter, format, mark_func))
+
+    # def print_operation(self, message, mark_func=None):
+    #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
+    #         print(cfg.config_string(letter, mark_func))
+    #         # print(' ')
+
+    # TBD - Deprecate? just here for compatibility with Haskell
     def print_operation_internal(self, message, mark_func=None):
-        for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
-            print(cfg.config_string_internal(letter, mark_func))
-            print(' ')
+        self.print_operation(message, format='internal', mark_func=mark_func)
+        # for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
+        #     print(cfg.config_string_internal(letter, mark_func))
+        #     print(' ')
 
     @staticmethod
     def postprocess(msg):
@@ -441,7 +504,8 @@ class EnigmaConfig(object):
 class EnigmaError(Exception):
     pass
 
-
+class EnigmaDisplayError(EnigmaError):
+    pass
 # TBD - Put basic functional version w/o documentation on PyPi; README that explains lack of docs
 
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
