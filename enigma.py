@@ -9,9 +9,7 @@ Description
 """
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
-
 import argparse
-
 from enigma import __version__
 from enigma.machine import *
 
@@ -33,11 +31,21 @@ Show an Enigma machine configuration in the specified format, optionally
 indicating the encoding of a specified character.
 """
 
-# TBD - Formats arent all the same: encoding has two more, the encoding and the chunked encoding <<<
-# TBD - Combine encode and run, or keep seperate? <<<
 _DESC_ENCODE = """\
 Show the encoding of a message.
 """
+
+_DESC_RUN = """\
+Show the operation of the Enigma machine as it encodes a message.
+"""
+
+_DESC_STEP = """\
+Show the state of the Enigma machine after a specified number of steps.
+"""
+
+# TBD - Formats arent all the same: encoding has two more, the encoding and the chunked encoding <<<
+# TBD - Combine encode and run, or keep seperate? <<<
+
 # _EPILOG_DISPLAY = """\
 # The the number of times '-d' is supplied will determine the level
 # of detail displayed:
@@ -60,12 +68,14 @@ The program is forgiving about forgotten format values and will accept a range
 of reasonable substitutes (e.g., 'detailed' or 'schematic' for 'internal').
 """
 _EPILOG_DISPLAY = _EPILOG_FORMAT_DISPLAY
-_EPILOG_ENCODE = _EPILOG_FORMAT_DISPLAY
+_EPILOG_ENCODE = "TBD"
+
 
 # ASK - What's idiomatic?
 def fmt_arg(arg):
     return arg.upper()
     # return '<' + arg.lower() + '>'
+
 
 # TBD - Not needed if help can works when in parent
 _HELP_ARGS = ['--help', '-h', '-?']
@@ -75,7 +85,6 @@ _CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store'}
 _DISPLAY_KWARGS = {'title': 'display arguments', 'description': 'optional display arguments'}
 _FORMAT_ARGS = ['--format', '-f']
 _FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single'}
-
 
 if __name__ == '__main__':
 
@@ -100,15 +109,15 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=_DESC, parents=[parent_parser],
                                      epilog=_EPILOG,
-                                     #usage = 'enigma.py [<options>] COMMAND CONFIG',
+                                     # usage = 'enigma.py [<options>] COMMAND CONFIG',
                                      add_help=False,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     commands = parser.add_subparsers(help='', dest='command',
-                                     #title='required arguments',
-                                       #description='description, some commands to choose from',
-                                       metavar=fmt_arg('command')
+                                     # title='required arguments',
+                                     # description='description, some commands to choose from',
+                                     metavar=fmt_arg('command')
                                      )
     # parser.add_argument('config', metavar=fmt_arg('config'),
     #                          action='store',
@@ -134,6 +143,22 @@ if __name__ == '__main__':
     show_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
     # group = parser.add_mutually_exclusive_group()
 
+    # Show machine operation
+    run_parser = commands.add_parser('run', parents=[parent_parser],
+                                      description=_DESC_ENCODE,
+                                      epilog=_EPILOG_ENCODE,
+                                      help='display enigma machine operation',
+                                      add_help=False,
+                                      formatter_class=argparse.RawDescriptionHelpFormatter)
+    _CONFIG_KWARGS['help'] = 'the machine setup at the start of operation'
+    run_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
+    run_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
+                             help='a message to encode')
+    run_display_group = run_parser.add_argument_group(**_DISPLAY_KWARGS)
+    _FORMAT_KWARGS['help'] = 'the format to use to show each configuration; see below'
+    run_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
+    run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
+
     # Encode a message
     encode_parser = commands.add_parser('encode', parents=[parent_parser],
                                         description=_DESC_ENCODE,
@@ -147,20 +172,22 @@ if __name__ == '__main__':
                                help='a message to encode')
     encode_display_group = encode_parser.add_argument_group(**_DISPLAY_KWARGS)
     _FORMAT_KWARGS['help'] = 'the format to use to show each configuration; see below'
-    encode_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
+    encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true')
     encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
-
-    # Show machine operation
-    run_parser = commands.add_parser('run', help='display machine operation', parents=[parent_parser], add_help=False)
-    _CONFIG_KWARGS['help'] = 'the machine configuration to start running from'
-    run_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-
-    # Show machine operation
-    step_parser = commands.add_parser('step', help='step the configuration once', parents=[parent_parser], add_help=False)
+    # Show result of stepping the machine
+    step_parser = commands.add_parser('step', help='step the configuration once', parents=[parent_parser],
+                                      add_help=False)
     _CONFIG_KWARGS['help'] = 'the machine configuration to begin stepping from'
     step_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
+    steps_display_group = step_parser.add_argument_group(title='stepping arguments',
+                                                         description='optional stepping arguments')
+    steps_display_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
+                                     nargs='?', default=1, const=1,
+                                     help='number of steps to preform; default is 1')
+    steps_display_group.add_argument('--all', '-a', action='store_true', help='show all steps')
+    _FORMAT_KWARGS['help'] = 'the format to use to show each the stepped configuration(s); see below'
+    steps_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
     step_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Just show the package version
@@ -168,7 +195,6 @@ if __name__ == '__main__':
     version_parser = commands.add_parser('version', help=_HELP_VERSION.lower(), add_help=False,
                                          description=_HELP_VERSION + '.')
     version_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-
 
     # try:
     #     args = parser.parse_args()
@@ -195,7 +221,7 @@ if __name__ == '__main__':
         else:
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
-            if fmt in _FMTS_INTERNAL + _FMTS_SINGLE +_FMTS_WINDOWS + _FMTS_CONFIG + _FMTS_DEBUG:
+            if fmt in _FMTS_INTERNAL + _FMTS_SINGLE + _FMTS_WINDOWS + _FMTS_CONFIG + _FMTS_DEBUG or fmt in [True, False]:
                 if args.command == 'show':
                     let = args.letter
                     if fmt in _FMTS_INTERNAL:
@@ -210,7 +236,7 @@ if __name__ == '__main__':
                     # Hidden option for debugging
                     elif fmt in _FMTS_DEBUG:
                         print(cfg.__repr__())
-                elif args.command == 'encode':
+                elif args.command == 'run':
                     msg = args.message
                     if fmt in _FMTS_INTERNAL:
                         cfg.print_operation_internal(msg)
@@ -224,6 +250,22 @@ if __name__ == '__main__':
                     # Hidden option for debugging
                     elif fmt in _FMTS_DEBUG:
                         print('TBD')
+                elif args.command == 'encode':
+                    msg = args.message
+                    if fmt:
+                        cfg.print_encoding(msg)
+                    else:
+                        print(cfg.enigma_encoding(msg))
+                # TBD - Formatting and all handling
+                elif args.command == 'step':
+                    steps = args.steps
+                    all = args.all
+                    if steps == 1:
+                        print(cfg.step())
+                    else:
+                        # !!! - Not getting steps <<<
+                        for s in cfg.stepped_configs(steps):
+                            print(s)
                 # TBD - Should share same arguments and same stucture with show <<<
                 elif args.command == 'step':
                     print(cfg.step())
