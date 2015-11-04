@@ -183,10 +183,14 @@ if __name__ == '__main__':
     steps_display_group = step_parser.add_argument_group(title='stepping arguments',
                                                          description='optional stepping arguments')
     steps_display_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
-                                     nargs='?', default=1, const=1,
+                                     nargs='?', default=1, const=1, type=int,
                                      help='number of steps to preform; default is 1')
+    steps_display_group.add_argument('--initial', '-i', action='store_true',
+                                     help='show the initial starting step as well')
+    steps_display_group.add_argument('--overwrite', '-o', action='store_true',
+                                     help='overwrite each step')
     steps_display_group.add_argument('--all', '-a', action='store_true', help='show all steps')
-    _FORMAT_KWARGS['help'] = 'the format to use to show each the stepped configuration(s); see below'
+    _FORMAT_KWARGS['help'] = 'the format to use to show the stepped configuration(s); see below'
     steps_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
     step_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
@@ -260,12 +264,22 @@ if __name__ == '__main__':
                 elif args.command == 'step':
                     steps = args.steps
                     all = args.all
-                    if steps == 1:
+                    if False:
                         print(cfg.step())
                     else:
-                        # !!! - Not getting steps <<<
+                        # TBD - Move and focus imports <<<
+                        import time
+                        import sys
+                        si = 0
                         for s in cfg.stepped_configs(steps):
-                            print(s)
+                            if si != 0 or args.initial:
+                                print(s, end=('\r' if si < steps and args.overwrite else None))
+                                if args.overwrite:
+                                    sys.stdout.flush() # Otherwise sleep will prevent printing
+                                    time.sleep(0.5 if si < steps else 0)
+                            si += 1
+
+
                 # TBD - Should share same arguments and same stucture with show <<<
                 elif args.command == 'step':
                     print(cfg.step())
