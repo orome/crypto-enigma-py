@@ -13,6 +13,11 @@ import argparse
 from enigma import __version__
 from enigma.machine import *
 
+# ASK - What's idiomatic?
+def fmt_arg(arg):
+    #return arg.upper()
+    return '<' + arg.lower() + '>'
+
 _DESC = "A simple Enigma machine simulator with rich display."
 
 _EPILOG = """\
@@ -57,24 +62,24 @@ Show the state of the Enigma machine after a specified number of steps.
 # """
 
 _EPILOG_FORMAT_DISPLAY = """\
-The selection for '--format' will determine what is shown; options include:
+The value of {} will determine how a configuration is represented;
+possible values include:
     - 'internal', which will show a detailed schematic of each
       processing stage;
-    - 'single', which will show a single line;
+    - 'single', the default, which will show a single line;
     - 'windows', just the letters visible at the windows; and
-    - 'config', the default, which simply shows the specification
+    - 'config', which simply shows the specification
       of the configuration
 The program is forgiving about forgotten format values and will accept a range
 of reasonable substitutes (e.g., 'detailed' or 'schematic' for 'internal').
 """
-_EPILOG_DISPLAY = _EPILOG_FORMAT_DISPLAY
-_EPILOG_ENCODE = "TBD"
+
+# TBD - Have this take lists of actual valid values (e.g., EnigmaConfig._FMTS_INTERNAL) to format
+_EPILOG_DISPLAY = _EPILOG_FORMAT_DISPLAY.format(fmt_arg('format'))
+_EPILOG_ENCODE = _EPILOG_FORMAT_DISPLAY.format(fmt_arg('format'))
 
 
-# ASK - What's idiomatic?
-def fmt_arg(arg):
-    return arg.upper()
-    # return '<' + arg.lower() + '>'
+
 
 
 # TBD - Not needed if help can works when in parent
@@ -82,9 +87,17 @@ _HELP_ARGS = ['--help', '-h', '-?']
 _HELP_KWARGS = {'action': 'help', 'help': 'show this help message and exit'}
 _CONFIG_ARGS = ['config']
 _CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store'}
-_DISPLAY_KWARGS = {'title': 'display arguments', 'description': 'optional display arguments'}
+_DISPLAY_GROUP_KWARGS = {'title': 'display formatting arguments',
+                         'description': 'optional arguments for controlling formatting of configurations'}
 _FORMAT_ARGS = ['--format', '-f']
-_FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single'}
+_FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single',
+                  'help': 'the format used to display configuration(s) (see below)'}
+_HIGHLIGHT_ARGS = ['--highlight', '-H']
+_HIGHLIGHT_KWARGS = {'metavar': fmt_arg('xy'), 'action': 'store',
+                     'help': "a pair or characters to use to bracket encoded characters in a configuration's encoding (see below)"}
+_SHOWENCODING_ARGS = ['--showencoding', '-e']
+_SHOWENCODING_KWARGS = {'action': 'store_true',
+                     'help': "show the encoding if not normally shown"}
 
 if __name__ == '__main__':
 
@@ -96,6 +109,12 @@ if __name__ == '__main__':
     parent_parser.add_argument('--verbose', '-v',
                                action='store_true',
                                help='display additional information (may have no effect)')
+    # show_display_group = parent_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
+    # _FORMAT_KWARGS['help'] = 'the format to use to show configuration(s) (see below)'
+    # show_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
+    # show_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
+    # show_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
+
     # parent_parser.add_argument('--version', '-V',
     #                            action='version', version='%(prog)s {0}'.format(__version__),
     #                            help='display package version number and exit')
@@ -129,10 +148,13 @@ if __name__ == '__main__':
                                       formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = 'the machine configuration to show'
     show_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    show_display_group = show_parser.add_argument_group(**_DISPLAY_KWARGS)
-    _FORMAT_KWARGS['help'] = 'the format to use to show the configuration; see below'
+    show_display_group = show_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
+    #_FORMAT_KWARGS['help'] = 'the format to use to show the configuration (see below)'
     show_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
-    show_display_group.add_argument('--letter', '-l', metavar=fmt_arg('letter'),
+    show_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
+    show_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
+    show_input_group = show_parser.add_argument_group(title='input argument')
+    show_input_group.add_argument('--letter', '-l', metavar=fmt_arg('letter'),
                                     action='store', nargs='?', default='', const='',
                                     help='an optional input letter to highlight as it is processed by the '
                                          'configuration, coerced to valid Enigma characters (uppercase letters); '
@@ -149,19 +171,29 @@ if __name__ == '__main__':
     _CONFIG_KWARGS['help'] = 'the machine setup at the start of operation'
     run_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
 
-    run_display_group = run_parser.add_argument_group(**_DISPLAY_KWARGS)
-    _FORMAT_KWARGS['help'] = 'the format to use to show each configuration; see below'
+    run_display_group = run_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
+    #_FORMAT_KWARGS['help'] = 'the format to use to show each configuration (see below)'
     run_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
-    run_display_group.add_argument('--no-initial', '-n', dest='initial', action='store_false',
+    run_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
+    run_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
+    run_operation_group = run_parser.add_argument_group(title='run operation arguments',
+                                                        description='options for controlling stepping and annotation of steps')
+    run_operation_group.add_argument('--noinitial', '-n', dest='initial', action='store_false',
                                      help="don't show the initial starting step as well")
-    run_display_group.add_argument('--overwrite', '-o', action='store_true',
+    run_operation_group.add_argument('--overwrite', '-o', action='store_true',
                                      help='overwrite each step')
-    run_display_group.add_argument('--message', '-m', metavar=fmt_arg('message'), action='store',
-                                   nargs='?', default=None, const=None,
-                             help='a message to encode')
-    run_display_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
+    run_operation_group.add_argument('--slower', '-S', action='count',
+                                   default=0,
+                                   help='slow down overwriting (only has effect with --overwrite)')
+    run_operation_group.add_argument('--showstep', '-t', action='store_true',
+                                     help='show the step number')
+    run_operation_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
                                     nargs='?', default=None, const=1, type=int,
                              help='a number of steps to run')
+    run_input_group = run_parser.add_argument_group(title='input argument')
+    run_input_group.add_argument('--message', '-m', metavar=fmt_arg('message'), action='store',
+                                   nargs='?', default=None, const=None,
+                             help='a message to encode')
     run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Encode a message
@@ -175,7 +207,7 @@ if __name__ == '__main__':
     encode_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
     encode_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
                                help='a message to encode')
-    encode_display_group = encode_parser.add_argument_group(**_DISPLAY_KWARGS)
+    encode_display_group = encode_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
     _FORMAT_KWARGS['help'] = 'the format to use to show each configuration; see below'
     encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true')
     encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
@@ -198,18 +230,27 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        # TBD - Add mark_func <<<
         if args.command == 'version':
             print('{0}'.format(__version__))
         else:
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
+            sst = args.showstep or args.verbose
+            sec = args.showencoding or args.verbose
+            mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(args.highlight) == 2 else None
             if args.command == 'show':
+                if args.verbose:
+                    print(unicode(cfg) + ':\n')
                 let = args.letter
-                print(cfg.config_string(let, fmt))
+                print(cfg.config_string(let, fmt, mark_func=mks))
             elif args.command == 'run':
+                if args.verbose:
+                    print(unicode(cfg) + ':\n')
                 cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
-                                    format=args.format, initial=args.initial)
+                                    format=args.format, initial=args.initial, delay=0.1+(0.1*args.slower),
+                                    show_encoding=sec,
+                                    show_step=sst,
+                                    mark_func=mks)
             elif args.command == 'encode':
                 msg = args.message
                 if fmt:

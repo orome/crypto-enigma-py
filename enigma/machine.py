@@ -31,6 +31,14 @@ FWD = 1
 REV = -1
 
 
+# TBD - Generalize to other platforms; test?
+def print_over(s, delay=0.2):
+    print(s, end='\r')
+    print("\033[F" * (s.count('\n')+1))
+    sys.stdout.flush()
+    time.sleep(delay)
+
+
 def num_A0(c):
     return ord(c) - ord('A')
 
@@ -209,8 +217,7 @@ class EnigmaConfig(object):
     def config_enigma_from_string(string):
 
         # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
-        # TBD - Remove multiple spaces <<<
-        rotor_names, window_letters, plugs, rings = string.decode('utf-8').split(' ')
+        rotor_names, window_letters, plugs, rings = filter(lambda s: s != '', string.decode('utf-8').split(' '))
 
         rotor_names_list = rotor_names.split('-')
         ring_numbers = [int(x) for x in rings.split('.')]
@@ -313,7 +320,7 @@ class EnigmaConfig(object):
     # __repr__ = __str__
     def __repr__(self):
         # return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
-        return '{0} ({1})'.format(object.__repr__(self), str(self))
+        return '{0} ({1})'.format(object.__repr__(self), unicode(self))
 
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):
@@ -434,18 +441,22 @@ class EnigmaConfig(object):
 
     # TBD - Add encoding note to config and windows (e.g with P > K) <<<
     # TBD - Add components format that lists the components and their attributes <<<
-    # TBD - Add step number? <<<
-    def config_string(self, letter='', format='single', mark_func=None):
+    def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
+
+            encoding_string = ''
+            if letter in LETTERS and show_encoding:
+                encoding_string = '  {0} > {1}'.format(letter, encode_char(self.enigma_mapping(),letter))
+
             if format in EnigmaConfig._FMTS_INTERNAL:
                 return self._config_string_internal(letter, mark_func)
             elif format in EnigmaConfig._FMTS_SINGLE:
                 return self._config_string(letter, mark_func)
             elif format in EnigmaConfig._FMTS_WINDOWS:
-                return self.windows()
+                return self.windows() + encoding_string
             elif format in EnigmaConfig._FMTS_CONFIG:
-                return str(self)
+                return unicode(self) + encoding_string
             elif format in EnigmaConfig._FMTS_DEBUG:
-                return self.__repr__()
+                return self.__repr__() + encoding_string
             else:
                 raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
@@ -453,18 +464,21 @@ class EnigmaConfig(object):
     def config_string_internal(self, letter='', mark_func=None):
         return self.config_string(letter, format='internal', mark_func=mark_func)
 
-    def print_operation(self, message=None, steps=None, overwrite=False, format='single', initial=True,
-                        mark_func=None):
+    def print_operation(self, message=None, steps=None, overwrite=False, format='single', initial=True, delay=0.1,
+                        show_step=False, show_encoding=False, mark_func=None):
 
-        def print_config_string(config_string):
+        def print_config_string(cfg_str):
             if step_num != 0 or initial:
-                print(config_string, end=('\r' if step_num < steps and overwrite else None))
-                if format in EnigmaConfig._FMTS_INTERNAL and step_num < steps and overwrite:
-                    print("\033[F" * (config_string.count('\n')+1))
-                if overwrite:
-                    sys.stdout.flush() # Otherwise sleep will prevent printing
-                    time.sleep(0.2 if step_num < steps else 0)
-                elif format=='internal' and step_num != steps:
+                if show_step:
+                    if format=='internal':
+                        cfg_str = '{0:04d}\n{1}'.format(step_num, cfg_str)
+                    else:
+                        cfg_str = '{0:04d}  {1}'.format(step_num, cfg_str)
+                if overwrite and step_num < steps:
+                    print_over(cfg_str, delay)
+                else:
+                    print(cfg_str)
+                if not overwrite and format=='internal' and step_num < steps:
                     print('')
 
         if message is not None:
@@ -479,7 +493,7 @@ class EnigmaConfig(object):
         for (step_num, cfg, letter) in zip(range(0, steps+1), self.stepped_configs(), ' ' + message[:steps]):
             if not initial and step_num == 0:
                 continue
-            print_config_string(cfg.config_string(letter, format, mark_func))
+            print_config_string(cfg.config_string(letter, format=format, show_encoding=show_encoding, mark_func=mark_func))
 
     # def print_operation(self, message, mark_func=None):
     #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
@@ -504,8 +518,10 @@ class EnigmaConfig(object):
 class EnigmaError(Exception):
     pass
 
+
 class EnigmaDisplayError(EnigmaError):
     pass
+
 # TBD - Put basic functional version w/o documentation on PyPi; README that explains lack of docs
 
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
