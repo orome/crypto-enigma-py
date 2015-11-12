@@ -22,13 +22,16 @@ import enigma
 
 from setuptools import setup
 
-read_me = "TEST"
-try:
-    from pypandoc import convert
-    read_md = lambda f: convert(f, b'rst')
-    read_me = read_md('README.md')
-except ImportError:
-    print("warning: pypandoc module not found, could not convert Markdown to RST")
+# TBD - Add Licence and changelog; see -- https://github.com/RIPE-NCC/ripe-atlas-tools/blob/master/README.rst <<<
+
+# read_me = "Crypto-Enigma"
+# try:
+#     from pypandoc import convert
+#     read_md = lambda f: convert(f, b'rst')
+#     read_me = read_md('README.md')
+# except ImportError:
+#     print("warning: pypandoc module not found, could not convert Markdown to RST")
+#     read_me = open(join(dirname(__file__), 'README.rst')).read()
 
 setup(name='crypto-enigma',
       version=enigma.__version__,
@@ -37,8 +40,7 @@ setup(name='crypto-enigma',
       url='http://www.aldaron.com',
       license='BSD',
       description='An Enigma machine simulation library.',
-      #long_description=open(join(dirname(__file__), 'README.txt')).read(),
-      long_description=read_me,
+      long_description=open(join(dirname(__file__), 'README.rst')).read(),
       packages=['enigma', 'enigma.tests'],
       # package_data=dict(enigma=['examples/*.py',
       #                           'docs/source/*.rst',
