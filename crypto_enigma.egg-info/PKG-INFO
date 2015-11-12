@@ -1,0 +1,47 @@
+Metadata-Version: 1.1
+Name: crypto-enigma
+Version: 0.1a1.dev7
+Summary: An Enigma machine simulation library.
+Home-page: http://www.aldaron.com
+Author: Roy Levien
+Author-email: royl@aldaron.com
+License: BSD
+Description: Crypto-Enigma
+        -------------
+        
+        |PyPi| |BSD3 License| |Build Status|
+        
+        An Enigma machine simulator for Python 2.7.
+        
+        Overview
+        ========
+        
+        **Crypto-Enigma** is a Python 2 library for simulating the `Enigma
+        machines <http://en.wikipedia.org/wiki/Enigma_machine>`__ most widely
+        used during the Second World War.
+        
+        .. |PyPi| image:: https://img.shields.io/pypi/v/crypto-enigma.svg
+           :target: https://pypi.python.org/pypi/crypto-enigma
+        .. |BSD3 License| image:: http://img.shields.io/badge/license-BSD3-brightgreen.svg
+           :target: https://github.com/orome/crypto-enigma-py/blob/pypi/LICENSE.txt
+        .. |Build Status| image:: https://travis-ci.org/orome/crypto-enigma-py.svg?branch=pypi
+           :target: https://travis-ci.org/orome/crypto-enigma-py/branches
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Environment :: Console
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Other Audience
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Security :: Cryptography
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: Natural Language :: English
