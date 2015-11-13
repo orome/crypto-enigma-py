@@ -5,6 +5,16 @@ See also: the list of `code releases`_ and `closed milestones`_.
 
 TBD
 
+`0.0.1b3`_
+~~~~~~~~
+
+* Fix script naming preventing imports during script run.
+
+`0.0.1b2`_
+~~~~~~~~
+
+* Fix unicode errors preventing successful installation.
+
 `0.0.1b1`_
 ~~~~~~~~
 
