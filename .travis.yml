@@ -10,6 +10,7 @@ install:
 
 # command to run tests
 script:
-  - py.test --cache-clear -v --color=yes --exitfirst --showlocals --durations=5
+  - py.test -v --color=yes --exitfirst --showlocals --durations=5
 
 # TBD - Automatic deployment? - http://docs.travis-ci.com/user/deployment/pypi/ <<<
+# Missing py.test arg: --cache-clear
