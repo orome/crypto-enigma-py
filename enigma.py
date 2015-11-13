@@ -11,13 +11,14 @@ Description
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 import argparse
 from enigma import __version__
-#from enigma.machine import *
+# from enigma.machine import *
 from enigma import *
+
 
 # ASK - What's idiomatic?
 def fmt_arg(arg):
     return arg.upper()
-    #return '<' + arg.lower() + '>'
+    # return '<' + arg.lower() + '>'
 
 
 _HELP_ARGS = ['--help', '-h', '-?']
@@ -27,55 +28,43 @@ _CONFIG_ARGS = ['config']
 _CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store'}
 
 _DISPLAY_GROUP_KWARGS = {'title': 'display formatting arguments',
-                         'description': 'optional arguments for controlling formatting of configurations'}
+                         'description': 'optional arguments for controlling formatting of machine configurations'}
 _FORMAT_ARGS = ['--format', '-f']
 _FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single',
-                  'help': 'the format used to display configuration(s) (see below)'}
+                  'help': 'the format used to display machine configuration(s) (see below)'}
+_HIGHLIGHT_VAL = fmt_arg('hh')
 _HIGHLIGHT_ARGS = ['--highlight', '-H']
-_HIGHLIGHT_KWARGS = {'metavar': fmt_arg('xy'), 'action': 'store',
-                     'help': "a pair or characters to use to bracket encoded characters in a configuration's encoding (see below)"}
+_HIGHLIGHT_KWARGS = {'metavar': _HIGHLIGHT_VAL, 'action': 'store',
+                     'help': "a pair or characters to use to highight encoded characters in a machine configuration's encoding (see below)"}
 _SHOWENCODING_ARGS = ['--showencoding', '-e']
 _SHOWENCODING_KWARGS = {'action': 'store_true',
-                        'help': "show the encoding if not normally shown"}
+                        'help': "show the encoding if not normally shown for the specified " + fmt_arg('format')}
 
-_DESC = "A simple Enigma machine simulator with rich display."
+_DESC = "A simple Enigma machine simulator with rich display of machine configurations."
 _EXAMPLES = """\
 Examples:
 
-    $ %(prog)s show "C-II-VIII-I EMO UX.MO.KZ.AY.EF.PL 13.04.11" -l Q -f internal
-    $ %(prog)s show "C-II-VIII-I EMO UX.MO.KZ.AY.EF.PL 13.04.11" -lQ -finternal
-    $ %(prog)s show "B-I-III-I EMO UX.MO.KZ.AY.EF.PL 13.04.11"
-    $ %(prog)s show "$(%(prog)s step 'C-II-VIII-I AAA UX.MO 13.04.11')" -f config
+    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
+    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
+    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
+    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
+    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
+    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
+    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal
+    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
+    $ python %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
+    $ python %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
+
+
+More information about each of these examples is available in the help for the respective
+commands.
 
 """
 _EPILOG = _EXAMPLES
 
-_HELP_DISPLAY = 'display an Enigma machine configuration'
-_DESC_DISPLAY = """\
-Show an Enigma machine configuration in the specified format, optionally
-indicating the encoding of a specified character.
-"""
-_EXAMPLES_DSIPLAY = """\
-Examples:
-
-    $ %(prog)s TBD
-
-"""
-_HELP_DSIPLAY_CONFIG = 'the machine configuration to show'
-
-_HELP_RUN = "show the operation of an Enigma machine"
-_DESC_RUN = """\
-Show the operation of the Enigma machine as it encodes a message and/or
-for a specified number of steps.
-"""
-_EXAMPLES_RUN = """\
-Examples:
-
-    $ %(prog)s TBD
-
-"""
-_HELP_RUN_CONFIG = 'the machine setup at the start of operation'
-
+# Encode command help strings
 _HELP_ENCODE = "show the encoding of a message"
 _DESC_ENCODE = """\
 Show the encoding of a message.
@@ -83,71 +72,260 @@ Show the encoding of a message.
 _EXAMPLES_ENCODE = """\
 Examples:
 
-    $ %(prog)s TBD
+  Encode a message:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    OZQKPFLPYZRPYTFVU
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
+    TESTINGXTESTINGUD
+
+  Encode a message and break the output into blocks of 4:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
+    OZQK PFLP YZRP YTFV U
+
+  Standard Naval subistitutions for non-letter characters are performed
+  before encoding:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
+    OZQK PFLP YZRP YTFV U
 
 """
-_HELP_ENCODE_CONFIG = 'the machine configuration at the start of encoding'
+_HELP_ENCODE_CONFIG = 'the machine configuration at the start of encoding (see below)'
 
+# Show command help strings
+_HELP_SHOW = 'display an Enigma machine configuration'
+_DESC_SHOW = """\
+Show an Enigma machine configuration in the specified format, optionally
+indicating the encoding of a specified character.
+"""
+_EXAMPLES_SHOW = """\
+Examples:
+
+  Show an Enigma machine configuration as its mapping (see '{fmt_single_val}'
+  in the note on {fmt_arg}), followed by the window letters and ring settings,
+  and indicate how a letter is encoded; here X is encoded to T (A would be
+  encoded to C, B to N ... Y to W, Z to O):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
+    X > CNAUJVQSLEMIKBZRGPHXDFYT̲̅WO  EMO  19 10 05
+
+  Use an alternate method for highlighting the encoded-to letter:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
+    X > CNAUJVQSLEMIKBZRGPHXDFY(T)WO  EMO  19 10 05
+
+  Show a detailed stage-by-stage schematic (see '{fmt_internal_val}' in the note
+  on {fmt_arg}) of the mappings preformed by a configuration:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f {fmt_internal_val}
+    X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
+      P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
+      1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
+      2 KOMQEPVZNXRBDLJHFSUWYACT(G)I  M  10  III
+      3 AXIQJZ(K)RMSUNTOLYDHVBWEGPFC  E  19  I
+      R YRUHQSLDPX(N)GOKMIEBFZCWVJAT         B
+      3 ATZQVYWRCEGOI(L)NXDHJMKSUBPF         I
+      2 VLWMEQYPZOA(N)CIBFDKRXSGTJUH         III
+      1 WZBLRVXAYGIPD(T)OHNEJMKFQSUC         I
+      P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
+    T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
+
+  Just show the configuration in conventional format (as used in {cfg_arg}):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val}
+    B-I-III-I EMO UX.MO.AY 13.04.11
+
+  As above, but show the encoding too (not shown my default for '{fmt_config_val}'):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val} -e
+    B-I-III-I EMO UX.MO.AY 13.04.11  X > T
+
+"""
+_HELP_DSIPLAY_CONFIG = 'the machine configuration to show (see below)'
+
+# Run command help strings
+_HELP_RUN = "show the operation of an Enigma machine"
+_DESC_RUN = """\
+Show the operation of the Enigma machine as a series of configurations, as it
+encodes a message and/or for a specified number of steps.
+"""
+_EXAMPLES_RUN = """\
+Examples:
+
+(For details on differences among formats used for displaying each step, see the
+examples in the help for the '{shw_cmd}' command.)
+
+  Show the operation of a machine for 10 steps, indicating step numbers (see
+  '{fmt_single_val}' in the note on {fmt_arg}):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
+    0000      CNAUJVQSLEMIKBZRGPHXDFYTWO  EMO  19 10 05
+    0001      UNXKGVERLYDIQBTWMHZOAFPCJS  EMP  19 10 06
+    0002      QTYJZXUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
+    0003      DMXAPTRWKYINBLUESGQFOZHCJV  ENR  19 11 08
+    0004      IUSMHRPEAQTVDYWGJFCKBLOZNX  ENS  19 11 09
+    0005      WMVXQRLSPYOGBTKIEFHNZCADJU  ENT  19 11 10
+    0006      WKIQXNRSCVBOYFLUDGHZPJAEMT  ENU  19 11 11
+    0007      RVPTWSLKYXHGNMQCOAFDZBEJIU  ENV  19 11 12
+    0008      IYTKRVSMALDJHZWXUEGCQFOPBN  ENW  19 11 13
+    0009      PSWGMODULZVIERFAXNBYHKCQTJ  ENX  19 11 14
+    0010      IVOWZKHGARFSPUCMXJLYNBDQTE  ENY  19 11 15
+
+  Show the operation of a machine as it encodes a message, with step numbers:
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
+    0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
+    0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
+    0003  S > DMXAPTRWKYINBLUESG(Q)FOZHCJV  ENR  19 11 08
+    0004  T > IUSMHRPEAQTVDYWGJFC(K)BLOZNX  ENS  19 11 09
+    0005  I > WMVXQRLS(P)YOGBTKIEFHNZCADJU  ENT  19 11 10
+    0006  N > WKIQXNRSCVBOY(F)LUDGHZPJAEMT  ENU  19 11 11
+    0007  G > RVPTWS(L)KYXHGNMQCOAFDZBEJIU  ENV  19 11 12
+
+  Show the operation of a machine as it encodes a message in more detail (see
+  '{fmt_internal_val}' in the note on {fmt_arg}), with step numbers (only some
+  steps shown here):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val}
+    0000
+    ...
+    0001
+    T > ABCDEFGHIJKLMNOPQRS(T)UVWXYZ
+      P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
+      1 BYLQUIOJRTCSPNKVDWM(X)EZFHAG  P  06  I
+      2 KOMQEPVZNXRBDLJHFSUWYAC(T)GI  M  10  III
+      3 AXIQJZKRMSUNTOLYDHV(B)WEGPFC  E  19  I
+      R Y(R)UHQSLDPXNGOKMIEBFZCWVJAT         B
+      3 ATZQVYWRCEGOILNXD(H)JMKSUBPF         I
+      2 VLWMEQY(P)ZOANCIBFDKRXSGTJUH         III
+      1 YAKQUWZXFHOCSNG(M)DILJEPRTBV         I
+      P YBCDEFGHIJKL(O)NMPQRSTXVWUAZ         UX.MO.AY
+    O < UNXKGVERLYDIQBTWMHZ(O)AFPCJS
+    ...
+    0007
+    G > ABCDEF(G)HIJKLMNOPQRSTUVWXYZ
+      P YBCDEF(G)HIJKLONMPQRSTXVWUAZ         UX.MO.AY
+      1 IDLNWM(J)HEPXQGRYTZBUAVSFKOC  V  12  I
+      2 NLPDOUYMW(Q)ACKIGERTVXZBSFHJ  N  11  III
+      3 AXIQJZKRMSUNTOLY(D)HVBWEGPFC  E  19  I
+      R YRU(H)QSLDPXNGOKMIEBFZCWVJAT         B
+      3 ATZQVYW(R)CEGOILNXDHJMKSUBPF         I
+      2 KVLDPXOYNZMBHAECJ(Q)WRFSITGU         III
+      1 TRZBIWMHAGXCFDYJ(L)NVPSUEKOQ         I
+      P YBCDEFGHIJK(L)ONMPQRSTXVWUAZ         UX.MO.AY
+    L < RVPTWS(L)KYXHGNMQCOAFDZBEJIU
+
+  Show the steps as above, but (slowly) in place (if the platform supports it)
+  rather than on a new line for each; only the last step is visible on
+  completion (as shown here):
+    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val} -o -SS
+    0007
+    G > ABCDEF(G)HIJKLMNOPQRSTUVWXYZ
+      P YBCDEF(G)HIJKLONMPQRSTXVWUAZ         UX.MO.AY
+      1 IDLNWM(J)HEPXQGRYTZBUAVSFKOC  V  12  I
+      2 NLPDOUYMW(Q)ACKIGERTVXZBSFHJ  N  11  III
+      3 AXIQJZKRMSUNTOLY(D)HVBWEGPFC  E  19  I
+      R YRU(H)QSLDPXNGOKMIEBFZCWVJAT         B
+      3 ATZQVYW(R)CEGOILNXDHJMKSUBPF         I
+      2 KVLDPXOYNZMBHAECJ(Q)WRFSITGU         III
+      1 TRZBIWMHAGXCFDYJ(L)NVPSUEKOQ         I
+      P YBCDEFGHIJK(L)ONMPQRSTXVWUAZ         UX.MO.AY
+    L < RVPTWS(L)KYXHGNMQCOAFDZBEJIU
+
+  Stepping a configuration only changes the window letters:
+    python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
+    000  B-I-III-I EMO UX.MO.AY 13.04.11
+    0001  B-I-III-I EMP UX.MO.AY 13.04.11  T > O
+    0002  B-I-III-I EMQ UX.MO.AY 13.04.11  E > Z
+    0003  B-I-III-I ENR UX.MO.AY 13.04.11  S > Q
+    0004  B-I-III-I ENS UX.MO.AY 13.04.11  T > K
+    0005  B-I-III-I ENT UX.MO.AY 13.04.11  I > P
+    0006  B-I-III-I ENU UX.MO.AY 13.04.11  N > F
+    0007  B-I-III-I ENV UX.MO.AY 13.04.11  G > L
+    python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_windows_val} -e
+    0000  EMO
+    0001  EMP  T > O
+    0002  EMQ  E > Z
+    0003  ENR  S > Q
+    0004  ENS  T > K
+    0005  ENT  I > P
+    0006  ENU  N > F
+    0007  ENV  G > L
+
+"""
+_HELP_RUN_CONFIG = 'the machine setup at the start of operation (see below)'
+
+# Version command help strings
 _HELP_VERSION = 'show the package version and exit'
 _DESC_VERSION = 'Show the package version and exit.'
 
 _HELP_MESSAGE = 'a message to encode; characters that are not letters will be ' \
                 'replaced with standard Naval substitutions or be removed'
 
+_EPILOG_CONFIG = """\
+{cfg_arg} specifies an Enigma machine configuration as a string based on common
+historical conventions and consists of four elements, separated by spaces:
+ + names for components, in physical order (starting with the reflector, on the
+   left, and ending with the 'first' rotor, on the right), separated by '-'s;
+ + letters visible at the machine windows (in physical order);
+ + a plugboard specification, consisting of exchanged (i.e. wired-together)
+   letter paris, separated by '.'s; and
+ + the locations of ring letter A on the rotor for each rotor
+   (in physical order)
+"""
 
-_EPILOG_FORMAT_DISPLAY = """\
-The value of {fmt_arg} will determine how a configuration is represented;
-possible values include:
- + '{fmt_internal_val}', which will show a detailed schematic of each
-   processing stage, in which each line corresponds to a component
-   of the machine;
- + '{fmt_single_val}', the default, which will show a single line;
- + '{fmt_windows_val}', which shows just the letters visible at the
-   windows; and
- + '{fmt_config_val}', which simply shows the specification
-   of the configuration
-The program is forgiving about forgotten format values and will accept a range
-of reasonable substitutes (e.g., {fmt_internal_alts} for {fmt_internal_val}).
-""".format(fmt_arg=_FORMAT_KWARGS['metavar'],
-           fmt_internal_val=EnigmaConfig._FMTS_INTERNAL[0],
-           fmt_single_val=EnigmaConfig._FMTS_SINGLE[0],
-           fmt_windows_val=EnigmaConfig._FMTS_WINDOWS[0],
-           fmt_config_val=EnigmaConfig._FMTS_CONFIG[0],
-           fmt_internal_alts=' or '.join(["'{}'".format(a) for a in EnigmaConfig._FMTS_INTERNAL[1:]]))
-_EPILOG_FORMAT_RUN = _EPILOG_FORMAT_DISPLAY
+_EPILOG_FORMAT = """\
+{fmt_arg} will determine how a configuration is represented; possible values
+include:
+ + '{fmt_single_val}' (the default) which will show a single line representing the
+   mapping (a string in which the letter at each position indicates the letter
+   encoded to by letter at that position in the alphabet) preformed by the
+   machine as a whole, followed by window letters (as '{fmt_windows_val}') and
+   positions, and indicating a {let_arg} and its encoding, if provided;
+ + '{fmt_internal_val}', which will show a detailed schematic of each processing step
+   (proceeding from top to bottom), in which
+    - each line indicates the mapping (see '{fmt_single_val}') preformed by the
+      component at that step;
+    - each line begins with an indication of the stage (rotor number, "P" for
+      plugboard, or "R" for reflector) at that step, and ends with the
+      specification of the component at that stage;
+    - rotors also indicate their window letter, and position;
+    - if a valid {let_arg} is provided, it is indicated as input and its
+      encoding at each stage is marked;
+   the schematic is followed by the mapping for the machine as a whole (as
+   '{fmt_single_val}'), and preceded by a (trivial, no-op) keyboard 'mapping'
+   for reference;
+ + '{fmt_windows_val}', which shows just the letters visible at the windows;
+    and
+ + '{fmt_config_val}', which simply shows the specification of the
+   configuration (in the same format as {cfg_arg}).
+The program is forgiving about forgotten format values and will accept a
+range of reasonable substitutes (e.g., {fmt_internal_alts} for
+'{fmt_internal_val}').
 
-_EPILOG_DISPLAY = _EPILOG_FORMAT_DISPLAY + "\n" + _EXAMPLES_DSIPLAY
-_EPILOG_RUN = _EPILOG_FORMAT_RUN + "\n" + _EXAMPLES_RUN
-_EPILOG_ENCODE = _EXAMPLES_ENCODE
+{hgt_arg} can be used to determine how any encoded-to characters in mappings
+(see '{fmt_single_val}' in the note on {fmt_arg}) are highlighted. By default
+this highlighting is done with combining Unicode characters, which may not
+work on all systems, and as an alternative, any two characters provided as
+{hgt_arg} will be used to 'bracket' the highlighted character. To avoid errors,
+these characters should be enclosed in quotes.
+"""
 
+_EPILOG_ENCODE = _EPILOG_CONFIG + "\n" + _EXAMPLES_ENCODE
+_EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW
+_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN
+
+_EPILOG_ARGS = dict(shw_cmd='show',
+                    hgt_arg=_HIGHLIGHT_VAL,
+                    let_arg=fmt_arg('letter'),
+                    cfg_arg=fmt_arg('config'),
+                    fmt_arg=_FORMAT_KWARGS['metavar'],
+                    fmt_internal_val=EnigmaConfig._FMTS_INTERNAL[0],
+                    fmt_single_val=EnigmaConfig._FMTS_SINGLE[0],
+                    fmt_windows_val=EnigmaConfig._FMTS_WINDOWS[0],
+                    fmt_config_val=EnigmaConfig._FMTS_CONFIG[0],
+                    fmt_internal_alts=' or '.join(["'{}'".format(a) for a in EnigmaConfig._FMTS_INTERNAL[1:]]))
+_EPILOG_ENCODE = _EPILOG_ENCODE.format(**_EPILOG_ARGS)
+_EPILOG_SHOW = _EPILOG_SHOW.format(**_EPILOG_ARGS)
+_EPILOG_RUN = _EPILOG_RUN.format(**_EPILOG_ARGS)
 
 if __name__ == '__main__':
 
     parent_parser = argparse.ArgumentParser(add_help=False)
-    # Almost works, but puts config in the wrong position and won't show command help unless theres a config!
-    # parent_parser.add_argument('config', metavar=fmt_arg('config'),
-    #                             action='store',
-    #                             help='the machine configuration to show')
     parent_parser.add_argument('--verbose', '-v',
                                action='store_true',
                                help='display additional information (may have no effect)')
-    # show_display_group = parent_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
-    # _FORMAT_KWARGS['help'] = 'the format to use to show configuration(s) (see below)'
-    # show_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
-    # show_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
-    # show_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
-
-    # parent_parser.add_argument('--version', '-V',
-    #                            action='version', version='%(prog)s {0}'.format(__version__),
-    #                            help='display package version number and exit')
-    # parent_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-
-    # config_parser = argparse.ArgumentParser(add_help=False)
-    # # Almost works, but puts config in the wrong position and won't show command help unless theres a config!
-    # config_parser.add_argument('config', metavar=fmt_arg('config'),
-    #                             action='store',
-    #                             help='the machine configuration to %(dest)s')
-
     parser = argparse.ArgumentParser(description=_DESC, parents=[parent_parser],
                                      epilog=_EPILOG,
                                      # usage = 'enigma.py [<options>] COMMAND CONFIG',
@@ -161,9 +339,22 @@ if __name__ == '__main__':
                                      metavar=fmt_arg('command')
                                      )
 
+    # Encode a message
+    encode_parser = commands.add_parser('encode', parents=[parent_parser], add_help=False,
+                                        description=_DESC_ENCODE, epilog=_EPILOG_ENCODE, help=_HELP_ENCODE,
+                                        formatter_class=argparse.RawDescriptionHelpFormatter)
+    _CONFIG_KWARGS['help'] = _HELP_ENCODE_CONFIG
+    encode_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
+    encode_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
+                               help=_HELP_MESSAGE)
+    encode_display_group = encode_parser.add_argument_group(title='message formatting arguments')
+    encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true',
+                                      help='format the encoded message into blocks')
+    encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
+
     # Display machine state
     show_parser = commands.add_parser('show', parents=[parent_parser], add_help=False,
-                                      description=_DESC_DISPLAY, epilog=_EPILOG_DISPLAY, help=_HELP_DISPLAY,
+                                      description=_DESC_SHOW, epilog=_EPILOG_SHOW, help=_HELP_SHOW,
                                       formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = _HELP_DSIPLAY_CONFIG
     show_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
@@ -213,19 +404,6 @@ if __name__ == '__main__':
                                  help=_HELP_MESSAGE)
     run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
-    # Encode a message
-    encode_parser = commands.add_parser('encode', parents=[parent_parser], add_help=False,
-                                        description=_DESC_ENCODE, epilog=_EPILOG_ENCODE, help=_HELP_ENCODE,
-                                        formatter_class=argparse.RawDescriptionHelpFormatter)
-    _CONFIG_KWARGS['help'] = _HELP_ENCODE_CONFIG
-    encode_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    encode_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
-                               help=_HELP_MESSAGE)
-    encode_display_group = encode_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
-    encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true',
-                                      help='format the encoded message into blocks')
-    encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
-
     # Just show the package version
     version_parser = commands.add_parser('version', add_help=False,
                                          description=_DESC_VERSION + '.', help=_HELP_VERSION)
@@ -257,7 +435,7 @@ if __name__ == '__main__':
                 else:
                     print(cfg.enigma_encoding(msg))
             else:
-                sst = args.showstep or args.verbose
+                sst = args.command == 'run' and (args.showstep or args.verbose)
                 sec = args.showencoding or args.verbose
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
@@ -265,7 +443,7 @@ if __name__ == '__main__':
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
                     let = args.letter
-                    print(cfg.config_string(let, fmt, mark_func=mks))
+                    print(cfg.config_string(let, fmt, show_encoding=sec, mark_func=mks))
                 elif args.command == 'run':
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
@@ -278,17 +456,11 @@ if __name__ == '__main__':
         print(e.message)
         exit(1)
 
+        # print(parser.parse_args())
+        # ASK - Put optional args after required ones? <<<
+        # http://superuser.com/questions/461946/can-i-use-pipe-output-as-a-shell-script-argument
+        # ASK - How to test scripts in testing suite? <<<
+        # From http://bioportal.weizmann.ac.il/course/python/PyMOTW/PyMOTW/docs/argparse/index.html to start
+        # Defaults - http://stackoverflow.com/a/15301183/656912
 
-
-
-# print(parser.parse_args())
-# ASK - Put optional args after required ones? <<<
-# http://superuser.com/questions/461946/can-i-use-pipe-output-as-a-shell-script-argument
-# ASK - How to test scripts in testing suite? <<<
-# From http://bioportal.weizmann.ac.il/course/python/PyMOTW/PyMOTW/docs/argparse/index.html to start
-# Defaults - http://stackoverflow.com/a/15301183/656912
-
-# # ASK - No way to do -ddd as --detail=3? <<<
-# show_display_group.add_argument('-d', '--detail', #metavar=fmt_arg('format'), #choices=('internal', 'single', 'config'),
-#                             action='count', default=0,  #default=1,
-#                             help='the level of detail to show; see below')
+        # # ASK - No way to do -ddd as --detail=3? <<<
