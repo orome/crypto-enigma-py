@@ -2,8 +2,8 @@
 # encoding: utf8
 
 # Copyright (C) 2015 by Roy Levien.
-# This file is part of Crypto-Enigma, the Enigma Machine simulation.
-# Crypto-Enigma is released under the BSD-3 License (see License.txt).
+# This file is part of crypto-enigma, an Enigma Machine simulator.
+# released under the BSD-3 License (see LICENSE.txt).
 
 
 """ 
@@ -40,7 +40,7 @@ setup(name='crypto-enigma',
       # TBD - Links to repo and issues etc. needed here <<<
       url='http://www.aldaron.com',
       license='BSD',
-      description='An Enigma machine simulation library.',
+      description='An Enigma machine simulation package.',
       long_description=open(join(dirname(__file__), 'README.rst')).read(),
       packages=['enigma', 'enigma.tests'],
       # package_data=dict(enigma=['examples/*.py',
