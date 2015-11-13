@@ -11,7 +11,11 @@ Overview
 **Crypto-Enigma** is a Python 2 library for simulating the `Enigma machines`_ most widely used
 during the Second World War.
 
+For documentation of the API, see the `Haskell version`_'s `Hackage documentation`_.
+
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
+.. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
+.. _Hackage documentation: https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html
 
 .. |Python Programming Language| image:: https://img.shields.io/badge/language-Python-blue.svg
    :target: https://www.python.org
