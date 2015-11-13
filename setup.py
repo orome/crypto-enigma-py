@@ -38,7 +38,7 @@ setup(name='crypto-enigma',
       author=enigma.__author__,
       author_email='royl@aldaron.com',
       # TBD - Links to repo and issues etc. needed here <<<
-      url='http://www.aldaron.com',
+      url='hhttps://github.com/orome/crypto-enigma-py',
       license='BSD',
       description='An Enigma machine simulation package.',
       long_description=open(join(dirname(__file__), 'README.rst')).read(),
