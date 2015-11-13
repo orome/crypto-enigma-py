@@ -12,7 +12,7 @@ Description
     Any additional note.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+from __future__ import (print_function, division, unicode_literals)
 import argparse
 from enigma import __version__
 # from enigma.machine import *
@@ -48,18 +48,18 @@ _DESC = "A simple Enigma machine simulator with rich display of machine configur
 _EXAMPLES = """\
 Examples:
 
-    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
-    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
-    $ python %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
-    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
-    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
-    $ python %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
-    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
-    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
-    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal
-    $ python %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
-    $ python %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
-    $ python %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
+    $ %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    $ %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
+    $ %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
+    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
+    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
+    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
+    $ %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
+    $ %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
 
 
 More information about each of these examples is available in the help for the respective
@@ -77,18 +77,18 @@ _EXAMPLES_ENCODE = """\
 Examples:
 
   Encode a message:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
     OZQKPFLPYZRPYTFVU
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
     TESTINGXTESTINGUD
 
   Encode a message and break the output into blocks of 4:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
     OZQK PFLP YZRP YTFV U
 
   Standard Naval subistitutions for non-letter characters are performed
   before encoding:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
     OZQK PFLP YZRP YTFV U
 
 """
@@ -107,16 +107,16 @@ Examples:
   in the note on {fmt_arg}), followed by the window letters and ring settings,
   and indicate how a letter is encoded; here X is encoded to T (A would be
   encoded to C, B to N ... Y to W, Z to O):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
     X > CNAUJVQSLEMIKBZRGPHXDFYT̲̅WO  EMO  19 10 05
 
   Use an alternate method for highlighting the encoded-to letter:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
     X > CNAUJVQSLEMIKBZRGPHXDFY(T)WO  EMO  19 10 05
 
   Show a detailed stage-by-stage schematic (see '{fmt_internal_val}' in the note
   on {fmt_arg}) of the mappings preformed by a configuration:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f {fmt_internal_val}
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f {fmt_internal_val}
     X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
       P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
       1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
@@ -130,11 +130,11 @@ Examples:
     T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
 
   Just show the configuration in conventional format (as used in {cfg_arg}):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val}
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val}
     B-I-III-I EMO UX.MO.AY 13.04.11
 
   As above, but show the encoding too (not shown my default for '{fmt_config_val}'):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val} -e
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -f {fmt_config_val} -e
     B-I-III-I EMO UX.MO.AY 13.04.11  X > T
 
 """
@@ -154,7 +154,7 @@ examples in the help for the '{shw_cmd}' command.)
 
   Show the operation of a machine for 10 steps, indicating step numbers (see
   '{fmt_single_val}' in the note on {fmt_arg}):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
     0000      CNAUJVQSLEMIKBZRGPHXDFYTWO  EMO  19 10 05
     0001      UNXKGVERLYDIQBTWMHZOAFPCJS  EMP  19 10 06
     0002      QTYJZXUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -168,7 +168,7 @@ examples in the help for the '{shw_cmd}' command.)
     0010      IVOWZKHGARFSPUCMXJLYNBDQTE  ENY  19 11 15
 
   Show the operation of a machine as it encodes a message, with step numbers:
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
     0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
     0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
     0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -181,7 +181,7 @@ examples in the help for the '{shw_cmd}' command.)
   Show the operation of a machine as it encodes a message in more detail (see
   '{fmt_internal_val}' in the note on {fmt_arg}), with step numbers (only some
   steps shown here):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val}
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val}
     0000
     ...
     0001
@@ -213,7 +213,7 @@ examples in the help for the '{shw_cmd}' command.)
   Show the steps as above, but (slowly) in place (if the platform supports it)
   rather than on a new line for each; only the last step is visible on
   completion (as shown here):
-    $ python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val} -o -SS
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val} -o -SS
     0007
     G > ABCDEF(G)HIJKLMNOPQRSTUVWXYZ
       P YBCDEF(G)HIJKLONMPQRSTXVWUAZ         UX.MO.AY
@@ -228,7 +228,7 @@ examples in the help for the '{shw_cmd}' command.)
     L < RVPTWS(L)KYXHGNMQCOAFDZBEJIU
 
   Stepping a configuration only changes the window letters:
-    python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
+     %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
     000  B-I-III-I EMO UX.MO.AY 13.04.11
     0001  B-I-III-I EMP UX.MO.AY 13.04.11  T > O
     0002  B-I-III-I EMQ UX.MO.AY 13.04.11  E > Z
@@ -237,7 +237,7 @@ examples in the help for the '{shw_cmd}' command.)
     0005  B-I-III-I ENT UX.MO.AY 13.04.11  I > P
     0006  B-I-III-I ENU UX.MO.AY 13.04.11  N > F
     0007  B-I-III-I ENV UX.MO.AY 13.04.11  G > L
-    python %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_windows_val} -e
+     %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_windows_val} -e
     0000  EMO
     0001  EMP  T > O
     0002  EMQ  E > Z

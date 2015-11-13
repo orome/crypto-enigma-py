@@ -15,17 +15,17 @@ Encode messages:
 
 .. code-block:: sh
 
-    $ python enigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    $ pyenigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
     OZQKPFLPYZRPYTFVU
 
-    $ python enigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
+    $ pyenigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
     TESTINGXTESTINGUD
 
 Show configuration details:
 
 .. code-block:: sh
 
-    $ python enigma.py show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
+    $ pyenigma.py show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
     X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
       P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
       1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
@@ -42,7 +42,7 @@ Simulate machine operation:
 
 .. code-block:: sh
 
-    $ python enigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ pyenigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
     0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
     0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
     0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -59,7 +59,7 @@ Command line documentation is available as help from the command line script:
 
 .. code-block:: sh
 
-   $ python enigma.py --help
+   $ pyenigma.py --help
 
 Full documentation for the API is not yet available, but the `Hackage documentation`_ for the
 `Haskell version`_ (which has essentially the same API) serves as a temporary substitute.
