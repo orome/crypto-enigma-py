@@ -11,8 +11,8 @@ Description
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 import argparse
 from enigma import __version__
-from enigma.machine import *
-
+#from enigma.machine import *
+from enigma import *
 
 # ASK - What's idiomatic?
 def fmt_arg(arg):

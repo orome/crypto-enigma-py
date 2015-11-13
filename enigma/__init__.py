@@ -9,5 +9,7 @@ Description
 """
 
 from ._version import __version__, __author__
-#__all__ = ['machine', 'utils']
+#__all__ = ['machine', 'components']
 
+from enigma.components import *
+from enigma.machine import *

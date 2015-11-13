@@ -25,7 +25,7 @@ def test_component_rotation():
     # Component rotation
     assert 'EKMFLGDQVZNTOWYHXUSPAIBRCJ' == component('I').mapping(1, FWD)
     assert 'QGCLFMUKTWZDNJYVOESIBPRAHX' == component('II').mapping(-1, FWD)
-    assert 'CEGIKBOQSWUYMXDHVFZJLTRPNA'== component('III').mapping(2, FWD)
+    assert 'CEGIKBOQSWUYMXDHVFZJLTRPNA' == component('III').mapping(2, FWD)
     assert 'PZEHVRYSCMDBTXLUKAOQIWJNGF' == component('IV').mapping(-2, FWD)
 
     assert 'RVHKXCSFBUMPJWNEGZYDIQOTLA' == component('VIII').mapping(11, REV)

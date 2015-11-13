@@ -12,7 +12,8 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 import cProfile
 import pytest
 
-from enigma.machine import *
+#from enigma.machine import *
+from enigma import *
 
 
 def print_header(level, label='', mark=None):
