@@ -32,25 +32,27 @@ from setuptools import setup
 # except ImportError:
 #     print("warning: pypandoc module not found, could not convert Markdown to RST")
 #     read_me = open(join(dirname(__file__), 'README.rst')).read()
+# _DEV_STATUS = {'a': '3 - Alpha',
+#                'b': '4 - Beta',
+#                'c': '5 - Production/Stable'}['c' if enigma.__pre_release__ == '' else enigma.__pre_release__[0]]
 
-setup(name='crypto-enigma',
+setup(name=b'crypto-enigma',
       version=enigma.__version__,
       author=enigma.__author__,
       author_email='royl@aldaron.com',
-      # TBD - Links to repo and issues etc. needed here <<<
-      url='hhttps://github.com/orome/crypto-enigma-py',
+      url='https://github.com/orome/crypto-enigma-py',
       license='BSD',
       description='An Enigma machine simulation package.',
       long_description=open(join(dirname(__file__), 'README.rst')).read(),
-      packages=['enigma', 'enigma.tests'],
+      packages=[b'enigma', b'enigma.tests'],
       # package_data=dict(enigma=['examples/*.py',
       #                           'docs/source/*.rst',
       #                           'docs/source/*.py']),
       scripts=['enigma.py'],
       # scripts=['test.py'],
-      classifiers=['Development Status :: 3 - Alpha',
+      classifiers=['Development Status :: {}'.format('4 - Beta'),
                    'Programming Language :: Python',
-                   'Programming Language :: Python :: 2',
+                   'Programming Language :: Python :: 2.7',
                    'Environment :: Console',
                    'Intended Audience :: End Users/Desktop',
                    'Intended Audience :: Developers',

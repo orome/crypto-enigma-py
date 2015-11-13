@@ -1,7 +1,7 @@
 crypto-enigma
 -------------
 
-|Python Programming Language| |PyPi| |Supported Python versions| |Development Status| |BSD3 License| |PyPi Build Status|
+|Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status|
 
 An Enigma machine simulator with state and encoding display for Python 2.7.
 
