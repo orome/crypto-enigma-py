@@ -15,7 +15,7 @@ __author__ = 'Roy Levien'
 __copyright__ = '(c) 2014-2105 Roy Levien'
 __release__ = '0.0.1'  # N(.N)*
 __pre_release__ = 'b1'  # aN | bN | cN |
-__suffix__ = '.dev7'  # .devN | | .postN
+__suffix__ = ''#'.dev7'  # .devN | | .postN
 __version__ = __release__ + __pre_release__ + __suffix__
 
 
