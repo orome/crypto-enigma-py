@@ -393,5 +393,4 @@ class EnigmaDisplayError(EnigmaError):
 #       Changelog <<<
 #       Versioning (sync with Haskell?) <<<
 #       Travis: first host on GitHub (remame and make public)
-#       Switch to .md README (for GitHub)?
 #       Does package name need to underscore-separated?
