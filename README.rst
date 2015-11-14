@@ -13,19 +13,19 @@ Functionality
 
 Encode messages:
 
-.. code-block:: sh
+.. parsed-literal::
 
-    $ pyenigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
+    $ |script| encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD"
     OZQKPFLPYZRPYTFVU
 
-    $ pyenigma.py encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
+    $ |script| encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
     TESTINGXTESTINGUD
 
 Show configuration details:
 
-.. code-block:: sh
+.. parsed-literal::
 
-    $ pyenigma.py show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
+    $ |script| show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
     X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
       P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
       1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
@@ -40,9 +40,9 @@ Show configuration details:
 
 Simulate machine operation:
 
-.. code-block:: sh
+.. parsed-literal::
 
-    $ pyenigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ |script| run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
     0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
     0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
     0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -57,9 +57,9 @@ Documentation
 
 Command line documentation is available as help from the command line script:
 
-.. code-block:: sh
+.. parsed-literal::
 
-   $ pyenigma.py --help
+   $ |script| --help
 
 Full documentation for the API is not yet available, but the `Hackage documentation`_ for the
 `Haskell version`_ (which has essentially the same API) serves as a temporary substitute.
@@ -87,10 +87,15 @@ Development status
 
 |Development Build Status|
 
-This package is in the early stages of development, and I and can't promise the
+This package is in the early stages of development, and I and can't promise the current
 `development version`_ will work. More detail about planned releases and activities
 can be found the list of scheduled `milestones`_ and in the list of `open issues`_.
+Various `test versions`_ may be available for installation or issues review, but these also
+may not work as expected.
 
+
+
+.. |script| replace:: pyenigma.py
 
 .. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
 .. _I: http://www.cryptomuseum.com/crypto/enigma/i/index.htm
@@ -98,6 +103,7 @@ can be found the list of scheduled `milestones`_ and in the list of `open issues
 .. _M4: http://www.cryptomuseum.com/crypto/enigma/m4/index.htm
 
 .. _development version: https://github.com/orome/crypto-enigma-py/tree/develop
+.. _test versions: https://testpypi.python.org/pypi/crypto-enigma
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
 
