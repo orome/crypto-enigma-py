@@ -17,7 +17,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 from itertools import cycle, islice
 from cachetools import cached
 
-from enigma.utils import *
+from .utils import *
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1

@@ -14,9 +14,9 @@ Description
 
 from __future__ import (print_function, division, unicode_literals)
 import argparse
-from enigma import __version__
+from crypto_enigma import __version__
 # from enigma.machine import *
-from enigma import *
+from crypto_enigma import *
 
 
 # ASK - What's idiomatic?

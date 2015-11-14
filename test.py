@@ -13,7 +13,7 @@ import cProfile
 import pytest
 
 #from enigma.machine import *
-from enigma import *
+from crypto_enigma import *
 
 
 def print_header(level, label='', mark=None):

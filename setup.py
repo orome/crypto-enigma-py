@@ -15,10 +15,9 @@ Description
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
-from distutils.core import setup
 from os.path import join, dirname
 
-import enigma
+import crypto_enigma
 
 from setuptools import setup
 
@@ -37,18 +36,18 @@ from setuptools import setup
 #                'c': '5 - Production/Stable'}['c' if enigma.__pre_release__ == '' else enigma.__pre_release__[0]]
 
 setup(name=b'crypto-enigma',
-      version=enigma.__version__,
-      author=enigma.__author__,
+      version=crypto_enigma.__version__,
+      author=crypto_enigma.__author__,
       author_email='royl@aldaron.com',
       url='https://github.com/orome/crypto-enigma-py',
       license='BSD',
       description='An Enigma machine simulation package.',
       long_description=open(join(dirname(__file__), 'README.rst')).read(),
-      packages=[b'enigma', b'enigma.tests'],
+      packages=[b'crypto_enigma', b'crypto_enigma.tests'],
       # package_data=dict(enigma=['examples/*.py',
       #                           'docs/source/*.rst',
       #                           'docs/source/*.py']),
-      scripts=['pyenigma.py'],
+      scripts=['enigma.py'],
       # scripts=['test.py'],
       classifiers=['Development Status :: {}'.format('4 - Beta'),
                    'Programming Language :: Python',

@@ -26,7 +26,7 @@ from unicodedata import combining
 #from cachetools import cached
 
 #from enigma.utils import *
-from enigma.components import *
+from .components import *
 
 
 class EnigmaConfig(object):

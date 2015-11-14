@@ -95,7 +95,7 @@ may not work as expected.
 
 
 
-.. |script| replace:: pyenigma.py
+.. |script| replace:: enigma.py
 
 .. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
 .. _I: http://www.cryptomuseum.com/crypto/enigma/i/index.htm
