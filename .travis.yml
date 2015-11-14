@@ -15,5 +15,8 @@ script:
   - python pyenigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
   - python pyenigma.py run "A-I-IV-I RXQ UX.MO.AY.NE 13.04.11" -s 20 -t
 
+after_success:
+  - python pyenigma.py version
+
 # TBD - Automatic deployment? - http://docs.travis-ci.com/user/deployment/pypi/ <<<
 # Missing py.test arg: --cache-clear
