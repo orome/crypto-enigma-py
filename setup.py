@@ -39,7 +39,7 @@ from setuptools import setup
 setup(name=b'crypto-enigma',
       version=enigma.__version__,
       author=enigma.__author__,
-      #author_email='royl@aldaron.com',
+      author_email='royl@aldaron.com',
       url='https://github.com/orome/crypto-enigma-py',
       license='BSD',
       description='An Enigma machine simulation package.',
