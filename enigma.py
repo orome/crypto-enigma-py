@@ -12,7 +12,7 @@ Description
     Any additional note.
 """
 
-from __future__ import (print_function, division, unicode_literals)
+from __future__ import (absolute_import, print_function, division, unicode_literals)
 import argparse
 from crypto_enigma import __version__
 # from enigma.machine import *
