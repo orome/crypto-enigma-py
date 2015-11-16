@@ -9,6 +9,7 @@ TBD
 ~~~~~~~~
 
 * Rename import from `enigma` to `crypto_enigma`.
+* Rename command line script from `pyenigma.py` to `enigma.py`.
 
 `0.0.1b3`_
 ~~~~~~~~
