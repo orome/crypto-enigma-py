@@ -3,6 +3,9 @@ See also: the list of `code releases`_ and `closed milestones`_.
 (0.0.1)
 ~~~~~~~~~
 
+`0.0.2b2`_
+~~~~~~~~
+
 TBD
 
 `0.0.2b1`_
@@ -33,3 +36,4 @@ Initial PyPi version, without documentation.
 .. _0.0.1b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b2
 .. _0.0.1b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b3
 .. _0.0.2b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b1
+.. _0.0.2b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b2
