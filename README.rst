@@ -63,6 +63,8 @@ Command line documentation is available as help from the command line script:
 
    $ |script| --help
 
+.. _undocumented:
+
 Full documentation for the API is not yet available, but the `Hackage documentation`_ for the
 `Haskell version`_ (which has essentially the same API) serves as a temporary substitute.
 
@@ -75,6 +77,14 @@ aspects of the display of machine state depend on support for combining
 Unicode. This is a `known
 limitation <https://github.com/orome/crypto-enigma-py/issues/1>`__ that
 will be addressed in a future release.
+
+Note also that if you are daring and use the (currently `undocumented <#undocumented>`__) API, you should
+
+.. parsed-literal::
+
+   from __future__ import unicode_literals
+
+before any code that uses the API
 
 Alternatives
 ~~~~~~~~~~~~
