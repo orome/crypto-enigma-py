@@ -21,7 +21,8 @@ Encode messages:
     $ |script| encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
     TESTINGXTESTINGUD
 
-Show configuration details:
+Show configuration details (explained in more detail in the
+`documentation <https://hackage.haskell.org/package/crypto-enigma-0.0.2.5/docs/Crypto-Enigma-Display.html#v:showEnigmaConfigInternal>`__ for the Haskell version):
 
 .. parsed-literal::
 
@@ -38,7 +39,8 @@ Show configuration details:
       P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
     T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
 
-Simulate machine operation:
+Simulate machine operation (explained in more detail in the
+`documentation <https://hackage.haskell.org/package/crypto-enigma-0.0.2.5/docs/Crypto-Enigma-Display.html#v:showEnigmaOperation>`__ for the Haskell version):
 
 .. parsed-literal::
 
