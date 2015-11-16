@@ -58,8 +58,9 @@ Examples:
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
-    $ %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
-    $ %(prog)s run  "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
+    $ %(prog)s run "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 
 More information about each of these examples is available in the help for the respective
@@ -228,7 +229,7 @@ examples in the help for the '{shw_cmd}' command.)
     L < RVPTWS(L)KYXHGNMQCOAFDZBEJIU
 
   Stepping a configuration only changes the window letters:
-     %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
     000  B-I-III-I EMO UX.MO.AY 13.04.11
     0001  B-I-III-I EMP UX.MO.AY 13.04.11  T > O
     0002  B-I-III-I EMQ UX.MO.AY 13.04.11  E > Z
@@ -237,7 +238,7 @@ examples in the help for the '{shw_cmd}' command.)
     0005  B-I-III-I ENT UX.MO.AY 13.04.11  I > P
     0006  B-I-III-I ENU UX.MO.AY 13.04.11  N > F
     0007  B-I-III-I ENV UX.MO.AY 13.04.11  G > L
-     %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_windows_val} -e
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_windows_val} -e
     0000  EMO
     0001  EMP  T > O
     0002  EMQ  E > Z
@@ -246,6 +247,9 @@ examples in the help for the '{shw_cmd}' command.)
     0005  ENT  I > P
     0006  ENU  N > F
     0007  ENV  G > L
+
+   Watch the machine run for 500 steps:
+    $ %(prog)s "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 """
 _HELP_RUN_CONFIG = 'the machine setup at the start of operation (see below)'

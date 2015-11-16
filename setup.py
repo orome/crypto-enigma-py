@@ -34,7 +34,6 @@ from setuptools import setup
 # _DEV_STATUS = {'a': '3 - Alpha',
 #                'b': '4 - Beta',
 #                'c': '5 - Production/Stable'}['c' if enigma.__pre_release__ == '' else enigma.__pre_release__[0]]
-print("Test message")
 
 setup(name=b'crypto-enigma',
       version=crypto_enigma.__version__,

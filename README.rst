@@ -54,6 +54,12 @@ Simulate machine operation (explained in more detail in the
     0006  N > WKIQXNRSCVBOY(F)LUDGHZPJAEMT  ENU  19 11 11
     0007  G > RVPTWS(L)KYXHGNMQCOAFDZBEJIU  ENV  19 11 12
 
+Watch the machine as it runs for 500 steps:
+
+.. parsed-literal::
+
+    $ |script| run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+
 Documentation
 ~~~~~~~~~~~~~
 
