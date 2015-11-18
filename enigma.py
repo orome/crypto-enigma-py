@@ -438,6 +438,7 @@ if __name__ == '__main__':
 
             # Decode the Enigma specification string
             # REV - Confirm that sys.getfilesystemencoding is the right thing to get - http://stackoverflow.com/q/22947181/656912
+            # ASK - Can argparse help here - https://docs.python.org/3/library/argparse.html#filetype-objects
             config_arg = args.config
             if not isinstance(config_arg, unicode):
                 config_arg = config_arg.decode(sys.getfilesystemencoding())
