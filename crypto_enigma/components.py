@@ -113,6 +113,11 @@ def component(name):
         else:
             return letters
 
+    # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
+    # TBD - Make into a decorator? <<<
+    if not isinstance(name, unicode):
+        name = name.decode('utf-8')
+
     if name not in _comps.keys():
         _comps[name] = Component(name, ''.join(reduce(plug, name.split('.'), list(LETTERS))), '')
     return _comps[name]

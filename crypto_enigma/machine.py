@@ -25,7 +25,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 from unicodedata import combining
 #from cachetools import cached
 
-#from enigma.utils import *
+from .utils import *
 from .components import *
 
 
@@ -57,6 +57,17 @@ class EnigmaConfig(object):
     @staticmethod
     def config_enigma(rotor_names, window_letters, plugs, rings):
 
+        # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
+        # TBD - Make into a decorator? <<<
+        if not isinstance(rotor_names, unicode):
+            rotor_names = rotor_names.decode('utf-8')
+        if not isinstance(window_letters, unicode):
+            window_letters = window_letters.decode('utf-8')
+        if not isinstance(plugs, unicode):
+            plugs = plugs.decode('utf-8')
+        if not isinstance(rings, unicode):
+            rings = rings.decode('utf-8')
+
         comps = (rotor_names + '-' + plugs).split('-')[::-1]
         winds = [num_A0(c) for c in 'A' + window_letters + 'A'][::-1]
         rngs = [int(x) for x in ('01.' + rings + '.01').split('.')][::-1]
@@ -74,13 +85,19 @@ class EnigmaConfig(object):
     @staticmethod
     def config_enigma_from_string(string):
 
+        # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
+        # TBD - Make into a decorator? <<<
+        if not isinstance(string, unicode):
+            string = string.decode('utf-8')
+
         # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
-        rotor_names, window_letters, plugs, rings = filter(lambda s: s != '', string.decode('utf-8').split(' '))
+        rotor_names, window_letters, plugs, rings = filter(lambda s: s != '', string.split(' '))
 
         rotor_names_list = rotor_names.split('-')
         ring_numbers = [int(x) for x in rings.split('.')]
 
         # TBD - Validation for plugboard <<<
+        # TBD - These should be in config_enigma (instead?) <<<
         # A bunch of checks to provide better feedback than assertions
         for name in rotor_names_list[1:]:
             if name not in rotors:
