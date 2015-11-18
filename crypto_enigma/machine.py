@@ -55,18 +55,8 @@ class EnigmaConfig(object):
         self._stages = tuple(range(0, len(self._components)))
 
     @staticmethod
+    @require_unicode()
     def config_enigma(rotor_names, window_letters, plugs, rings):
-
-        # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
-        # TBD - Make into a decorator? <<<
-        if not isinstance(rotor_names, unicode):
-            rotor_names = rotor_names.decode('utf-8')
-        if not isinstance(window_letters, unicode):
-            window_letters = window_letters.decode('utf-8')
-        if not isinstance(plugs, unicode):
-            plugs = plugs.decode('utf-8')
-        if not isinstance(rings, unicode):
-            rings = rings.decode('utf-8')
 
         comps = (rotor_names + '-' + plugs).split('-')[::-1]
         winds = [num_A0(c) for c in 'A' + window_letters + 'A'][::-1]
@@ -83,12 +73,8 @@ class EnigmaConfig(object):
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     @staticmethod
+    @require_unicode()
     def config_enigma_from_string(string):
-
-        # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
-        # TBD - Make into a decorator? <<<
-        if not isinstance(string, unicode):
-            string = string.decode('utf-8')
 
         # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
         rotor_names, window_letters, plugs, rings = filter(lambda s: s != '', string.split(' '))

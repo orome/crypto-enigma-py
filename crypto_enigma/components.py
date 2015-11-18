@@ -105,6 +105,7 @@ rotors = sorted(_rots.keys())
 reflectors = sorted(_refs.keys())
 
 
+@require_unicode()
 def component(name):
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
@@ -112,11 +113,6 @@ def component(name):
             return [swap[0] if c == swap[1] else swap[1] if c == swap[0] else c for c in letters]
         else:
             return letters
-
-    # REV - Is this good practice - http://stackoverflow.com/a/33743668/656912 <<<
-    # TBD - Make into a decorator? <<<
-    if not isinstance(name, unicode):
-        name = name.decode('utf-8')
 
     if name not in _comps.keys():
         _comps[name] = Component(name, ''.join(reduce(plug, name.split('.'), list(LETTERS))), '')
