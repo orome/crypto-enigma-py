@@ -80,7 +80,8 @@ def require_unicode(*given_arg_names):
                 except ValueError:
                     raise NameError, unicode_arg_name
                 arg = args[arg_index]
-                assert isinstance(arg, unicode), "Parameter '{}' should be a Unicode literal".format(unicode_arg_name)
+                if not isinstance(arg, unicode):
+                    raise TypeError("Parameter '{}' should be a Unicode literal".format(unicode_arg_name))
             return _func_(*args)
         return modified
     return check_types
