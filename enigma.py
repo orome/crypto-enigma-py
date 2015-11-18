@@ -13,6 +13,8 @@ Description
 """
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
+
+import sys
 import argparse
 from crypto_enigma import __version__
 # from enigma.machine import *
@@ -433,7 +435,16 @@ if __name__ == '__main__':
             print('{0}'.format(__version__))
 
         else:
-            cfg = EnigmaConfig.config_enigma_from_string(args.config)
+
+            # Decode the Enigma specification string
+            # REV - Confirm that sys.getfilesystemencoding is the right thing to get - http://stackoverflow.com/q/22947181/656912
+            config_arg = args.config
+            if not isinstance(config_arg, unicode):
+                config_arg = config_arg.decode(sys.getfilesystemencoding())
+
+            print([config_arg])
+
+            cfg = EnigmaConfig.config_enigma_from_string(config_arg)
             fmt = args.format
 
             if args.command == 'encode':

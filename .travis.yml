@@ -12,8 +12,8 @@ install:
 script:
   - py.test -v --color=yes --exitfirst --showlocals --durations=5
   - python enigma.py -?
-  - python enigma.py run u"B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
-  - python enigma.py run u"A-I-IV-I RXQ UX.MO.AY.NE 13.04.11" -s 20 -t
+  - python enigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+  - python enigma.py run "A-I-IV-I RXQ UX.MO.AY.NE 13.04.11" -s 20 -t
 
 after_success:
   - python enigma.py version
