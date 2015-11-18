@@ -7,6 +7,7 @@ See also: the list of `code releases`_ and `closed milestones`_.
 ~~~~~~~~
 
 TBD
+* Requre Unicode arguments. Decode command line arguments.
 
 `0.0.2b1`_
 ~~~~~~~~
