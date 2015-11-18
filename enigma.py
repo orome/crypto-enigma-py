@@ -60,7 +60,7 @@ Examples:
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
-    $ %(prog)s run "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+    $ %(prog)s run "c-β-VIII-VII-VI QMLI UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 
 More information about each of these examples is available in the help for the respective
@@ -249,7 +249,7 @@ examples in the help for the '{shw_cmd}' command.)
     0007  ENV  G > L
 
    Watch the machine run for 500 steps:
-    $ %(prog)s "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+    $ %(prog)s "c-β-VIII-VII-VI QMLI UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 """
 _HELP_RUN_CONFIG = 'the machine setup at the start of operation (see below)'
