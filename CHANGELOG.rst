@@ -5,6 +5,12 @@ See also: the list of `code releases`_ and `closed milestones`_.
 
 TBD
 
+`0.0.2b3`_
+~~~~~~~~~~
+
+TBD
+- (Unicode checking for messages and letters.)
+
 `0.0.2b2`_
 ~~~~~~~~~~
 
@@ -41,3 +47,4 @@ Initial PyPi version, without documentation.
 .. _0.0.1b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b3
 .. _0.0.2b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b1
 .. _0.0.2b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b2
+.. _0.0.2b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b3
