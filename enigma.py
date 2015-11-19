@@ -14,12 +14,20 @@ Description
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
-import sys
+#import sys
 import argparse
+
 from crypto_enigma import __version__
-# from enigma.machine import *
 from crypto_enigma import *
 
+
+# Decode the Enigma specification string
+# http://stackoverflow.com/q/33811930/; http://stackoverflow.com/q/22947181/
+def unicode_literal(str_, encoding=sys.stdin.encoding):
+    if not isinstance(str_, unicode):
+        return str_.decode(encoding)
+    else:
+        return str_
 
 # ASK - What's idiomatic?
 def fmt_arg(arg):
@@ -31,20 +39,29 @@ _HELP_ARGS = ['--help', '-h', '-?']
 _HELP_KWARGS = {'action': 'help', 'help': 'show this help message and exit'}
 
 _CONFIG_ARGS = ['config']
-_CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store'}
+_CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store', 'type': unicode_literal}
+
+_LETTER_ARGS = ['--letter', '-l']
+_LETTER_KWARGS = {'metavar': fmt_arg('letter'), 'action': 'store',  'nargs': '?', 'default': '', 'const': '',
+                  'help': 'an optional input letter to highlight as it is processed by the configuration; '
+                          'defaults to nothing'}
+
+# _MESSAGE_ARGS
+# _MESSAGE_KWARGS
 
 _DISPLAY_GROUP_KWARGS = {'title': 'display formatting arguments',
                          'description': 'optional arguments for controlling formatting of machine configurations'}
 _FORMAT_ARGS = ['--format', '-f']
 _FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single',
                   'help': 'the format used to display machine configuration(s) (see below)'}
-_HIGHLIGHT_VAL = fmt_arg('hh')
+
 _HIGHLIGHT_ARGS = ['--highlight', '-H']
-_HIGHLIGHT_KWARGS = {'metavar': _HIGHLIGHT_VAL, 'action': 'store',
+_HIGHLIGHT_KWARGS = {'metavar': fmt_arg('hh'), 'action': 'store',
                      'help': "a pair or characters to use to highight encoded characters in a machine configuration's encoding (see below)"}
+
 _SHOWENCODING_ARGS = ['--showencoding', '-e']
 _SHOWENCODING_KWARGS = {'action': 'store_true',
-                        'help': "show the encoding if not normally shown for the specified " + fmt_arg('format')}
+                        'help': "show the encoding if not normally shown for the specified " + _FORMAT_KWARGS['metavar']}
 
 _DESC = "A simple Enigma machine simulator with rich display of machine configurations."
 _EXAMPLES = """\
@@ -317,9 +334,9 @@ _EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW
 _EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN
 
 _EPILOG_ARGS = dict(shw_cmd='show',
-                    hgt_arg=_HIGHLIGHT_VAL,
-                    let_arg=fmt_arg('letter'),
-                    cfg_arg=fmt_arg('config'),
+                    hgt_arg=_HIGHLIGHT_KWARGS['metavar'],
+                    let_arg=_LETTER_KWARGS['metavar'],
+                    cfg_arg=_CONFIG_KWARGS['metavar'],
                     fmt_arg=_FORMAT_KWARGS['metavar'],
                     fmt_internal_val=EnigmaConfig._FMTS_INTERNAL[0],
                     fmt_single_val=EnigmaConfig._FMTS_SINGLE[0],
@@ -373,10 +390,7 @@ if __name__ == '__main__':
     show_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
     show_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
     show_input_group = show_parser.add_argument_group(title='input argument')
-    show_input_group.add_argument('--letter', '-l', metavar=fmt_arg('letter'),
-                                  action='store', nargs='?', default='', const='',
-                                  help='an optional input letter to highlight as it is processed by the '
-                                       'configuration; defaults to nothing')
+    show_input_group.add_argument(*_LETTER_ARGS, **_LETTER_KWARGS)
     show_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Show machine operation
@@ -436,16 +450,11 @@ if __name__ == '__main__':
 
         else:
 
-            # Decode the Enigma specification string
-            # REV - Confirm that sys.getfilesystemencoding is the right thing to get - http://stackoverflow.com/q/22947181/656912
-            # ASK - Can argparse help here - https://docs.python.org/3/library/argparse.html#filetype-objects
-            config_arg = args.config
-            if not isinstance(config_arg, unicode):
-                config_arg = config_arg.decode(sys.getfilesystemencoding())
+            # See 'type' for 'config' and definition of 'unicode_literal' above
+            assert isinstance(args.config, unicode), \
+                "Unable to decode '{}' to Unicode; report this error!".format(_CONFIG_KWARGS['metavar'])
 
-            print([config_arg])
-
-            cfg = EnigmaConfig.config_enigma_from_string(config_arg)
+            cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
 
             if args.command == 'encode':

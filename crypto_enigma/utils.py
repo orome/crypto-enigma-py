@@ -65,7 +65,7 @@ def chunk_of(it, n):
     return [it[i:i+n] for i in range(0, len(it), n)]
 
 
-# require unicode strings - http://stackoverflow.com/a/33743668/656912
+# require unicode strings (see unicode_literal in enigma.py) - http://stackoverflow.com/a/33743668/656912
 def require_unicode(*given_arg_names):
     def check_types(_func_, *args):
         def modified(*args):
@@ -78,7 +78,7 @@ def require_unicode(*given_arg_names):
                 try:
                     arg_index = arg_names.index(unicode_arg_name)
                 except ValueError:
-                    raise NameError, unicode_arg_name
+                    raise NameError(unicode_arg_name)
                 arg = args[arg_index]
                 if not isinstance(arg, unicode):
                     raise TypeError("Parameter '{}' should be a Unicode literal".format(unicode_arg_name))
