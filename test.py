@@ -218,3 +218,87 @@ cfg.print_operation(message='ABCD EFGH IJK    L', initial=False)
 
 # TBD - Add function to format sections and pad with == or --, etc.
 # TBD - Loop through keys here and in test
+
+# import sys
+# import argparse as ap
+#
+#
+# def foo(str_, encoding=sys.stdin.encoding):
+#     return str_.decode(encoding)
+#
+# parser = ap.ArgumentParser()
+# parser.add_argument('my_int', type=int)
+# parser.add_argument('my_arg', type=foo)
+# args = parser.parse_args()
+#
+# print repr(args)
+
+# http://www.macfreek.nl/memory/Unicode_Strings_in_Python
+
+print(rotors)
+
+for cfg in [EnigmaConfig.config_enigma_from_string('b-γ-V-I-I XXXX UX.MO.KZ.AY.EF.PL 03.17.04.11'),
+            EnigmaConfig.config_enigma_from_string(u'b-γ-V-I-I UUUU UX.MO.KZ.AY.EF.PL 03.17.04.11'),
+            EnigmaConfig.config_enigma_from_string(u'b-γ-V-I-I BBBB UX.MO.KZ.AY.EF.PL 03.17.04.11'),
+            EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'XXXX', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11'),
+            EnigmaConfig.config_enigma(u'b-γ-V-VIII-II', u'UUUU', u'UX.MO.KZ.AY.EF.PL', u'03.17.04.11'),
+            EnigmaConfig.config_enigma(u'b-γ-V-VIII-II', u'BBBB', u'UX.MO.KZ.AY.EF.PL', u'03.17.04.11')]:
+    print(cfg)
+
+cfgC = EnigmaConfig.config_enigma_from_string('b-γ-V-I-I LEZO UX.MO.KZ.AY.EF.PL 03.17.04.11')
+print(cfgC)
+
+cfgC = EnigmaConfig.config_enigma_from_string('b-γ-V-I-I LEZO UX.MO.KZ.AY.EF.PL 03.17.04.11')
+print(cfgC)
+
+cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LEZO', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11')
+print(cfg)
+
+
+# cfgB = EnigmaConfig.config_enigma_from_string(str(cfg))
+# print(cfgB)
+# print([cfg.config_string()])
+# print(cfg.config_string())
+#
+# l = [str(cfg), unicode(cfg)]
+# print(l)
+# for x in l:
+#     print(x)
+#
+# l =[str(cfgB), unicode(cfgB)]
+# print(l)
+# for x in l:
+#     print(x)
+
+
+# class UnicodePuzzler(object):
+#
+#     @staticmethod
+#     def config(a):
+#         print([a])
+#         if not isinstance(a, unicode):
+#             a = a.decode('utf-8')
+#         print([a])
+#         print(a)
+#
+#     @staticmethod
+#     def config_string(a):
+#         #a, b = filter(lambda s: s != '', ab.decode('utf-8').split(' '))
+#         a = a.decode('utf-8')
+#         print([a])
+#
+#         UnicodePuzzler.config(a)
+#
+# print('config_string converts a to unicode ')
+# UnicodePuzzler.config_string('ABγ')
+# print('')
+# UnicodePuzzler.config('ABγ')
+#
+# print('config_string converts a to unicode ')
+# UnicodePuzzler.config_string(u'ABγ')
+# print('')
+# UnicodePuzzler.config('ABγ')
+# print('\n\nForced')
+# UnicodePuzzler.config_string('ABγ XYZ')
+# print('')
+# UnicodePuzzler.config('ABγ', 'XYZ')
