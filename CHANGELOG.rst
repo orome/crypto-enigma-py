@@ -5,11 +5,18 @@ See also: the list of `code releases`_ and `closed milestones`_.
 
 TBD
 
-`0.0.2b3`_
-~~~~~~~~~~
+(0.0.2b4)
+~~~~~~~~~
+
+TBD
+- (Start documentation.)
+
+(0.0.2b3)
+~~~~~~~~~
 
 TBD
 - (Unicode checking for messages and letters.)
+- (Add argument checks to testing scripts.)
 
 `0.0.2b2`_
 ~~~~~~~~~~
