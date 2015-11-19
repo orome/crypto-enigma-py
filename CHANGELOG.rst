@@ -1,32 +1,35 @@
 See also: the list of `code releases`_ and `closed milestones`_.
 
-(0.0.1)
-~~~~~~~~~
-
-`0.0.2b2`_
-~~~~~~~~
+(0.0.2)
+~~~~~~~
 
 TBD
-* Requre Unicode arguments. Decode command line arguments.
+
+`0.0.2b2`_
+~~~~~~~~~~
+
+* Attempt to `decode <http://stackoverflow.com/a/33812744/>`__ ``enigma.py`` command line arguments to Unicode.
+* Require `Unicode arguments <http://stackoverflow.com/a/33743668/>`__ for ``config_enigma``
+  and ``config_enigma_string`` constructors and component names.
 
 `0.0.2b1`_
-~~~~~~~~
+~~~~~~~~~~
 
-* Rename import from `enigma` to `crypto_enigma`.
-* Rename command line script from `pyenigma.py` to `enigma.py`.
+* Rename import from ``enigma`` to ``crypto_enigma``.
+* Rename command line script from ``pyenigma.py`` to ``enigma.py``.
 
 `0.0.1b3`_
-~~~~~~~~
+~~~~~~~~~~
 
 * Fix script naming preventing imports during script run.
 
 `0.0.1b2`_
-~~~~~~~~
+~~~~~~~~~~
 
 * Fix unicode errors preventing successful installation.
 
 `0.0.1b1`_
-~~~~~~~~
+~~~~~~~~~~
 
 Initial PyPi version, without documentation.
 
