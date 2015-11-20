@@ -9,14 +9,16 @@ TBD
 ~~~~~~~~~
 
 TBD
-- (Start documentation.)
+
+* (Start documentation.)
 
 (0.0.2b3)
 ~~~~~~~~~
 
 TBD
-- (Unicode checking for messages and letters.)
-- (Add argument checks to testing scripts.)
+
+* (Unicode checking for messages and letters.)
+* (Add argument checks to testing scripts.)
 
 `0.0.2b2`_
 ~~~~~~~~~~
