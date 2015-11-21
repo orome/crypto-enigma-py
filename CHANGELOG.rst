@@ -1,24 +1,29 @@
-See also: the list of `code releases`_ and `closed milestones`_.
+A list key changes in `PyPi`_ releases,
+along with planned features of some some expected future releases (in parentheses).
+
+See also:
+
+* the list of `code releases`_;
+* `open milestones`_,
+* `closed milestones`_; and
+* `issues`_.
 
 (0.0.2)
 ~~~~~~~
 
-TBD
+* (`First stable release`_.)
 
 (0.0.2b4)
 ~~~~~~~~~
-
-TBD
 
 * (Start documentation.)
 
 (0.0.2b3)
 ~~~~~~~~~
 
-TBD
-
 * (Unicode checking for messages and letters.)
 * (Add argument checks to testing scripts.)
+* (Force characters into map range or catch indexing errors in encoding.)
 
 `0.0.2b2`_
 ~~~~~~~~~~
@@ -49,8 +54,12 @@ TBD
 Initial PyPi version, without documentation.
 
 
-.. _code releases: https://github.com/orome/crypto-enigma-py/releases
+.. _PyPi: https://pypi.python.org/pypi
+.. _issues: https://github.com/orome/crypto-enigma-py/issues?q=
+.. _open milestones: https://github.com/orome/crypto-enigma-py/milestones?state=open
 .. _closed milestones: https://github.com/orome/crypto-enigma-py/milestones?state=closed
+.. _code releases: https://github.com/orome/crypto-enigma-py/releases
+.. _First stable release: https://github.com/orome/crypto-enigma-py/milestones/First%20Stable%20Release
 .. _0.0.1b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b1
 .. _0.0.1b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b2
 .. _0.0.1b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.1b3
