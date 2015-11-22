@@ -15,6 +15,7 @@ Description
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 import argparse
+import traceback
 
 from crypto_enigma import __version__
 from crypto_enigma import *
@@ -510,6 +511,11 @@ if __name__ == '__main__':
                                         show_encoding=sec,
                                         show_step=sst,
                                         mark_func=mks)
+    # REV - Keep this or just exit (or show trace without asking)? <<<
+    except KeyboardInterrupt as e:
+        if 'y' in raw_input('\rInterrupted by user; print stack trace? ').lower():
+            traceback.print_exc()
+        sys.exit()
     except EnigmaError as e:
         print(e.message)
         sys.exit(1)
