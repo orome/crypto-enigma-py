@@ -1,10 +1,10 @@
-A list key changes in `PyPi`_ releases,
-along with planned features of some some expected future releases (in parentheses).
+A list of key changes in `PyPi releases`_,
+along with planned features of some expected future releases (in parentheses).
 
 See also:
 
 * the list of `code releases`_;
-* `open milestones`_,
+* `open milestones`_;
 * `closed milestones`_; and
 * `issues`_.
 
@@ -59,7 +59,7 @@ See also:
 Initial PyPi version, without documentation.
 
 
-.. _PyPi: https://pypi.python.org/pypi
+.. _PyPi releases: https://pypi.python.org/pypi/crypto-enigma/
 .. _issues: https://github.com/orome/crypto-enigma-py/issues?q=
 .. _open milestones: https://github.com/orome/crypto-enigma-py/milestones?state=open
 .. _closed milestones: https://github.com/orome/crypto-enigma-py/milestones?state=closed
@@ -71,3 +71,4 @@ Initial PyPi version, without documentation.
 .. _0.0.2b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b1
 .. _0.0.2b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b2
 .. _0.0.2b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b3
+.. _0.0.2b4: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b4
