@@ -14,7 +14,6 @@ Description
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
-#import sys
 import argparse
 
 from crypto_enigma import __version__
@@ -28,6 +27,7 @@ def unicode_literal(str_, encoding=sys.stdin.encoding):
         return str_.decode(encoding)
     else:
         return str_
+
 
 # ASK - What's idiomatic?
 def fmt_arg(arg):
@@ -84,7 +84,8 @@ _HIGHLIGHT_NAME = 'highlight'
 _HIGHLIGHT_ARGS = make_args(_HIGHLIGHT_NAME, True, 'H')
 _HIGHLIGHT_KWARGS = dict(
     action='store', metavar=fmt_arg('hh'),
-    help="a pair or characters to use to highight encoded characters in a machine configuration's encoding (see below)")
+    help="a pair or characters to use to highlight encoded characters in a machine configuration's encoding "
+         "(see below)")
 
 _SHOWENCODING_NAME = 'showencoding'
 _SHOWENCODING_ARGS = make_args(_SHOWENCODING_NAME, True, 'e')
