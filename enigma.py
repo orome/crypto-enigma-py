@@ -35,33 +35,62 @@ def fmt_arg(arg):
     # return '<' + arg.lower() + '>'
 
 
+def make_args(name, is_opt=False, opt_letter=None):
+    if not is_opt:
+        return name
+    else:
+        return ['--' + name, '-' + (opt_letter if opt_letter is not None else name[0])]
+
+
 _HELP_ARGS = ['--help', '-h', '-?']
-_HELP_KWARGS = {'action': 'help', 'help': 'show this help message and exit'}
+_HELP_KWARGS = dict(
+    action='help',
+    help='show this help message and exit')
 
 _CONFIG_ARGS = ['config']
-_CONFIG_KWARGS = {'metavar': fmt_arg('config'), 'action': 'store', 'type': unicode_literal}
+_CONFIG_KWARGS = dict(
+    action='store', metavar=fmt_arg('config'),
+    type=unicode_literal)
 
-_LETTER_ARGS = ['--letter', '-l']
-_LETTER_KWARGS = {'metavar': fmt_arg('letter'), 'action': 'store',  'nargs': '?', 'default': '', 'const': '',
-                  'help': 'an optional input letter to highlight as it is processed by the configuration; '
-                          'defaults to nothing'}
+_MESSAGE_HELP = 'a message to encode; characters that are not letters will be ' \
+                'replaced with standard Naval substitutions or be removed'
+_ENCODE_MESSAGE_NAME = 'message'
+_ENCODE_MESSAGE_ARG = make_args(_ENCODE_MESSAGE_NAME)
+_ENCODE_MESSAGE_KWARGS = dict(
+    action='store', metavar=fmt_arg(_ENCODE_MESSAGE_NAME),
+    help=_MESSAGE_HELP)
+_RUN_MESSAGE_ARGS = make_args(_ENCODE_MESSAGE_NAME, True)
+_RUN_MESSAGE_KWARGS = dict(
+    action='store', metavar=fmt_arg(_ENCODE_MESSAGE_NAME), nargs='?', default=None, const=None,
+    help=_MESSAGE_HELP)
 
-# _MESSAGE_ARGS
-# _MESSAGE_KWARGS
+_LETTER_NAME = 'letter'
+_LETTER_ARGS = make_args(_LETTER_NAME, True)
+_LETTER_KWARGS = dict(
+    action='store', metavar=fmt_arg(_LETTER_NAME), nargs='?', default='', const='',
+    help='an optional input letter to highlight as it is processed by the configuration; defaults to nothing')
 
-_DISPLAY_GROUP_KWARGS = {'title': 'display formatting arguments',
-                         'description': 'optional arguments for controlling formatting of machine configurations'}
-_FORMAT_ARGS = ['--format', '-f']
-_FORMAT_KWARGS = {'metavar': fmt_arg('format'), 'action': 'store', 'nargs': '?', 'default': 'single', 'const': 'single',
-                  'help': 'the format used to display machine configuration(s) (see below)'}
+_DISPLAY_GROUP_KWARGS = dict(
+    title='display formatting arguments',
+    description='optional arguments for controlling formatting of machine configurations')
 
-_HIGHLIGHT_ARGS = ['--highlight', '-H']
-_HIGHLIGHT_KWARGS = {'metavar': fmt_arg('hh'), 'action': 'store',
-                     'help': "a pair or characters to use to highight encoded characters in a machine configuration's encoding (see below)"}
+_FORMAT_NAME = 'format'
+_FORMAT_ARGS = make_args(_FORMAT_NAME, True)
+_FORMAT_KWARGS = dict(
+    action='store', metavar=fmt_arg(_FORMAT_NAME), nargs='?', default='single', const='single',
+    help='the format used to display machine configuration(s) (see below)')
 
-_SHOWENCODING_ARGS = ['--showencoding', '-e']
-_SHOWENCODING_KWARGS = {'action': 'store_true',
-                        'help': "show the encoding if not normally shown for the specified " + _FORMAT_KWARGS['metavar']}
+_HIGHLIGHT_NAME = 'highlight'
+_HIGHLIGHT_ARGS = make_args(_HIGHLIGHT_NAME, True, 'H')
+_HIGHLIGHT_KWARGS = dict(
+    action='store', metavar=fmt_arg('hh'),
+    help="a pair or characters to use to highight encoded characters in a machine configuration's encoding (see below)")
+
+_SHOWENCODING_NAME = 'showencoding'
+_SHOWENCODING_ARGS = make_args(_SHOWENCODING_NAME, True, 'e')
+_SHOWENCODING_KWARGS = dict(
+    action='store_true',
+    help='show the encoding if not normally shown for the specified ' + _FORMAT_KWARGS['metavar'])
 
 _DESC = "A simple Enigma machine simulator with rich display of machine configurations."
 _EXAMPLES = """\
@@ -277,8 +306,6 @@ _HELP_RUN_CONFIG = 'the machine setup at the start of operation (see below)'
 _HELP_VERSION = 'show the package version and exit'
 _DESC_VERSION = 'Show the package version and exit.'
 
-_HELP_MESSAGE = 'a message to encode; characters that are not letters will be ' \
-                'replaced with standard Naval substitutions or be removed'
 
 _EPILOG_CONFIG = """\
 {cfg_arg} specifies an Enigma machine configuration as a string based on common
@@ -372,10 +399,10 @@ if __name__ == '__main__':
                                         formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = _HELP_ENCODE_CONFIG
     encode_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    encode_parser.add_argument('message', metavar=fmt_arg('message'), action='store',
-                               help=_HELP_MESSAGE)
+    encode_parser.add_argument(_ENCODE_MESSAGE_ARG, **_ENCODE_MESSAGE_KWARGS)
     encode_display_group = encode_parser.add_argument_group(title='message formatting arguments')
-    encode_display_group.add_argument(*_FORMAT_ARGS, action='store_true',
+    encode_display_group.add_argument(*_FORMAT_ARGS,
+                                      action='store_true',
                                       help='format the encoded message into blocks')
     encode_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
@@ -385,12 +412,12 @@ if __name__ == '__main__':
                                       formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = _HELP_DSIPLAY_CONFIG
     show_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
+    show_input_group = show_parser.add_argument_group(title='input argument')
+    show_input_group.add_argument(*_LETTER_ARGS, **_LETTER_KWARGS)
     show_display_group = show_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
     show_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
     show_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
     show_display_group.add_argument(*_SHOWENCODING_ARGS, **_SHOWENCODING_KWARGS)
-    show_input_group = show_parser.add_argument_group(title='input argument')
-    show_input_group.add_argument(*_LETTER_ARGS, **_LETTER_KWARGS)
     show_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Show machine operation
@@ -399,7 +426,8 @@ if __name__ == '__main__':
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = _HELP_RUN_CONFIG
     run_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-
+    run_input_group = run_parser.add_argument_group(title='input argument')
+    run_input_group.add_argument(*_RUN_MESSAGE_ARGS, **_RUN_MESSAGE_KWARGS)
     run_display_group = run_parser.add_argument_group(**_DISPLAY_GROUP_KWARGS)
     run_display_group.add_argument(*_FORMAT_ARGS, **_FORMAT_KWARGS)
     run_display_group.add_argument(*_HIGHLIGHT_ARGS, **_HIGHLIGHT_KWARGS)
@@ -407,25 +435,25 @@ if __name__ == '__main__':
     run_operation_group = run_parser.add_argument_group(title='run operation arguments',
                                                         description='options for controlling stepping and '
                                                                     'annotation of steps')
-    run_operation_group.add_argument('--noinitial', '-n', dest='initial', action='store_false',
+    # REV - Rework using constands as for others? Revert to not using constants?
+    run_operation_group.add_argument('--noinitial', '-n',
+                                     action='store_false', dest='initial',
                                      help="don't show the initial starting step")
-    run_operation_group.add_argument('--overwrite', '-o', action='store_true',
+    run_operation_group.add_argument('--overwrite', '-o',
+                                     action='store_true',
                                      help='overwrite each step after a pause '
                                           '(may result in garbled output on some systems)')
-    run_operation_group.add_argument('--slower', '-S', action='count',
-                                     default=0,
+    run_operation_group.add_argument('--slower', '-S',
+                                     action='count', default=0,
                                      help='slow down overwriting; '
                                           'repeat for more slowing (only has effect with --overwrite)')
     run_operation_group.add_argument('--showstep', '-t', action='store_true',
                                      help='show the step number')
-    run_operation_group.add_argument('--steps', '-s', metavar=fmt_arg('steps'), action='store',
-                                     nargs='?', default=None, const=1, type=int,
+    run_operation_group.add_argument('--steps', '-s',
+                                     action='store', metavar=fmt_arg('steps'), nargs='?', default=None, const=1,
+                                     type=int,
                                      help='a number of steps to run; if omitted when a message is provided, '
                                           'will default to the length of the message; otherwise defaults to 1')
-    run_input_group = run_parser.add_argument_group(title='input argument')
-    run_input_group.add_argument('--message', '-m', metavar=fmt_arg('message'), action='store',
-                                 nargs='?', default=None, const=None,
-                                 help=_HELP_MESSAGE)
     run_parser.add_argument(*_HELP_ARGS, **_HELP_KWARGS)
 
     # Just show the package version
