@@ -13,17 +13,22 @@ See also:
 
 * (`First stable release`_.)
 
-(0.0.2b4)
+(0.0.2b5)
 ~~~~~~~~~
 
 * (Start documentation.)
 
-(0.0.2b3)
+(0.0.2b4)
 ~~~~~~~~~
 
 * (Unicode checking for messages and letters.)
 * (Add argument checks to testing scripts.)
 * (Force characters into map range or catch indexing errors in encoding.)
+
+`0.0.2b3`_
+~~~~~~~~~~
+
+* Improve handling of keyboard interrupt of output to avoid misplacement of prompt.
 
 `0.0.2b2`_
 ~~~~~~~~~~
