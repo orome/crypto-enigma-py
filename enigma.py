@@ -505,17 +505,11 @@ if __name__ == '__main__':
                 elif args.command == 'run':
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
-                    try:
-                        cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
-                                            format=args.format, initial=args.initial, delay=0.1 + (0.1 * args.slower),
-                                            show_encoding=sec,
-                                            show_step=sst,
-                                            mark_func=mks)
-                    except KeyboardInterrupt as k:
-                        # ASK - Is this reliable <<<
-                        # Attempt to clear output block
-                        print('\n' * (2*len(cfg.components)+1 if args.format=='internal' else 0))
-                        sys.exit()
+                    cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
+                                        format=args.format, initial=args.initial, delay=0.1 + (0.1 * args.slower),
+                                        show_encoding=sec,
+                                        show_step=sst,
+                                        mark_func=mks)
     except EnigmaError as e:
         print(e.message)
         exit(1)
