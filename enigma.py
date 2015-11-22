@@ -520,11 +520,10 @@ if __name__ == '__main__':
         print(e.message)
         sys.exit(1)
 
-        # print(parser.parse_args())
-        # ASK - Put optional args after required ones? <<<
-        # http://superuser.com/questions/461946/can-i-use-pipe-output-as-a-shell-script-argument
-        # ASK - How to test scripts in testing suite? <<<
-        # From http://bioportal.weizmann.ac.il/course/python/PyMOTW/PyMOTW/docs/argparse/index.html to start
-        # Defaults - http://stackoverflow.com/a/15301183/656912
+# ASK - Put optional args after required ones? <<<
+# http://superuser.com/questions/461946/can-i-use-pipe-output-as-a-shell-script-argument
+# ASK - How to test scripts in testing suite? <<<
+# From http://bioportal.weizmann.ac.il/course/python/PyMOTW/PyMOTW/docs/argparse/index.html to start
+# Defaults - http://stackoverflow.com/a/15301183/656912
 
-        # # ASK - No way to do -ddd as --detail=3? <<<
+# # ASK - No way to do -ddd as --detail=3? <<<
