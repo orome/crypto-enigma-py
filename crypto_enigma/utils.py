@@ -19,9 +19,11 @@ import sys
 
 
 # TBD - Generalize to other platforms; test?
-def print_over(s, delay=0.2):
-    print(s, end='\r')
-    print("\033[F" * (s.count('\n')+1))
+def print_over(s, backup=True, delay=0.2):
+    if backup:
+        print('', end='\r')
+        print("\033[F" * (s.count('\n')+2))
+    print(s)
     sys.stdout.flush()
     time.sleep(delay)
 
