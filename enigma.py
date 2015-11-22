@@ -468,7 +468,7 @@ if __name__ == '__main__':
     # # ASK - How to print help for current subcommand, if there is one <<<
     # except:# argparse.ArgumentError as e:
     #     parser.print_help()
-    #     exit(0)
+    #     sys.exit(0)
     # else:
 
     args = parser.parse_args()
@@ -512,7 +512,7 @@ if __name__ == '__main__':
                                         mark_func=mks)
     except EnigmaError as e:
         print(e.message)
-        exit(1)
+        sys.exit(1)
 
         # print(parser.parse_args())
         # ASK - Put optional args after required ones? <<<
