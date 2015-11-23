@@ -515,6 +515,7 @@ if __name__ == '__main__':
         # REV - Restore interrupt message and ask for trace?
         # if 'y' in raw_input('\rInterrupted by user; print stack trace? ').lower():
         #     traceback.print_exc()
+        print('', end='\r')
         sys.exit()
     except EnigmaError as e:
         print(e.message)
