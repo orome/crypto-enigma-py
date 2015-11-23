@@ -511,10 +511,10 @@ if __name__ == '__main__':
                                         show_encoding=sec,
                                         show_step=sst,
                                         mark_func=mks)
-    # REV - Keep this or just exit (or show trace without asking)? <<<
     except KeyboardInterrupt as e:
-        if 'y' in raw_input('\rInterrupted by user; print stack trace? ').lower():
-            traceback.print_exc()
+        # REV - Restore interrupt message and ask for trace?
+        # if 'y' in raw_input('\rInterrupted by user; print stack trace? ').lower():
+        #     traceback.print_exc()
         sys.exit()
     except EnigmaError as e:
         print(e.message)
