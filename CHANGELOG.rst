@@ -8,22 +8,27 @@ See also:
 * `closed milestones`_; and
 * `issues`_.
 
-(0.0.2)
+(0.2.1)
 ~~~~~~~
 
 * (`First stable release`_.)
 
-(0.0.2b5)
+(0.2.1b2)
 ~~~~~~~~~
 
 * (Start documentation.)
 
-(0.0.2b4)
+(0.2.1b1)
 ~~~~~~~~~
 
 * (Unicode checking for messages and letters.)
 * (Add argument checks to testing scripts.)
 * (Force characters into map range or catch indexing errors in encoding.)
+
+(0.2.0.b1)
+~~~~~~~~~~
+
+* (Synchronize top-level versioning with `Haskell version`_.)
 
 `0.0.2b3`_
 ~~~~~~~~~~
@@ -58,7 +63,7 @@ See also:
 
 Initial PyPi version, without documentation.
 
-
+.. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
 .. _PyPi releases: https://pypi.python.org/pypi/crypto-enigma/
 .. _issues: https://github.com/orome/crypto-enigma-py/issues?q=
 .. _open milestones: https://github.com/orome/crypto-enigma-py/milestones?state=open
