@@ -25,10 +25,10 @@ See also:
 * (Add argument checks to testing scripts.)
 * (Force characters into map range or catch indexing errors in encoding.)
 
-(0.2.0.b1)
-~~~~~~~~~~
+`0.2.0b1`_
+~~~~~~~~~~~
 
-* (Synchronize top-level versioning with `Haskell version`_.)
+* Synchronize top-level versioning with `Haskell version`_.
 
 `0.0.2b3`_
 ~~~~~~~~~~
@@ -77,3 +77,4 @@ Initial PyPi version, without documentation.
 .. _0.0.2b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b2
 .. _0.0.2b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b3
 .. _0.0.2b4: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b4
+.. _0.2.0b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.0b1
