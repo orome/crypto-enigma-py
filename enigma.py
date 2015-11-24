@@ -360,13 +360,15 @@ work on all systems, and as an alternative, any two characters provided as
 {hgt_arg} will be used to 'bracket' the highlighted character. To avoid errors,
 these characters should be enclosed in quotes.
 """
+
+_OPT_STRING_DEFAULT = """\
 Note that providing no value, or a value of '', for {opt_string_arg} is the
 same as omitting it.
 """
-_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN
 
 _EPILOG_ENCODE = _EPILOG_CONFIG + "\n" + _EXAMPLES_ENCODE
 _EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW + "\n" + _OPT_STRING_DEFAULT
+_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN + "\n" + _OPT_STRING_DEFAULT
 
 _EPILOG_ARGS = dict(shw_cmd='show',
                     hgt_arg=_HIGHLIGHT_KWARGS['metavar'],
@@ -376,10 +378,10 @@ _EPILOG_ARGS = dict(shw_cmd='show',
                     fmt_internal_val=EnigmaConfig._FMTS_INTERNAL[0],
                     fmt_single_val=EnigmaConfig._FMTS_SINGLE[0],
                     fmt_windows_val=EnigmaConfig._FMTS_WINDOWS[0],
-_EPILOG_SHOW = _EPILOG_SHOW.format(**_EPILOG_ARGS)
                     fmt_config_val=EnigmaConfig._FMTS_CONFIG[0],
                     fmt_internal_alts=' or '.join(["'{}'".format(a) for a in EnigmaConfig._FMTS_INTERNAL[1:]]))
 _EPILOG_ENCODE = _EPILOG_ENCODE.format(**_EPILOG_ARGS)
+_EPILOG_SHOW = _EPILOG_SHOW.format(opt_string_arg=_LETTER_KWARGS['metavar'], **_EPILOG_ARGS)
 _EPILOG_RUN = _EPILOG_RUN.format(opt_string_arg=_RUN_MESSAGE_KWARGS['metavar'], **_EPILOG_ARGS)
 
 if __name__ == '__main__':
