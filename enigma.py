@@ -283,7 +283,7 @@ examples in the help for the '{shw_cmd}' command.)
 
   Stepping a configuration only changes the window letters:
     $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f {fmt_config_val} -e
-    000  B-I-III-I EMO UX.MO.AY 13.04.11
+    0000  B-I-III-I EMO UX.MO.AY 13.04.11
     0001  B-I-III-I EMP UX.MO.AY 13.04.11  T > O
     0002  B-I-III-I EMQ UX.MO.AY 13.04.11  E > Z
     0003  B-I-III-I ENR UX.MO.AY 13.04.11  S > Q
