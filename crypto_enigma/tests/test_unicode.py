@@ -11,10 +11,13 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 from ..machine import *
 
+
+# Tests of expected exceotpions from providing non-unicode arguments
+
 # ASK - How to test for expected exceptions (and their values) <<<
 # TBD - Expand tests <<<
 def test_config_unicode():
-    # EnigmaConfig mappings and simple encoding
+    # EnigmaConfig arguments
     try:
         cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', '', '03.17.04.11')
         assert True
