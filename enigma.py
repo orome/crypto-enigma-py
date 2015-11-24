@@ -15,7 +15,6 @@ Description
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 import argparse
-import traceback
 
 from crypto_enigma import __version__
 from crypto_enigma import *

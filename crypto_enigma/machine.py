@@ -23,9 +23,7 @@ Description
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 from unicodedata import combining
-#from cachetools import cached
 
-from .utils import *
 from .components import *
 
 
