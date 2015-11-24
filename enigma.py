@@ -59,16 +59,19 @@ _ENCODE_MESSAGE_NAME = 'message'
 _ENCODE_MESSAGE_ARG = make_args(_ENCODE_MESSAGE_NAME)
 _ENCODE_MESSAGE_KWARGS = dict(
     action='store', metavar=fmt_arg(_ENCODE_MESSAGE_NAME),
+    type=unicode_literal,
     help=_MESSAGE_HELP)
 _RUN_MESSAGE_ARGS = make_args(_ENCODE_MESSAGE_NAME, True)
 _RUN_MESSAGE_KWARGS = dict(
     action='store', metavar=fmt_arg(_ENCODE_MESSAGE_NAME), nargs='?', default=None, const=None,
+    type=unicode_literal,
     help=_MESSAGE_HELP)
 
 _LETTER_NAME = 'letter'
 _LETTER_ARGS = make_args(_LETTER_NAME, True)
 _LETTER_KWARGS = dict(
     action='store', metavar=fmt_arg(_LETTER_NAME), nargs='?', default='', const='',
+    type=unicode_literal,
     help='an optional input letter to highlight as it is processed by the configuration; defaults to nothing')
 
 _DISPLAY_GROUP_KWARGS = dict(
@@ -479,15 +482,14 @@ if __name__ == '__main__':
             print('{0}'.format(__version__))
 
         else:
+            uni_arg_err = "Unable to decode '{}' to Unicode; report this error!"
 
-            # See 'type' for 'config' and definition of 'unicode_literal' above
-            assert isinstance(args.config, unicode), \
-                "Unable to decode '{}' to Unicode; report this error!".format(_CONFIG_KWARGS['metavar'])
-
+            assert isinstance(args.config, unicode), uni_arg_err.format(_CONFIG_KWARGS['metavar'])
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
 
             if args.command == 'encode':
+                assert isinstance(args.message, unicode), uni_arg_err.format(_ENCODE_MESSAGE_KWARGS['metavar'])
                 msg = args.message
                 if fmt:
                     cfg.print_encoding(msg)
@@ -499,11 +501,14 @@ if __name__ == '__main__':
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
                 if args.command == 'show':
+                    assert isinstance(args.letter, unicode), uni_arg_err.format(_LETTER_KWARGS['metavar'])
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
                     let = args.letter
                     print(cfg.config_string(let, fmt, show_encoding=sec, mark_func=mks))
                 elif args.command == 'run':
+                    if args.message is not None:
+                        assert isinstance(args.message, unicode), uni_arg_err.format(_RUN_MESSAGE_KWARGS['metavar'])
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
                     cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
