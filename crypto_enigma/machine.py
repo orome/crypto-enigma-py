@@ -335,7 +335,7 @@ class EnigmaConfig(object):
                     else:
                         cfg_str = '{0:04d}  {1}'.format(step_num, cfg_str)
                 if overwrite and step_num <= steps:
-                    print_over(cfg_str, 0 < step_num, delay)
+                    print_over(cfg_str, (0 if initial else 1) < step_num, delay)
                 else:
                     print(cfg_str)
                 if not overwrite and format=='internal' and step_num < steps:
