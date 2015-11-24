@@ -117,10 +117,14 @@ print(cfg._config_string('K'))
 
 print_header(3, 'config strings internal')
 cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11')
-print_header(4, "{0} and '{1}'".format(cfg, 'Q'))
+print_header(4, "{0} and '{1}' _".format(cfg, 'Q'))
 print(cfg._config_string_internal('Q'))
-print_header(4, "{0} and '{1}'".format(cfg, ' '))
+print_header(4, "{0} and '{1}' _".format(cfg, ' '))
 print(cfg._config_string_internal(' '))
+print_header(4, "{0} and '{1}'".format(cfg, 'Q'))
+print(cfg.config_string_internal('Q'))
+print_header(4, "{0} and omitted".format(cfg))
+print(cfg.config_string_internal())
 
 #print(cfg.enigma_mapping_list())
 print_header(3, 'operation')
@@ -252,8 +256,11 @@ cfgC = EnigmaConfig.config_enigma_from_string('b-γ-V-I-I LEZO UX.MO.KZ.AY.EF.PL
 print(cfgC)
 
 cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LEZO', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11')
-print(cfg)
+print(cfg.config_string_internal('A'))
+print(cfg.config_string_internal('B'))
 
+print(cfg.enigma_encoding('ABCDEFGHIGK'))
+#print(cfg.enigma_encoding(b'ABCDEFGHIGK'))
 
 # cfgB = EnigmaConfig.config_enigma_from_string(str(cfg))
 # print(cfgB)

@@ -23,9 +23,14 @@ def test_config_encoding_simple():
     cfg = EnigmaConfig.config_enigma('b-γ-IV-III-II', 'XLMA', 'LM.OR.TK.SC.FZ.QE', '11.01.06.01')
     assert cfg.enigma_encoding('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == 'HKNOIVPIQQDIUEPANGFXOOOCWH'
     assert cfg.enigma_encoding(cfg.enigma_encoding('GENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBE')) == 'GENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBE'
+    assert cfg.enigma_encoding('                ') == ''
+    assert cfg.enigma_encoding(' ') == ''
+    assert cfg.enigma_encoding('') == ''
     cfg = EnigmaConfig.config_enigma('c-γ-V-VIII-III', 'MFIQ', 'ML.IO.QW.AG.DS.ZR', '13.19.02.16')
     assert cfg.enigma_encoding('ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
     assert cfg.enigma_encoding(cfg.enigma_encoding('HLERHALTENXXJANSTERLEDESBISHERIGENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBE')) == 'HLERHALTENXXJANSTERLEDESBISHERIGENDESISTSOFORTBEKANNTZUGEBENXXICHHABEFOLGELNBE'
+    assert cfg.enigma_encoding('aBCDEfGHIJKLMNOPQRSTUVWXYZABCDEfghIJKLMNOPQRStuvwXYZ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
+
 
 def test_config_encoding_historical():
     # EnigmaConfig historical message encoding
