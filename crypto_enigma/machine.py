@@ -375,13 +375,9 @@ class EnigmaError(Exception):
 class EnigmaDisplayError(EnigmaError):
     pass
 
-# TBD - Put basic functional version w/o documentation on PyPi; README that explains lack of docs
-
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
 # ASK - Idiom for printing loops?
-# ASK - Reversing arguments (like swap)?
-# ASK - Passing a method as an argument?
 # REV - Keep list(reverse( conversions as [::-1] throughout?
 # TBD - Break out heavy validation stuff into another layer to keep core functionality separate?
 # REV - Use of EnigmaError vs. assert (be systematic about distinction) <<<
