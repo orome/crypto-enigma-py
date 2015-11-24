@@ -362,13 +362,13 @@ these characters should be enclosed in quotes.
 """
 
 _OPT_STRING_DEFAULT = """\
-Note that providing no value, or a value of '', for {opt_string_arg} is the
-same as omitting it.
+Note that providing no value, a value of '', or just spaces or invalid
+characters for {opt_string_arg} is the same as omitting it.
 """
 
 _EPILOG_ENCODE = _EPILOG_CONFIG + "\n" + _EXAMPLES_ENCODE
-_EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW + "\n" + _OPT_STRING_DEFAULT
-_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN + "\n" + _OPT_STRING_DEFAULT
+_EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _OPT_STRING_DEFAULT + "\n" + _EXAMPLES_SHOW
+_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _OPT_STRING_DEFAULT + "\n" + _EXAMPLES_RUN
 
 _EPILOG_ARGS = dict(shw_cmd='show',
                     hgt_arg=_HIGHLIGHT_KWARGS['metavar'],
