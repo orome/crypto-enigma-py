@@ -53,7 +53,7 @@ class EnigmaConfig(object):
         self._stages = tuple(range(0, len(self._components)))
 
     @staticmethod
-    @require_unicode()
+    @require_unicode('rotor_names', 'window_letters', 'plugs', 'rings')
     def config_enigma(rotor_names, window_letters, plugs, rings):
 
         comps = (rotor_names + '-' + plugs).split('-')[::-1]
@@ -71,7 +71,7 @@ class EnigmaConfig(object):
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     @staticmethod
-    @require_unicode()
+    @require_unicode('string')
     def config_enigma_from_string(string):
 
         # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
@@ -158,10 +158,11 @@ class EnigmaConfig(object):
         # return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
         return self.enigma_mapping_list()[-1]
 
+    @require_unicode('message')
     def enigma_encoding(self, message):
 
-        message = EnigmaConfig._make_valid_string(message)
-        #assert all(letter in LETTERS for letter in message)
+        message = EnigmaConfig._make_valid_message(message)
+        assert all(letter in LETTERS for letter in message)
 
         return ''.join([encode_char(step_config.enigma_mapping(), letter) for
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
@@ -197,6 +198,8 @@ class EnigmaConfig(object):
 
         return mapping[:i] + marked_char(mapping[i]) + mapping[i + 1:] if 0 <= i <= 25 else pads + mapping + pads
 
+    # TBD - Redo these internal methods to match Haskell <<<
+    # TBD - Add assertions to all that they get Unicode <<<
     @staticmethod
     def _locate_letter(mapping, letter, string):
 
@@ -211,8 +214,8 @@ class EnigmaConfig(object):
         return filter(lambda l: l in LETTERS + ' ', (letter + ' ').upper())[0]
 
     @staticmethod
-    def _make_valid_string(string):
-        return ''.join([EnigmaConfig._make_valid_letter(l) for l in string])
+    def _make_valid_message(string):
+        return ''.join([EnigmaConfig._make_valid_letter(l) for l in EnigmaConfig.preprocess(string)])
 
     @staticmethod
     def _is_valid_letter(letter):
@@ -273,6 +276,7 @@ class EnigmaConfig(object):
                 )
 
     @staticmethod
+    @require_unicode('msg')
     def preprocess(msg):
 
         subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
@@ -294,6 +298,7 @@ class EnigmaConfig(object):
 
     # TBD - Add encoding note to config and windows (e.g with P > K) <<<
     # TBD - Add components format that lists the components and their attributes <<<
+    @require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
 
             encoding_string = ''
@@ -314,10 +319,12 @@ class EnigmaConfig(object):
                 raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
     # TBD - Deprecate? just here for compatibility with Haskell
+    @require_unicode('letter')
     def config_string_internal(self, letter='', mark_func=None):
         return self.config_string(letter, format='internal', mark_func=mark_func)
 
-    def print_operation(self, message=None, steps=None, overwrite=False, format='single', initial=True, delay=0.1,
+    @require_unicode('message')
+    def print_operation(self, message='', steps=None, overwrite=False, format='single', initial=True, delay=0.1,
                         show_step=False, show_encoding=False, mark_func=None):
 
         def print_config_string(cfg_str):
@@ -334,8 +341,8 @@ class EnigmaConfig(object):
                 if not overwrite and format=='internal' and step_num < steps:
                     print('')
 
-        if message is not None:
-            message = EnigmaConfig.preprocess(message)
+        message = EnigmaConfig.preprocess(message)
+        if message != '':
             steps = len(message) if steps is None else min(steps, len(message))
         elif steps is not None:
             message = ' ' * steps
@@ -354,6 +361,7 @@ class EnigmaConfig(object):
     #         # print(' ')
 
     # TBD - Deprecate? just here for compatibility with Haskell
+    @require_unicode('message')
     def print_operation_internal(self, message, mark_func=None):
         self.print_operation(message, format='internal', mark_func=mark_func)
         # for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
@@ -361,9 +369,11 @@ class EnigmaConfig(object):
         #     print(' ')
 
     @staticmethod
+    @require_unicode('msg')
     def postprocess(msg):
         return '\n'.join(chunk_of(' '.join(chunk_of(msg, 4)), 60))
 
+    @require_unicode('message')
     def print_encoding(self, message):
         print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.preprocess(message))))
 

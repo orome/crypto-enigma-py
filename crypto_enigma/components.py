@@ -105,7 +105,7 @@ rotors = sorted(_rots.keys())
 reflectors = sorted(_refs.keys())
 
 
-@require_unicode()
+@require_unicode('name')
 def component(name):
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
