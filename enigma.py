@@ -360,10 +360,13 @@ work on all systems, and as an alternative, any two characters provided as
 {hgt_arg} will be used to 'bracket' the highlighted character. To avoid errors,
 these characters should be enclosed in quotes.
 """
+Note that providing no value, or a value of '', for {opt_string_arg} is the
+same as omitting it.
+"""
+_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN
 
 _EPILOG_ENCODE = _EPILOG_CONFIG + "\n" + _EXAMPLES_ENCODE
-_EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW
-_EPILOG_RUN = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_RUN
+_EPILOG_SHOW = _EPILOG_CONFIG + "\n" + _EPILOG_FORMAT + "\n" + _EXAMPLES_SHOW + "\n" + _OPT_STRING_DEFAULT
 
 _EPILOG_ARGS = dict(shw_cmd='show',
                     hgt_arg=_HIGHLIGHT_KWARGS['metavar'],
@@ -373,11 +376,11 @@ _EPILOG_ARGS = dict(shw_cmd='show',
                     fmt_internal_val=EnigmaConfig._FMTS_INTERNAL[0],
                     fmt_single_val=EnigmaConfig._FMTS_SINGLE[0],
                     fmt_windows_val=EnigmaConfig._FMTS_WINDOWS[0],
+_EPILOG_SHOW = _EPILOG_SHOW.format(**_EPILOG_ARGS)
                     fmt_config_val=EnigmaConfig._FMTS_CONFIG[0],
                     fmt_internal_alts=' or '.join(["'{}'".format(a) for a in EnigmaConfig._FMTS_INTERNAL[1:]]))
 _EPILOG_ENCODE = _EPILOG_ENCODE.format(**_EPILOG_ARGS)
-_EPILOG_SHOW = _EPILOG_SHOW.format(**_EPILOG_ARGS)
-_EPILOG_RUN = _EPILOG_RUN.format(**_EPILOG_ARGS)
+_EPILOG_RUN = _EPILOG_RUN.format(opt_string_arg=_RUN_MESSAGE_KWARGS['metavar'], **_EPILOG_ARGS)
 
 if __name__ == '__main__':
 
@@ -501,17 +504,17 @@ if __name__ == '__main__':
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
                 if args.command == 'show':
-                    assert isinstance(args.letter, unicode), uni_arg_err.format(_LETTER_KWARGS['metavar'])
+                    let = '' if args.letter is None else args.letter
+                    assert isinstance(let, unicode), uni_arg_err.format(_LETTER_KWARGS['metavar'])
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
-                    let = args.letter
                     print(cfg.config_string(let, fmt, show_encoding=sec, mark_func=mks))
                 elif args.command == 'run':
-                    if args.message is not None:
-                        assert isinstance(args.message, unicode), uni_arg_err.format(_RUN_MESSAGE_KWARGS['metavar'])
+                    msg = '' if args.message is None else args.message
+                    assert isinstance(msg, unicode), uni_arg_err.format(_RUN_MESSAGE_KWARGS['metavar'])
                     if args.verbose:
                         print(unicode(cfg) + ':\n')
-                    cfg.print_operation(message=args.message, steps=args.steps, overwrite=args.overwrite,
+                    cfg.print_operation(message=msg, steps=args.steps, overwrite=args.overwrite,
                                         format=args.format, initial=args.initial, delay=0.1 + (0.1 * args.slower),
                                         show_encoding=sec,
                                         show_step=sst,
