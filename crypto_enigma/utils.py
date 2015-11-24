@@ -75,7 +75,8 @@ def require_unicode(*given_arg_names):
         def modified(*args, **kwargs):
             arg_names = list(_func_.func_code.co_varnames[:_func_.func_code.co_argcount])
             if len(given_arg_names) == 0:
-                unicode_arg_names = arg_names
+                # ASK - Where should this be; it should really happen when the decorator is applied <<<
+                raise TypeError('No arguments provided to require_unicode decorator.')
                 #unicode_arg_names = arg_names
             else:
                 unicode_arg_names = given_arg_names
