@@ -38,7 +38,7 @@ def fmt_arg(arg):
 
 def make_args(name, is_opt=False, opt_letter=None):
     if not is_opt:
-        return name
+        return [name]
     else:
         return ['--' + name, '-' + (opt_letter if opt_letter is not None else name[0])]
 
@@ -48,15 +48,16 @@ _HELP_KWARGS = dict(
     action='help',
     help='show this help message and exit')
 
-_CONFIG_ARGS = ['config']
+_CONFIG_NAME = 'config'
+_CONFIG_ARGS = make_args(_CONFIG_NAME)
 _CONFIG_KWARGS = dict(
-    action='store', metavar=fmt_arg('config'),
+    action='store', metavar=fmt_arg(_CONFIG_NAME),
     type=unicode_literal)
 
 _MESSAGE_HELP = 'a message to encode; characters that are not letters will be ' \
                 'replaced with standard Naval substitutions or be removed'
 _ENCODE_MESSAGE_NAME = 'message'
-_ENCODE_MESSAGE_ARG = make_args(_ENCODE_MESSAGE_NAME)
+_ENCODE_MESSAGE_ARGS = make_args(_ENCODE_MESSAGE_NAME)
 _ENCODE_MESSAGE_KWARGS = dict(
     action='store', metavar=fmt_arg(_ENCODE_MESSAGE_NAME),
     type=unicode_literal,
@@ -404,7 +405,7 @@ if __name__ == '__main__':
                                         formatter_class=argparse.RawDescriptionHelpFormatter)
     _CONFIG_KWARGS['help'] = _HELP_ENCODE_CONFIG
     encode_parser.add_argument(*_CONFIG_ARGS, **_CONFIG_KWARGS)
-    encode_parser.add_argument(_ENCODE_MESSAGE_ARG, **_ENCODE_MESSAGE_KWARGS)
+    encode_parser.add_argument(*_ENCODE_MESSAGE_ARGS, **_ENCODE_MESSAGE_KWARGS)
     encode_display_group = encode_parser.add_argument_group(title='message formatting arguments')
     encode_display_group.add_argument(*_FORMAT_ARGS,
                                       action='store_true',
