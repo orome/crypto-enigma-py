@@ -8,6 +8,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
         ./test.py
     or run 'test' in PyCharm.
 '''
+import pytest
 
 from ..machine import *
 
@@ -38,3 +39,15 @@ def test_config_unicode():
         assert False
     except TypeError as e:
         assert e.message == "Parameter 'rings' should be Unicode"
+
+    # REV - Alternate method - http://stackoverflow.com/a/33920418/656912
+    with pytest.raises(TypeError) as e:
+        cfg = EnigmaConfig.config_enigma(b'b-γ-V-VIII-II', 'LFAQ', '', '03.17.04.11')
+    assert e.value.message == "Parameter 'rotor_names' should be Unicode"
+    with pytest.raises(TypeError) as e:
+        cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', '', b'03.17.04.11')
+    assert  e.value.message == "Parameter 'rings' should be Unicode"
+    with pytest.raises(TypeError) as e:
+        cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', '', '03.17.04.11')
+        cfg.enigma_encoding(b'XYZ')
+    assert  e.value.message == "Parameter 'message' should be Unicode"
