@@ -88,6 +88,7 @@ _HIGHLIGHT_NAME = 'highlight'
 _HIGHLIGHT_ARGS = make_args(_HIGHLIGHT_NAME, True, 'H')
 _HIGHLIGHT_KWARGS = dict(
     action='store', metavar=fmt_arg('hh'),
+    type=unicode_literal,
     help="a pair or characters to use to highlight encoded characters in a machine configuration's encoding "
          "(see below)")
 
@@ -503,6 +504,7 @@ if __name__ == '__main__':
             else:
                 sst = args.command == 'run' and (args.showstep or args.verbose)
                 sec = args.showencoding or args.verbose
+                assert isinstance(args.highlight, unicode), uni_arg_err.format(_HIGHLIGHT_KWARGS['metavar'])
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
                 if args.command == 'show':
