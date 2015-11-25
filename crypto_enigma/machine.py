@@ -81,7 +81,7 @@ class EnigmaConfig(object):
         ring_numbers = [int(x) for x in rings.split('.')]
 
         # TBD - Validation for plugboard <<<
-        # TBD - These should be in config_enigma (instead?) <<<
+        # TBD - Move these to  config_enigma and only check splittig as needed here <<<
         # A bunch of checks to provide better feedback than assertions
         for name in rotor_names_list[1:]:
             if name not in rotors:
