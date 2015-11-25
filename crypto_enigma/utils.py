@@ -42,10 +42,10 @@ def ordering(items):
 
 # standard simple-substitution cypher encoding
 def encode_char(mapping, ch):
-    if ch == ' ':
-        return ' '
-    else:
+    if 0 <= num_A0(ch) < len(mapping):
         return mapping[num_A0(ch)]
+    else:
+        return ' '
 
 
 def encode_string(mapping, string):

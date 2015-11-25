@@ -161,8 +161,7 @@ class EnigmaConfig(object):
     @require_unicode('message')
     def enigma_encoding(self, message):
 
-        message = EnigmaConfig._make_valid_message(message)
-        assert all(letter in LETTERS for letter in message)
+        message = EnigmaConfig.make_message(message)
 
         return ''.join([encode_char(step_config.enigma_mapping(), letter) for
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
@@ -197,38 +196,35 @@ class EnigmaConfig(object):
 
         pads = ' ' * ((sum(not combining(c) for c in marked_char('A')) - 1) // 2)
 
-        return mapping[:i] + marked_char(mapping[i]) + mapping[i + 1:] if 0 <= i <= 25 else pads + mapping + pads
+        return mapping[:i] + marked_char(mapping[i]) + mapping[i + 1:] if 0 <= i < len(mapping) else pads + mapping + pads
 
-    # TBD - Redo these internal methods to match Haskell <<<
     # TBD - Add assertions to all that they get Unicode <<<
     @staticmethod
     def _locate_letter(mapping, letter, string):
 
-        assert EnigmaConfig._is_valid_letter(letter)
-        #assert letter in string
         # locate the index of the encoding with mapping of letter, in string
+        # REV - Use of out of bounds index (-1) as failure return value; callers must check bounds (see above) <<<
         return string.index(encode_char(mapping, letter)) if letter in string else -1
 
     # Ensures a single uppercase character ("those that are valid Enigma input") or space, defaulting to a space
     @staticmethod
-    def _make_valid_letter(letter):
+    def _make_enigma_char(letter):
         return filter(lambda l: l in LETTERS + ' ', (letter + ' ').upper())[0]
 
-    @staticmethod
-    def _make_valid_message(string):
-        return ''.join([EnigmaConfig._make_valid_letter(l) for l in EnigmaConfig.preprocess(string)])
+    # @staticmethod
+    # def _make_valid_message(string):
+    #     return ''.join([EnigmaConfig._make_valid_letter(l) for l in EnigmaConfig.preprocess(string)])
 
-    @staticmethod
-    def _is_valid_letter(letter):
-        return len(letter) == 1 and letter in LETTERS + ' '
-
-    @staticmethod
-    def _is_valid_string(string):
-        return all(EnigmaConfig._is_valid_letter(l) for l in string)
+    # @staticmethod
+    # def _is_valid_letter(letter):
+    #     return len(letter) == 1 and letter in LETTERS + ' '
+    #
+    # @staticmethod
+    # def _is_valid_string(string):
+    #     return all(EnigmaConfig._is_valid_letter(l) for l in string)
 
     def _config_string(self, letter, mark_func=None):
 
-        letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
 
         return '{0} {1}  {2}  {3}'.format(letter + ' >' if letter in LETTERS else '   ',
@@ -242,7 +238,6 @@ class EnigmaConfig(object):
 
     def _config_string_internal(self, letter, mark_func=None):
 
-        letter = EnigmaConfig._make_valid_letter(letter)
         cfg_mapping = self.enigma_mapping()
         cfg_mapping_list = self.enigma_mapping_list()
         stg_mapping_list = self.stage_mapping_list()
@@ -277,16 +272,16 @@ class EnigmaConfig(object):
                 )
 
     @staticmethod
-    @require_unicode('msg')
-    def preprocess(msg):
+    @require_unicode('string')
+    def make_message(string):
 
         subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
                 ('?', 'UD'), ('-', 'YY'), (':', 'XX'), ('(', 'KK'), (')', 'KK'),
                 ('1', 'YQ'), ('2', 'YW'), ('3', 'YE'), ('4', 'YR'), ('5', 'YT'),
                 ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
 
-        msg = filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, msg.upper()))
-        assert EnigmaConfig._is_valid_string(msg)
+        msg = filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, string.upper()))
+        assert all(letter in LETTERS for letter in msg)
 
         return msg
 
@@ -303,6 +298,8 @@ class EnigmaConfig(object):
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
 
             # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
+            letter = EnigmaConfig._make_enigma_char(letter)
+
             encoding_string = ''
             if letter in LETTERS and show_encoding:
                 encoding_string = '  {0} > {1}'.format(letter, encode_char(self.enigma_mapping(),letter))
@@ -320,7 +317,7 @@ class EnigmaConfig(object):
             else:
                 raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
-    # TBD - Deprecate? just here for compatibility with Haskell
+    # TBD - Deprecate. just here for compatibility with Haskell <<<
     @require_unicode('letter')
     def config_string_internal(self, letter='', mark_func=None):
         return self.config_string(letter, format='internal', mark_func=mark_func)
@@ -343,7 +340,7 @@ class EnigmaConfig(object):
                 if not overwrite and format=='internal' and step_num < steps:
                     print('')
 
-        message = EnigmaConfig.preprocess(message)
+        message = EnigmaConfig.make_message(message)
         if message != '':
             steps = len(message) if steps is None else min(steps, len(message))
         elif steps is not None:
@@ -362,7 +359,7 @@ class EnigmaConfig(object):
     #         print(cfg.config_string(letter, mark_func))
     #         # print(' ')
 
-    # TBD - Deprecate? just here for compatibility with Haskell
+    # TBD - Deprecate. just here for compatibility with Haskell <<<
     @require_unicode('message')
     def print_operation_internal(self, message, mark_func=None):
         self.print_operation(message, format='internal', mark_func=mark_func)
@@ -377,7 +374,7 @@ class EnigmaConfig(object):
 
     @require_unicode('message')
     def print_encoding(self, message):
-        print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.preprocess(message))))
+        print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.make_message(message))))
 
 
 class EnigmaError(Exception):
