@@ -287,9 +287,10 @@ class EnigmaConfig(object):
 
     # TBD - Additional formats, e.g., components listed, etc.
     _FMTS_INTERNAL = ['internal', 'detailed', 'schematic']
-    _FMTS_SINGLE = ['single', 'encoding', 'summary']
+    _FMTS_SINGLE = ['single', 'summary']
     _FMTS_WINDOWS = ['windows', 'winds']
     _FMTS_CONFIG = ['config', 'configuration', 'spec', 'specification']
+    _FMTS_ENCODING = ['encoding']
     _FMTS_DEBUG = ['debug']
 
     # TBD - Add encoding note to config and windows (e.g with P > K) <<<
@@ -301,7 +302,7 @@ class EnigmaConfig(object):
             letter = EnigmaConfig._make_enigma_char(letter)
 
             encoding_string = ''
-            if letter in LETTERS and show_encoding:
+            if letter in LETTERS and (show_encoding or format in EnigmaConfig._FMTS_ENCODING):
                 encoding_string = '  {0} > {1}'.format(letter, encode_char(self.enigma_mapping(),letter))
 
             if format in EnigmaConfig._FMTS_INTERNAL:
@@ -314,6 +315,8 @@ class EnigmaConfig(object):
                 return unicode(self) + encoding_string
             elif format in EnigmaConfig._FMTS_DEBUG:
                 return self.__repr__() + encoding_string
+            elif format in EnigmaConfig._FMTS_ENCODING:
+                return encoding_string[2:]
             else:
                 raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
