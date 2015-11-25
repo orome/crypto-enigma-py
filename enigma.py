@@ -106,12 +106,12 @@ Examples:
     $ %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTINGXTESTINGUD" -f
     $ %(prog)s encode "B-I-III-I EMO UX.MO.AY 13.04.11" "TESTING! testing?" -f
     $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X'
-    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
-    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f internal
+    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H '()'
+    $ %(prog)s show "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H '()' -f internal
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -s 10 -t
-    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
-    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal
-    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f internal -o -SS
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()'
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()' -f internal
+    $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()' -f internal -o -SS
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f config -e
     $ %(prog)s run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -f internal -e
     $ %(prog)s run "c-β-VIII-VII-VI QMLI UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
@@ -166,12 +166,12 @@ Examples:
     X > CNAUJVQSLEMIKBZRGPHXDFYT̲̅WO  EMO  19 10 05
 
   Use an alternate method for highlighting the encoded-to letter:
-    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()'
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H '()'
     X > CNAUJVQSLEMIKBZRGPHXDFY(T)WO  EMO  19 10 05
 
   Show a detailed stage-by-stage schematic (see '{fmt_internal_val}' in the note
   on {fmt_arg}) of the mappings preformed by a configuration:
-    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H'()' -f {fmt_internal_val}
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -l 'X' -H '()' -f {fmt_internal_val}
     X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
       P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
       1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
@@ -223,7 +223,7 @@ examples in the help for the '{shw_cmd}' command.)
     0010      IVOWZKHGARFSPUCMXJLYNBDQTE  ENY  19 11 15
 
   Show the operation of a machine as it encodes a message, with step numbers:
-    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()'
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()'
     0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
     0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
     0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -236,7 +236,7 @@ examples in the help for the '{shw_cmd}' command.)
   Show the operation of a machine as it encodes a message in more detail (see
   '{fmt_internal_val}' in the note on {fmt_arg}), with step numbers (only some
   steps shown here):
-    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val}
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()' -f {fmt_internal_val}
     0000
     ...
     0001
@@ -268,7 +268,7 @@ examples in the help for the '{shw_cmd}' command.)
   Show the steps as above, but (slowly) in place (if the platform supports it)
   rather than on a new line for each; only the last step is visible on
   completion (as shown here):
-    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H'()' -f {fmt_internal_val} -o -SS
+    $ %(prog)s "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H '()' -f {fmt_internal_val} -o -SS
     0007
     G > ABCDEF(G)HIJKLMNOPQRSTUVWXYZ
       P YBCDEF(G)HIJKLONMPQRSTXVWUAZ         UX.MO.AY
