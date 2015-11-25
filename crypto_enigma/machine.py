@@ -320,9 +320,12 @@ class EnigmaConfig(object):
             else:
                 raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
-    # TBD - Deprecate. just here for compatibility with Haskell <<<
     @require_unicode('letter')
     def config_string_internal(self, letter='', mark_func=None):
+        """
+        .. deprecated:: 0.0.2
+            This function has been removed; use :func:`config_string` instead.
+        """
         return self.config_string(letter, format='internal', mark_func=mark_func)
 
     @require_unicode('message')
@@ -362,9 +365,12 @@ class EnigmaConfig(object):
     #         print(cfg.config_string(letter, mark_func))
     #         # print(' ')
 
-    # TBD - Deprecate. just here for compatibility with Haskell <<<
     @require_unicode('message')
     def print_operation_internal(self, message, mark_func=None):
+        """
+        .. deprecated:: 0.0.2
+            This function has been removed; use :func:`print_operation` instead.
+        """
         self.print_operation(message, format='internal', mark_func=mark_func)
         # for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
         #     print(cfg.config_string_internal(letter, mark_func))
