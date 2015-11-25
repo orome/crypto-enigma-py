@@ -116,4 +116,6 @@ def component(name):
 
     if name not in _comps.keys():
         _comps[name] = Component(name, ''.join(reduce(plug, name.split('.'), list(LETTERS))), '')
+    assert sorted(_comps[name].wiring) == list(LETTERS)
+    assert all([t in _comps[name].wiring for t in _comps[name].turnovers])
     return _comps[name]
