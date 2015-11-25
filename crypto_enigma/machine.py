@@ -187,6 +187,7 @@ class EnigmaConfig(object):
 
         def marked_char(c):
             if mark_func is None:
+                # REV - Why does this end up here if mark_func is supplied with non-Unicode?
                 return c + '\u0332\u0305'
                 #return '[' + c + ']'
                 # REV - Would be nice, but has limited support: http://www.fileformat.info/info/unicode/char/20de/
@@ -301,6 +302,7 @@ class EnigmaConfig(object):
     @require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
 
+            # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
             encoding_string = ''
             if letter in LETTERS and show_encoding:
                 encoding_string = '  {0} > {1}'.format(letter, encode_char(self.enigma_mapping(),letter))
