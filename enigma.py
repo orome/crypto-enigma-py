@@ -504,7 +504,8 @@ if __name__ == '__main__':
             else:
                 sst = args.command == 'run' and (args.showstep or args.verbose)
                 sec = args.showencoding or args.verbose
-                assert isinstance(args.highlight, unicode), uni_arg_err.format(_HIGHLIGHT_KWARGS['metavar'])
+                if args.highlight is not None:
+                    assert isinstance(args.highlight, unicode), uni_arg_err.format(_HIGHLIGHT_KWARGS['metavar'])
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
                 if args.command == 'show':
