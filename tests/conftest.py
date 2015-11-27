@@ -2,6 +2,8 @@
 # encoding: utf8
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
-# REV - This has no effect - http://stackoverflow.com/q/18558666/656912
+from crypto_enigma import __version__
+
+
 def pytest_report_header(config):
-    return "Testing Enigma functionality"
+    return "version: {}".format(__version__)
