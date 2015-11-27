@@ -10,7 +10,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 '''
 
 from crypto_enigma.machine import *
-
+from crypto_enigma.components import _comps
 
 # Comparing output with output generated from Haskell version
 # USE - Replace greek letters in Haskell-generated output
@@ -20,6 +20,8 @@ def test_component_keys():
     assert rotors == sorted(['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'β', 'γ'])
     assert reflectors == sorted(['A', 'B', 'C', 'b', 'c'])
 
+    for r in rotors + reflectors:
+        assert component(r) == _comps[r]
 
 def test_component_rotation():
     # Component rotation
@@ -32,6 +34,9 @@ def test_component_rotation():
     assert 'XZVROSMPJIWNGLEHUDFYQCKATB' == component('B').mapping(-12, REV)
     assert 'DUEACLXWRVPFZTSKYIONBJHGQM' == component('C').mapping(17, REV)
     assert 'MTPRJAYQKZLHUGFNWOCIXBVESD' == component('V').mapping(-8, REV)
+
+    for r in rotors + reflectors:
+        assert component(r).wiring == component(r).mapping(1, FWD)
 
 
 def test_component_string():
