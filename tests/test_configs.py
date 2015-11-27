@@ -9,11 +9,31 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
     or run 'test' in PyCharm.
 '''
 
+import pytest
+
 from crypto_enigma.machine import *
 
 
 # Comparing output with output generated from Haskell version
 # USE - Replace greek letters in Haskell-generated output
+
+def test_config_constructor():
+    with pytest.raises(EnigmaValueError) as e:
+        cfg = EnigmaConfig.config_enigma('B-XX-VI-VII', 'AZU', '', '14.22.11')
+    assert e.value.message == "Bad configuration - Invalid rotor name, XX"
+    with pytest.raises(EnigmaValueError) as e:
+        cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'aZU', '', '14.22.11')
+    assert e.value.message == "Bad configuration: window letter, a"
+    with pytest.raises(EnigmaValueError) as e:
+        cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'AZU', '', '99.22.11')
+    assert e.value.message == "Bad configuration: invalid ring position number, 99"
+    with pytest.raises(EnigmaValueError) as e:
+        cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'AU', '', '14.22.11')
+    assert e.value.message == "Bad configuration: number rotors (3), rings (3), and window letters (2) must match"
+
+    with pytest.raises(EnigmaValueError) as e:
+        cfg = EnigmaConfig.config_enigma_from_string('B-III-VI-VII AU 14.22.11')
+    assert e.value.message == "Bad string - [u'B-III-VI-VII', u'AU', u'14.22.11'] should have 4 elements"
 
 def test_config_stepping():
     # EnigmaConfig stepping
