@@ -10,7 +10,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 '''
 import pytest
 
-from ..machine import *
+from crypto_enigma.machine import *
 
 
 # Tests of expected exceotpions from providing non-unicode arguments

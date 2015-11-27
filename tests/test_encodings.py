@@ -9,7 +9,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
     or run 'test' in PyCharm.
 '''
 
-from ..machine import *
+from crypto_enigma.machine import *
 
 
 # Comparing output with output generated from Haskell version
