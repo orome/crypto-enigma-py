@@ -47,6 +47,15 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
+
+        # TBD - Assertions plugboard <<<
+        assert all(name in rotors for name in components[1:-1])
+        assert components[-1] in reflectors
+        assert len(rings) == len(positions) == len(components)
+        assert all(1 <= rng <= 26 for rng in rings)
+        assert all(1 <= pos <= 26 for pos in positions)
+        #assert all(chr_A0(pos) in LETTERS for pos in positions)
+
         self._components = tuple(components)
         self._positions = tuple(positions)
         self._rings = tuple(rings)
@@ -56,48 +65,42 @@ class EnigmaConfig(object):
     @require_unicode('rotor_names', 'window_letters', 'plugs', 'rings')
     def config_enigma(rotor_names, window_letters, plugs, rings):
 
+        rotor_names_list = rotor_names.split('-')
+        ring_numbers = [int(x) for x in rings.split('.')]
+
+        # TBD - Validation for plugboard <<<
+        # A bunch of checks to provide better feedback than (and befor lower-level) assertions
+        for name in rotor_names_list[1:]:
+            if name not in rotors:
+                raise EnigmaValueError('Bad configuration - Invalid rotor name, {0}'.format(name))
+        if rotor_names_list[0] not in reflectors:
+            raise EnigmaValueError('Bad configuration: invalid reflector name, {0}'.format(rotor_names_list[0]))
+        if not (len(ring_numbers) == len(window_letters) == len(rotor_names_list)-1):
+            raise EnigmaValueError('Bad configuration: number rotors ({0}), rings ({1}), and window letters ({2}) must match'.format(
+                len(rotor_names_list)-1, len(ring_numbers), len(window_letters)
+            ))
+        for rng in ring_numbers:
+            if not (1 <= rng <= 26):
+                raise EnigmaValueError('Bad configuration: invalid ring position number, {0}'.format(rng))
+        for wind in window_letters:
+            if wind not in LETTERS:
+                raise EnigmaValueError('Bad configuration: window letter, {0}'.format(wind))
+
         comps = (rotor_names + '-' + plugs).split('-')[::-1]
         winds = [num_A0(c) for c in 'A' + window_letters + 'A'][::-1]
         rngs = [int(x) for x in ('01.' + rings + '.01').split('.')][::-1]
 
-        # TBD - Assertions plugboard <<<
-        assert all(name in rotors for name in comps[1:-1])
-        assert comps[-1] in reflectors
-        assert len(rngs) == len(winds) == len(comps)
-        assert all(1 <= rng <= 26 for rng in rngs)
-        assert all(chr_A0(wind) in LETTERS for wind in winds)
-
-        # return EnigmaConfig(comps, map(lambda w, r: ((w - r + 1) % 26) + 1, winds, rngs), rngs)
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     @staticmethod
     @require_unicode('string')
     def config_enigma_from_string(string):
 
-        # REV - Some of the splitting here is shared with splitting in config_enigma and should be functionized <<<
-        rotor_names, window_letters, plugs, rings = filter(lambda s: s != '', string.split(' '))
+        split_string = filter(lambda s: s != '', string.split(' '))
+        if len(split_string) != 4:
+            raise EnigmaValueError('Bad string - {0} should have 4 elements'.format(split_string))
 
-        rotor_names_list = rotor_names.split('-')
-        ring_numbers = [int(x) for x in rings.split('.')]
-
-        # TBD - Validation for plugboard <<<
-        # TBD - Move these to  config_enigma and only check splittig as needed here <<<
-        # A bunch of checks to provide better feedback than assertions
-        for name in rotor_names_list[1:]:
-            if name not in rotors:
-                raise EnigmaError('Bad configuration - Invalid rotor name, {0}'.format(name))
-        if rotor_names_list[0] not in reflectors:
-            raise EnigmaError('Bad configuration: invalid reflector name, {0}'.format(rotor_names_list[0]))
-        if not (len(ring_numbers) == len(window_letters) == len(rotor_names_list)-1):
-            raise EnigmaError('Bad configuration: number rotors ({0}), rings ({1}), and window letters ({2}) must match'.format(
-                len(rotor_names_list)-1, len(ring_numbers), len(window_letters)
-            ))
-        for rng in ring_numbers:
-            if not (1 <= rng <= 26):
-                raise EnigmaError('Bad configuration: invalid ring position number, {0}'.format(rng))
-        for wind in window_letters:
-            if not wind in LETTERS:
-                raise EnigmaError('Bad configuration: window letter, {0}'.format(wind))
+        rotor_names, window_letters, plugs, rings = split_string
 
         return EnigmaConfig.config_enigma(rotor_names, window_letters, plugs, rings)
 
@@ -387,6 +390,10 @@ class EnigmaConfig(object):
 
 
 class EnigmaError(Exception):
+    pass
+
+
+class EnigmaValueError(EnigmaError, ValueError):
     pass
 
 
