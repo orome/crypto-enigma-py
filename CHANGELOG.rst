@@ -24,6 +24,7 @@ See also:
 * (Unicode checking for messages and letters.)
 * (Add argument checks to testing scripts.)
 * (Force characters into map range or catch indexing errors in encoding.)
+* (Remove tests from module.)
 
 `0.2.0b1`_
 ~~~~~~~~~~~
