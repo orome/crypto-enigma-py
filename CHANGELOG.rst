@@ -82,3 +82,4 @@ Initial PyPi version, without documentation.
 .. _0.0.2b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b3
 .. _0.0.2b4: https://github.com/orome/crypto-enigma-py/releases/tag/0.0.2b4
 .. _0.2.0b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.0b1
+.. _0.2.1b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.1b1
