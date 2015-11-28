@@ -1,17 +1,33 @@
-.. crypto-enigma documentation master file, created by
-   sphinx-quickstart on Sat Nov 28 14:45:20 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. crypto_enigma documentation file
 
-Welcome to crypto-enigma's documentation!
-=========================================
+.. _home:
 
-Contents:
+*************
+crypto-enigma
+*************
+
+.. warning::
+
+   This documentation is not currently kept in sync with the code. It's current purpose is simply to verify that
+   documentation is being correctly generated and to learn a bit about document generation and formatting.
+
+The `crypto_enigma` package
+===========================
+
+.. automodule:: crypto_enigma
+
+.. Several ways of creating tables of content for the documentation.
+
+Sitemap
+=======
+
+Full contents of the documentation including subsections of each listed page.
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 5
 
-
+    machine
+    components
 
 Indices and tables
 ==================
@@ -19,4 +35,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
 
