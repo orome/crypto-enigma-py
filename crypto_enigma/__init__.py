@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-""" 
-Description
-
-.. note::
-    Any additional note.
-"""
+""" The CE package (this is in init).  """
 
 from ._version import __version__, __author__
 #__all__ = ['machine', 'components']

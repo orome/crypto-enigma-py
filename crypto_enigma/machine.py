@@ -113,7 +113,9 @@ class EnigmaConfig(object):
         # return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
 
     def step(self):
+        """ Test documentation for step function
 
+        """
         def is_turn(stg):
             return self._window_letter(stg) in component(self.components[stg]).turnovers
 
@@ -163,7 +165,12 @@ class EnigmaConfig(object):
 
     @require_unicode('message')
     def enigma_encoding(self, message):
+        """Encode a Message using a given machine configuration.
 
+        Encode a Message using a given (starting) machine configuration, by stepping the configuration prior to
+        processing each character of the message. This produces a new configuration (with new positions only) for
+        encoding each character, which serves as the "starting" configuration for subsequent processing of the message.
+        """
         message = EnigmaConfig.make_message(message)
 
         return ''.join([encode_char(step_config.enigma_mapping(), letter) for
