@@ -18,16 +18,19 @@ See also:
 
 * (Start documentation.)
 
-(0.2.1b1)
-~~~~~~~~~
+`0.2.1b1`_
+~~~~~~~~~~
 
-* (Unicode checking for messages and letters.)
-* (Add argument checks to testing scripts.)
-* (Force characters into map range or catch indexing errors in encoding.)
-* (Remove tests from module.)
+* Require Unicode ``message`` and ``letter`` arguments.
+* Refactor validation of arguments to ``config_enigma`` and ``config_enigma_string`` and ``EnigmaConfig``.
+* Replace or remove invalid characters in ``message`` and ``letter`` arguments.
+* Replace low-level substitution encoding misses (in ``encode_char``) with ``' '``.
+* Add argument checks to testing scripts.
+* Improve placement of prompt after keyboard interrupt of overwriting output.
+* Remove tests from distribution.
 
 `0.2.0b1`_
-~~~~~~~~~~~
+~~~~~~~~~~
 
 * Synchronize top-level versioning with `Haskell version`_.
 
