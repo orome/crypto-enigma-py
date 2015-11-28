@@ -66,12 +66,13 @@ def accumulate(l, f):
 def chunk_of(it, n):
     return [it[i:i+n] for i in range(0, len(it), n)]
 
-
+from functools import wraps
 # require unicode strings (see unicode_literal in enigma.py)
 #   http://stackoverflow.com/a/33743668/656912
 #   http://code.activestate.com/recipes/454322-type-checking-decorator/
 def require_unicode(*given_arg_names):
-    def check_types(_func_, *args,  **kwargs):
+    def check_types(_func_):
+        @wraps(_func_)
         def modified(*args, **kwargs):
             arg_names = list(_func_.func_code.co_varnames[:_func_.func_code.co_argcount])
             if len(given_arg_names) == 0:
@@ -97,3 +98,4 @@ def require_unicode(*given_arg_names):
             return _func_(*args, **kwargs)
         return modified
     return check_types
+
