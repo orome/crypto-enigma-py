@@ -16,6 +16,7 @@ import sys
 import os
 import shlex
 
+sys.path.insert(0, os.path.abspath('../..'))
 from crypto_enigma._version import __version__, __release__, __author__
 
 
