@@ -28,6 +28,9 @@ from .components import *
 
 
 class EnigmaConfig(object):
+    """
+    Class docs
+    """
     @property
     def components(self):
         return self._components
@@ -47,7 +50,9 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
-
+        """
+        Init docs
+        """
         # TBD - Assertions plugboard <<<
         assert all(name in rotors for name in components[1:-1])
         assert components[-1] in reflectors

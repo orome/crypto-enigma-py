@@ -59,6 +59,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinxcontrib.napoleon',
+    'sphinx.ext.extlinks'
+    #'sphinx_paramlinks', # Not working witn Googly docstrings - http://stackoverflow.com/a/20845306/656912
     # 'alabaster',
     # 'sphinxarg.ext',
     # 'sphinxcontrib.programoutput',
@@ -139,8 +141,7 @@ todo_include_todos = True
 
 # Extension settings
 
-# Napoleon settings
-# https://sphinxcontrib-napoleon.readthedocs.org/en/latest/#configuration
+# sphinxcontrib.napoleon - https://sphinxcontrib-napoleon.readthedocs.org/en/latest/#configuration
 # napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 # napoleon_include_private_with_doc = False
@@ -151,6 +152,21 @@ napoleon_numpy_docstring = False
 # napoleon_use_ivar = False
 # napoleon_use_param = True
 # napoleon_use_rtype = True
+
+# sphinx.ext.autodoc - http://sphinx-doc.org/ext/autodoc.html
+autodoc_member_order = 'bysource'
+# Incorporate __init__ documentation into the class documentation;
+# See: - http://sphinx-doc.org/ext/autodoc.html#confval-autoclass_content
+autoclass_content = 'both'
+
+# sphinx.ext.extlinks - http://sphinx-doc.org/ext/extlinks.html
+extlinks = {
+    'github': ('https://github.com/%s', ''),
+    'git-tag': ('https://github.com/orome/crypto-enigma-py/releases/tag/%s', ''),
+    'git-commit': ('https://github.com/orome/crypto-enigma-py/tree/%s', ''),
+    'physics.se': ('http://physics.stackexchange.com/%s', ''),
+    'so': ('http://stackoverflow.com/%s', '')
+}
 
 
 # -- Options for HTML output ----------------------------------------------
