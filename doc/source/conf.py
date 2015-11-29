@@ -113,11 +113,11 @@ language = None
 exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
-# documents.
-#default_role = None
+# documents. - http://sphinx-doc.org/domains.html#python-roles
+default_role = 'py:obj'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+add_function_parentheses = False
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
@@ -138,6 +138,24 @@ modindex_common_prefix = ['crypto_enigma.']
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+
+rst_epilog = """
+.. |se| replace:: StackExchange
+.. _`StackExchange`: http://stackexchange.com
+.. _`SE`: http://stackexchange.com
+.. |repo_link| replace:: <https://github.com/orome/crypto-enigma-py/>
+.. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
+.. _development version: https://github.com/orome/crypto-enigma-py/tree/develop
+.. _test versions: https://testpypi.python.org/pypi/crypto-enigma
+.. _milestones: https://github.com/orome/crypto-enigma-py/milestones
+.. _open issues: https://github.com/orome/crypto-enigma-py/issues
+.. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
+.. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
+.. _Hackage documentation: https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html
+"""
+
+
 
 # Extension settings
 
