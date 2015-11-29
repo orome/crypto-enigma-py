@@ -58,7 +58,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
-    'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'sphinx.ext.extlinks'
     #'sphinx_paramlinks', # Not working witn Googly docstrings - http://stackoverflow.com/a/20845306/656912
     # 'alabaster',
@@ -141,7 +141,7 @@ todo_include_todos = True
 
 # Extension settings
 
-# sphinxcontrib.napoleon - https://sphinxcontrib-napoleon.readthedocs.org/en/latest/#configuration
+# sphinx.ext.napoleon - https://sphinxcontrib-napoleon.readthedocs.org/en/latest/#configuration
 # napoleon_google_docstring = True
 napoleon_numpy_docstring = False
 # napoleon_include_private_with_doc = False
