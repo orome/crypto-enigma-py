@@ -63,6 +63,8 @@ Watch the machine as it runs for 500 steps:
 Documentation
 ~~~~~~~~~~~~~
 
+|Stable Docs|
+
 Command line documentation is available as help from the command line script:
 
 .. parsed-literal::
@@ -103,7 +105,7 @@ For other Python Enigma machines see:
 Development status
 ~~~~~~~~~~~~~~~~~~
 
-|Development Build Status|
+|Development Build Status| |Development Docs|
 
 This package is in the early stages of development, and I and can't promise the current
 `development version`_ will work. More detail about planned releases and activities
@@ -133,6 +135,12 @@ may not work as expected.
    :target: https://www.python.org
 .. |PyPi| image:: https://img.shields.io/pypi/v/crypto-enigma.svg
    :target: https://pypi.python.org/pypi/crypto-enigma
+.. |Development Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=latest
+   :target: http://crypto-enigma.readthedocs.org/en/latest/?badge=latest
+   :alt: Documentation Status
+.. |Stable Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=stable
+   :target: http://crypto-enigma.readthedocs.org/en/latest/?badge=stable
+   :alt: Documentation Status
 .. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/crypto-enigma.svg
    :target: https://pypi.python.org/pypi/crypto-enigma/
 .. |Development Status| image:: https://img.shields.io/pypi/status/crypto-enigma.svg
@@ -143,6 +151,9 @@ may not work as expected.
    :target: https://travis-ci.org/orome/crypto-enigma-py/branches
 .. |Development Build Status| image:: https://travis-ci.org/orome/crypto-enigma-py.svg?branch=develop
    :target: https://travis-ci.org/orome/crypto-enigma-py/branches
+
+
+
 
 
 
