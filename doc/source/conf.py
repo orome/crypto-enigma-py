@@ -58,6 +58,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'sphinxcontrib.napoleon',
     # 'alabaster',
     # 'sphinxarg.ext',
     # 'sphinxcontrib.programoutput',
