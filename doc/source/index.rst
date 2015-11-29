@@ -8,8 +8,8 @@ crypto-enigma
 
 .. warning::
 
-   This documentation is not currently kept in sync with the code. It's current purpose is simply to verify that
-   documentation is being correctly generated and to learn a bit about document generation and formatting.
+   This documentation is not yet kept in sync with the code. It's current purpose is simply to verify that
+   documentation is being correctly generated.
 
 The `crypto_enigma` package
 ===========================
