@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-""" The CE package (this is in init).  """
+"""An Enigma machine simulator with rich textual display functionality."""
 
 from ._version import __version__, __author__
 #__all__ = ['machine', 'components']
