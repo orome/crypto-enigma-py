@@ -6,6 +6,8 @@
 crypto-enigma
 *************
 
+An Enigma machine simulator with rich textual display functionalty.
+
 .. warning::
 
    This documentation is not yet kept in sync with the code. It's current purpose is simply to verify that
