@@ -81,7 +81,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'crypto_enigma'
+project = u'crypto-enigma'
 copyright = u'2014-2015, ' + __author__
 author = __author__
 
