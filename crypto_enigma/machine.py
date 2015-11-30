@@ -118,7 +118,49 @@ class EnigmaConfig(object):
         # return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
 
     def step(self):
-        """ Test documentation for step function
+        """Step the Enigma machine to a new machine configuration.
+
+        Step the Enigma machine by rotating the rightmost (first) rotor one position, and other rotors as
+        determined by the `positions` of rotors in the machine. In the physical machine, a step occurs in
+        response to each operator keypress, prior to processing that key's letter (see `enigma_encoding).
+
+        Stepping leaves the `components`, `stages` and `rings` of a configuration unchanged, changing only
+        `positions`, which is manifest in changes of the letters visible at the `windows`:
+
+        Returns:
+            EnigmaConfig: A new Enigma configuration.
+
+        Examples:
+            Using the initial configuration
+
+            >>> cfg = EnigmaConfig.config_enigma("c-γ-V-I-II", "LXZO", "UX.MO.KZ.AY.EF.PL", "03.17.04.01")
+
+            the consequences of the stepping process can be observed by examining the `windows` of each
+            stepped configuration:
+
+            >>> print(cfg.windows())
+            LXZO
+            >>> print(cfg.step().windows())
+            LXZP
+            >>> print(cfg.step().step().windows())
+            LXZQ
+            >>> print(cfg.step().step().step().windows())
+            LXZR
+            >>> print(cfg.step().step().step().step().windows())
+            LXZS
+            >>> print(cfg.step().step().step().step().step().windows())
+            LXZT
+
+            This, and the fact that only positions (and thus window letters), change as the result of stepping
+            can be visualized in more detail using `print_operation`:
+
+            >>> cfg.print_operation(steps=5, format='config')
+            c-γ-V-I-II LXZO UX.MO.KZ.AY.EF.PL 03.17.04.01
+            c-γ-V-I-II LXZP UX.MO.KZ.AY.EF.PL 03.17.04.01
+            c-γ-V-I-II LXZQ UX.MO.KZ.AY.EF.PL 03.17.04.01
+            c-γ-V-I-II LXZR UX.MO.KZ.AY.EF.PL 03.17.04.01
+            c-γ-V-I-II LXZS UX.MO.KZ.AY.EF.PL 03.17.04.01
+            c-γ-V-I-II LXZT UX.MO.KZ.AY.EF.PL 03.17.04.01
 
         """
         def is_turn(stg):
@@ -170,11 +212,45 @@ class EnigmaConfig(object):
 
     @require_unicode('message')
     def enigma_encoding(self, message):
-        """Encode a Message using a given machine configuration.
+        """Encode a message using the machine configuration.
 
-        Encode a Message using a given (starting) machine configuration, by stepping the configuration prior to
-        processing each character of the message. This produces a new configuration (with new positions only) for
-        encoding each character, which serves as the "starting" configuration for subsequent processing of the message.
+        Encode a string, interpreted as a message (see `make_message`), using the
+        (starting) machine configuration, by stepping (see `step`) the configuration prior to processing each character
+        of the message. This produces a new configuration (with new `positions` only) for encoding each character,
+        which serves as the "starting" configuration for subsequent processing of the message.
+
+        Args:
+            message (str): A message to encode.
+
+        Returns:
+            str: The machine-encoded message.
+
+        Examples:
+            Given machine configuration
+
+            >>> cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAP", "UX.MO.KZ.AY.EF.PL", "03.17.04.11")
+
+            the message `"KRIEG"` is encoded to `"GOWNW"`:
+
+            >>> cfg.enigma_encoding("KRIEG")
+            "GOWNW"
+
+            The details of this encoding and its relationship to stepping from one configuration to another are illustrated
+            using `print_operation`:
+
+            >>> cfg.print_operation("KRIEG", format='windows', show_encoding=True, show_step=True)
+            0000  LFAP
+            0001  LFAQ  K > G
+            0002  LFAR  R > O
+            0003  LFAS  I > W
+            0004  LFAT  E > N
+            0005  LFAU  G > W
+
+            Note that because of the way the Enigma machine is designed, it is always the case
+            (provided that `msg` is all uppercase letters) that::
+
+                cfg.enigma_encoding(cfg.enigma_encoding(msg)) == msg
+
         """
         message = EnigmaConfig.make_message(message)
 
@@ -289,7 +365,20 @@ class EnigmaConfig(object):
     @staticmethod
     @require_unicode('string')
     def make_message(string):
+        """Convert a string to valid Enigma machine input.
 
+        Replace any symbols for which there are standard Kriegsmarine substitutions,
+        remove any remaining non-letter characters, and convert to uppercase.
+        This function is applied automatically to `message` arguments for functions defined here
+        (`enigma_encoding`).
+
+        Args:
+            string (str): A string to convert to valid Enigma machine input.
+
+        Returns:
+            str: A string of valid Enigma machine input characters.
+
+        """
         subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
                 ('?', 'UD'), ('-', 'YY'), (':', 'XX'), ('(', 'KK'), (')', 'KK'),
                 ('1', 'YQ'), ('2', 'YW'), ('3', 'YE'), ('4', 'YR'), ('5', 'YT'),
