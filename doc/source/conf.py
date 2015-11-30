@@ -52,6 +52,7 @@ needs_sphinx = '1.3'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
@@ -185,6 +186,9 @@ extlinks = {
     'physics.se': ('http://physics.stackexchange.com/%s', ''),
     'so': ('http://stackoverflow.com/%s', '')
 }
+
+# sphinx.ext.doctest - http://sphinx-doc.org/ext/doctest.html
+doctest_test_doctest_blocks = 'docs'
 
 
 # -- Options for HTML output ----------------------------------------------
