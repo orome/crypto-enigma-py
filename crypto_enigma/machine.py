@@ -417,7 +417,7 @@ class EnigmaConfig(object):
             elif format in EnigmaConfig._FMTS_WINDOWS:
                 return self.windows() + encoding_string
             elif format in EnigmaConfig._FMTS_CONFIG:
-                return unicode(self) + encoding_string
+                return str(self) + encoding_string
             elif format in EnigmaConfig._FMTS_DEBUG:
                 return self.__repr__() + encoding_string
             elif format in EnigmaConfig._FMTS_ENCODING:
