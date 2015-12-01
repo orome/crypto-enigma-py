@@ -40,8 +40,8 @@ def test_config_encoding_simple():
 def test_encoding_stepped_start():
     cfg = EnigmaConfig.config_enigma('b-γ-IV-VIII-V', 'JOAW', 'UE.BN.ZA.PD', '04.11.04.16')
     msg = "FJUGFHFHIRVBNAFOQIWUFHFBABJSIQHFFJDSISQNSBFJKDIFFDHDHAJSJSJS"
-    for i in range(len(msg)):
-        assert list(cfg.stepped_configs(i))[-1].enigma_encoding(msg[i:]) == cfg.enigma_encoding(msg)[i:]
+    for i, c in enumerate(cfg.stepped_configs(len(msg))):
+        assert c.enigma_encoding(msg[i:]) == cfg.enigma_encoding(msg)[i:]
 
 
 def test_config_encoding_historical():
