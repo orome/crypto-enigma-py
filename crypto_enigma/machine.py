@@ -137,7 +137,7 @@ class EnigmaConfig(object):
 
             .. testsetup:: step
 
-                cfg = EnigmaConfig.config_enigma(b"c-γ-V-I-II".decode("UTF-8"), u"LXZO", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.01")
+                cfg = EnigmaConfig.config_enigma("c-γ-V-I-II".decode(), u"LXZO", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.01")
 
             the consequences of the stepping process can be observed by examining the `windows` of each
             stepped configuration:
@@ -162,7 +162,7 @@ class EnigmaConfig(object):
 
             .. doctest:: step
 
-                >>> cfg.print_operation(steps=5, format='config') # doctest: +SKIP
+                >>> cfg.print_operation(steps=5, format='config')
                 c-γ-V-I-II LXZO UX.MO.KZ.AY.EF.PL 03.17.04.01
                 c-γ-V-I-II LXZP UX.MO.KZ.AY.EF.PL 03.17.04.01
                 c-γ-V-I-II LXZQ UX.MO.KZ.AY.EF.PL 03.17.04.01
@@ -239,7 +239,7 @@ class EnigmaConfig(object):
 
             .. testsetup:: enigma_encoding
 
-                cfg = EnigmaConfig.config_enigma(b"b-γ-V-VIII-II".decode("UTF-8"), u"LFAP", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.11")
+                cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II".decode("UTF-8"), u"LFAP", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.11")
 
             the message `'KRIEG'` is encoded to `'GOWNW'`:
 
