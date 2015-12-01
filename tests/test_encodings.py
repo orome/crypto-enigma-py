@@ -35,6 +35,12 @@ def test_config_encoding_simple():
     assert cfg.enigma_encoding('βaBCD Ef& GHIJK LMNOγPQRS TUV|WXYZA BβCγDEfghIJK LM@NOPQ RStuγvwXYZβ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
     assert cfg.enigma_encoding('βaBCD Ef& GHI<K LMNOγPQRS TUV|W!YZA BβCγDEfghIJK LM@NOPQ RStuγvwX,Zβ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
 
+def test_encoding_stepped_start():
+    cfg = EnigmaConfig.config_enigma('b-γ-IV-VIII-V', 'JOAW', 'UE.BN.ZA.PD', '04.11.04.16')
+    msg = "FJUGFHFHIRVBNAFOQIWUFHFBABJSIQHFFJDSISQNSBFJKDIFFDHDHAJSJSJS"
+    for i in range(len(msg)):
+        assert list(cfg.stepped_configs(i))[-1].enigma_encoding(msg[i:]) == cfg.enigma_encoding(msg)[i:]
+
 def test_config_encoding_historical():
     # EnigmaConfig historical message encoding
     cfg = EnigmaConfig.config_enigma('c-β-V-VI-VIII', EnigmaConfig.config_enigma('c-β-V-VI-VIII', 'NAEM', 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12').enigma_encoding('QEOB'), 'AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW', '05.16.05.12')
