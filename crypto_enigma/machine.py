@@ -286,7 +286,7 @@ class EnigmaConfig(object):
     # __repr__ = __str__
     def __repr__(self):
         # return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
-        return '{0} ({1})'.format(object.__repr__(self), unicode(self))
+        return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
 
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):
