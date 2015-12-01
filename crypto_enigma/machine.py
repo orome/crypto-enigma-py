@@ -122,7 +122,7 @@ class EnigmaConfig(object):
 
         Step the Enigma machine by rotating the rightmost (first) rotor one position, and other rotors as
         determined by the `positions` of rotors in the machine. In the physical machine, a step occurs in
-        response to each operator keypress, prior to processing that key's letter (see `enigma_encoding).
+        response to each operator keypress, prior to processing that key's letter (see `enigma_encoding`).
 
         Stepping leaves the `components`, `stages` and `rings` of a configuration unchanged, changing only
         `positions`, which is manifest in changes of the letters visible at the `windows`:
