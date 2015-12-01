@@ -22,6 +22,15 @@ from crypto_enigma._version import __version__, __release__, __author__
 # Has no effect -- http://stackoverflow.com/q/34025113/656912
 sys.dont_write_bytecode = True
 
+doctest_global_setup =('# -*- coding: utf-8 -*-\n\n'
+                       'from __future__ import unicode_literals #Has no effect?\n'
+                       #'import sys\n'
+                       #'reload(sys)\n'
+                       #'sys.setdefaultencoding("UTF-8")\n'
+                       'from crypto_enigma.machine import *\n')
+
+
+
 # TBD - Has no effect, but something like this is needed <<<
 #       http://stackoverflow.com/q/33977457/656912
 #       https://github.com/sphinx-doc/sphinx/issues/1711
