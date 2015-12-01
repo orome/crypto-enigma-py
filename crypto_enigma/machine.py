@@ -215,7 +215,6 @@ class EnigmaConfig(object):
         return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
 
     def enigma_mapping(self):
-        # return reduce(lambda string, mapping: encode_string(mapping, string), self.stage_mapping_list(), LETTERS)
         return self.enigma_mapping_list()[-1]
 
     @require_unicode('message')
@@ -283,10 +282,8 @@ class EnigmaConfig(object):
     def __str__(self):
         return unicode(self).encode('utf-8')
 
-    # __repr__ = __str__
     def __repr__(self):
-        # return '<{0}.{1} object at {2}> ({3})'.format(self.__module__, type(self).__name__, hex(id(self)),str(self))
-        return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
+         return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
 
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):
@@ -317,18 +314,6 @@ class EnigmaConfig(object):
     @staticmethod
     def _make_enigma_char(letter):
         return filter(lambda l: l in LETTERS + ' ', (letter + ' ').upper())[0]
-
-    # @staticmethod
-    # def _make_valid_message(string):
-    #     return ''.join([EnigmaConfig._make_valid_letter(l) for l in EnigmaConfig.preprocess(string)])
-
-    # @staticmethod
-    # def _is_valid_letter(letter):
-    #     return len(letter) == 1 and letter in LETTERS + ' '
-    #
-    # @staticmethod
-    # def _is_valid_string(string):
-    #     return all(EnigmaConfig._is_valid_letter(l) for l in string)
 
     def _config_string(self, letter, mark_func=None):
 
@@ -480,11 +465,6 @@ class EnigmaConfig(object):
                 continue
             print_config_string(cfg.config_string(letter, format=format, show_encoding=show_encoding, mark_func=mark_func))
 
-    # def print_operation(self, message, mark_func=None):
-    #     for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
-    #         print(cfg.config_string(letter, mark_func))
-    #         # print(' ')
-
     @require_unicode('message')
     def print_operation_internal(self, message, mark_func=None):
         """
@@ -492,9 +472,6 @@ class EnigmaConfig(object):
             This function has been removed; use :func:`print_operation` instead.
         """
         self.print_operation(message, format='internal', mark_func=mark_func)
-        # for (cfg, letter) in zip(self.stepped_configs(), ' ' + EnigmaConfig.preprocess(message)):
-        #     print(cfg.config_string_internal(letter, mark_func))
-        #     print(' ')
 
     @staticmethod
     @require_unicode('msg')
@@ -521,5 +498,3 @@ class EnigmaDisplayError(EnigmaError):
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<
 # ASK - Idiom for printing loops?
 # REV - Keep list(reverse( conversions as [::-1] throughout?
-# TBD - Break out heavy validation stuff into another layer to keep core functionality separate?
-# REV - Use of EnigmaError vs. assert (be systematic about distinction) <<<
