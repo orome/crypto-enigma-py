@@ -19,7 +19,8 @@ import shlex
 sys.path.insert(0, os.path.abspath('../..'))
 from crypto_enigma._version import __version__, __release__, __author__
 
-# Doesn't work - http://stackoverflow.com/q/1733414/656912
+# See - http://stackoverflow.com/q/1733414/656912; http://stackoverflow.com/a/34030206/656912
+# Use in doctest_global_setup instead
 # reload(sys)
 # sys.setdefaultencoding("UTF-8")
 
@@ -196,12 +197,12 @@ extlinks = {
 
 # sphinx.ext.doctest - http://sphinx-doc.org/ext/doctest.html
 doctest_test_doctest_blocks = 'docs'
-doctest_global_setup =(
+doctest_global_setup = (
     '#encoding: utf8\n\n'
     'from __future__ import unicode_literals #Has no effect?\n'
-    #'import sys\n'
-    #'reload(sys)\n'
-    #'sys.setdefaultencoding("UTF-8")\n'
+    'import sys\n'
+    'reload(sys)\n'
+    'sys.setdefaultencoding("UTF-8")\n'
     'from crypto_enigma.machine import *\n'
 )
 
