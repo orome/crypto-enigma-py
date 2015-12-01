@@ -197,7 +197,7 @@ extlinks = {
 # sphinx.ext.doctest - http://sphinx-doc.org/ext/doctest.html
 doctest_test_doctest_blocks = 'docs'
 doctest_global_setup =(
-    '# -*- coding: utf-8 -*-\n\n'
+    '#encoding: utf8\n\n'
     'from __future__ import unicode_literals #Has no effect?\n'
     #'import sys\n'
     #'reload(sys)\n'
