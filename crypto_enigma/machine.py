@@ -133,34 +133,42 @@ class EnigmaConfig(object):
         Examples:
             Using the initial configuration
 
-            >>> cfg = EnigmaConfig.config_enigma("c-γ-V-I-II", "LXZO", "UX.MO.KZ.AY.EF.PL", "03.17.04.01")
+            >>> cfg = EnigmaConfig.config_enigma("c-γ-V-I-II", "LXZO", "UX.MO.KZ.AY.EF.PL", "03.17.04.01") # doctest: +SKIP
+
+            .. testsetup:: step
+
+                cfg = EnigmaConfig.config_enigma(b"c-γ-V-I-II".decode("UTF-8"), u"LXZO", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.01")
 
             the consequences of the stepping process can be observed by examining the `windows` of each
             stepped configuration:
 
-            >>> print(cfg.windows())
-            LXZO
-            >>> print(cfg.step().windows())
-            LXZP
-            >>> print(cfg.step().step().windows())
-            LXZQ
-            >>> print(cfg.step().step().step().windows())
-            LXZR
-            >>> print(cfg.step().step().step().step().windows())
-            LXZS
-            >>> print(cfg.step().step().step().step().step().windows())
-            LXZT
+            .. doctest:: step
 
-            This, and the fact that only positions (and thus window letters), change as the result of stepping
+                >>> print(cfg.windows())
+                LXZO
+                >>> print(cfg.step().windows())
+                LXZP
+                >>> print(cfg.step().step().windows())
+                LXZQ
+                >>> print(cfg.step().step().step().windows())
+                LXZR
+                >>> print(cfg.step().step().step().step().windows())
+                LXZS
+                >>> print(cfg.step().step().step().step().step().windows())
+                LXZT
+
+            This, and the fact that only positions (and thus window letters) change as the result of stepping,
             can be visualized in more detail using `print_operation`:
 
-            >>> cfg.print_operation(steps=5, format='config')
-            c-γ-V-I-II LXZO UX.MO.KZ.AY.EF.PL 03.17.04.01
-            c-γ-V-I-II LXZP UX.MO.KZ.AY.EF.PL 03.17.04.01
-            c-γ-V-I-II LXZQ UX.MO.KZ.AY.EF.PL 03.17.04.01
-            c-γ-V-I-II LXZR UX.MO.KZ.AY.EF.PL 03.17.04.01
-            c-γ-V-I-II LXZS UX.MO.KZ.AY.EF.PL 03.17.04.01
-            c-γ-V-I-II LXZT UX.MO.KZ.AY.EF.PL 03.17.04.01
+            .. doctest:: step
+
+                >>> cfg.print_operation(steps=5, format='config') # doctest: +SKIP
+                c-γ-V-I-II LXZO UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZP UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZQ UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZR UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZS UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZT UX.MO.KZ.AY.EF.PL 03.17.04.01
 
         """
         def is_turn(stg):
@@ -228,23 +236,31 @@ class EnigmaConfig(object):
         Examples:
             Given machine configuration
 
-            >>> cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAP", "UX.MO.KZ.AY.EF.PL", "03.17.04.11")
+            >>> cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAP", "UX.MO.KZ.AY.EF.PL", "03.17.04.11") # doctest: +SKIP
 
-            the message `"KRIEG"` is encoded to `"GOWNW"`:
+            .. testsetup:: enigma_encoding
 
-            >>> cfg.enigma_encoding("KRIEG")
-            "GOWNW"
+                cfg = EnigmaConfig.config_enigma(b"b-γ-V-VIII-II".decode("UTF-8"), u"LFAP", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.11")
+
+            the message `'KRIEG'` is encoded to `'GOWNW'`:
+
+            .. doctest:: enigma_encoding
+
+                >>> cfg.enigma_encoding('KRIEG')
+                u'GOWNW'
 
             The details of this encoding and its relationship to stepping from one configuration to another are illustrated
             using `print_operation`:
 
-            >>> cfg.print_operation("KRIEG", format='windows', show_encoding=True, show_step=True)
-            0000  LFAP
-            0001  LFAQ  K > G
-            0002  LFAR  R > O
-            0003  LFAS  I > W
-            0004  LFAT  E > N
-            0005  LFAU  G > W
+            .. doctest:: enigma_encoding
+
+                >>> cfg.print_operation("KRIEG", format='windows', show_encoding=True, show_step=True)
+                0000  LFAP
+                0001  LFAQ  K > G
+                0002  LFAR  R > O
+                0003  LFAS  I > W
+                0004  LFAT  E > N
+                0005  LFAU  G > W
 
             Note that because of the way the Enigma machine is designed, it is always the case
             (provided that `msg` is all uppercase letters) that::
