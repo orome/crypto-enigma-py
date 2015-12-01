@@ -19,6 +19,10 @@ import shlex
 sys.path.insert(0, os.path.abspath('../..'))
 from crypto_enigma._version import __version__, __release__, __author__
 
+# Doesn't work - http://stackoverflow.com/q/1733414/656912
+# reload(sys)
+# sys.setdefaultencoding("UTF-8")
+
 # Has no effect -- http://stackoverflow.com/q/34025113/656912
 sys.dont_write_bytecode = True
 
