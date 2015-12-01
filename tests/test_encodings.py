@@ -15,6 +15,7 @@ from crypto_enigma.machine import *
 # Comparing output with output generated from Haskell version
 # USE - Replace greek letters in Haskell-generated output
 
+
 def test_config_encoding_simple():
     # EnigmaConfig mappings and simple encoding
     cfg = EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'LFAQ', '', '03.17.04.11')
@@ -35,11 +36,13 @@ def test_config_encoding_simple():
     assert cfg.enigma_encoding('βaBCD Ef& GHIJK LMNOγPQRS TUV|WXYZA BβCγDEfghIJK LM@NOPQ RStuγvwXYZβ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
     assert cfg.enigma_encoding('βaBCD Ef& GHI<K LMNOγPQRS TUV|W!YZA BβCγDEfghIJK LM@NOPQ RStuγvwX,Zβ') == 'YGMHCRNJJFADFQWMYGZEVSQJDGHAYWFZMBKBVUOABSFBUAJKZLKE'
 
+
 def test_encoding_stepped_start():
     cfg = EnigmaConfig.config_enigma('b-γ-IV-VIII-V', 'JOAW', 'UE.BN.ZA.PD', '04.11.04.16')
     msg = "FJUGFHFHIRVBNAFOQIWUFHFBABJSIQHFFJDSISQNSBFJKDIFFDHDHAJSJSJS"
     for i in range(len(msg)):
         assert list(cfg.stepped_configs(i))[-1].enigma_encoding(msg[i:]) == cfg.enigma_encoding(msg)[i:]
+
 
 def test_config_encoding_historical():
     # EnigmaConfig historical message encoding

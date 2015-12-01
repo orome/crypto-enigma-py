@@ -35,6 +35,7 @@ def test_config_constructor():
         cfg = EnigmaConfig.config_enigma_from_string('B-III-VI-VII AU 14.22.11')
     assert e.value.message == "Bad string - [u'B-III-VI-VII', u'AU', u'14.22.11'] should have 4 elements"
 
+
 def test_config_stepping():
     # EnigmaConfig stepping
     cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'EZU', '', '14.22.11')

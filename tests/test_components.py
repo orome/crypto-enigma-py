@@ -12,8 +12,10 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 from crypto_enigma.machine import *
 from crypto_enigma.components import _comps
 
+
 # Comparing output with output generated from Haskell version
 # USE - Replace greek letters in Haskell-generated output
+
 
 def test_component_keys():
     # Component names
@@ -22,6 +24,7 @@ def test_component_keys():
 
     for r in rotors + reflectors:
         assert component(r) == _comps[r]
+
 
 def test_component_rotation():
     # Component rotation

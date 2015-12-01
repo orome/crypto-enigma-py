@@ -146,6 +146,7 @@ def test_operation_windows(capsys):
 0021  PLY  E > L
 """
 
+
 def test_encoding(capsys):
     cfg = EnigmaConfig.config_enigma('B-β-V-IV-III', 'ZZZZ', 'LE.IO.AG.DM.ZR', '11.11.11.11')
     cfg.print_encoding("THE MAN IN THE HIGH CASTLE")

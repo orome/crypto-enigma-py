@@ -17,6 +17,7 @@ from crypto_enigma.machine import *
 # USE - Haskell output for first and last lines needs to be trimmed to match; marked output needs \818\773 replaced with ̲̅
 # TBD - Marked configs (e.g. with alternate marking)
 
+
 def test_config_strings():
     cfg = EnigmaConfig.config_enigma('c-β-V-II-III', 'KFIE', 'IO.QW.AG.DX.ZR', '11.19.21.16')
     assert cfg.config_string(' ') == '    OGUSZKBIHVFPXTALWYDNCJQMRE  KFIE  01 14 15 16'
