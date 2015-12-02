@@ -7,8 +7,6 @@
 
 """ 
 The main Enigma machine module to import.
-
-.. note::
 """
 
 # REV - Additional performance improvements
