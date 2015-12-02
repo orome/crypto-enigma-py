@@ -32,7 +32,7 @@ class EnigmaConfig(object):
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
         """
-        The state of an Enigma machine, fully expressed by three values: `components`, `positions`, and `rings`.
+        The complete description of the state of an Enigma machine, consisting `components`, `positions`, and `rings`.
         """
         # TBD - Assertions plugboard <<<
         assert all(name in rotors for name in components[1:-1])
@@ -50,7 +50,43 @@ class EnigmaConfig(object):
     @staticmethod
     @require_unicode('rotor_names', 'window_letters', 'plugs', 'rings')
     def config_enigma(rotor_names, window_letters, plugs, rings):
+        """Create an `EnigmaConfig` from strings specifying its state.
 
+        A (safe public, "smart") constructor that does validation and takes a conventional specification as input,
+        in the form of four strings.
+
+        Following convention, the elements of these specifications are in physical machine order as the operator
+        sees them, which is the reverse of the order in which they are encountered in processing (see `stages`).
+
+        Validation is permissive, allowing for ahistorical collections and numbers of rotors (including reflectors
+        at the rotor stage, and trivial degenerate machines; e.g., `config_enigma("-", "A", "", "01")`,
+        and any number of (non-contradictory) plugboard wirings (including none).
+
+        Args:
+            rotor_names (str): The rotor names, separated by dashes (e.g. `'C-V-I-II'`);
+                see `Component`.
+            window_letters (str): The letters visible at the windows (e.g. `'MQR'`);
+                see `windows`.
+            plugs (str): The plugboard specification (which may be omitted with `'~'`);
+                see `components`.
+            rings (str): The position of the letter ring on each rotor, separated by periods (e.g. `'22.11.16'`);
+                see `rings`.
+
+        Returns:
+            EnigmaConfig:
+
+        Raises:
+            EnigmaValueError: Raised when arguments do not pass validation.
+
+        Example:
+
+            >>> cfg EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11") # doctest: +SKIP
+
+            .. testsetup:: properties
+
+                cfg = EnigmaConfig.config_enigma("c-β-V-III-II".decode(), u"LQVI", u"AM.EU.ZL", u"16.01.21.11")
+
+        """
         rotor_names_list = rotor_names.split('-')
         ring_numbers = [int(x) for x in rings.split('.')]
 
