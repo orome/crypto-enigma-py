@@ -138,8 +138,11 @@ class EnigmaConfig(object):
             Unchanged by `step`.
 
         Example:
+            Using `cfg` as defined above:
 
-            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").components # doctest: +SKIP
+        .. doctest:: properties
+
+            >>> cfg.components # doctest: +SKIP
             (u'AM.EU.ZL', u'II', u'III', u'V', u'\u03b2', u'c')
 
         """
@@ -156,8 +159,11 @@ class EnigmaConfig(object):
             May be changed by `step`.
 
         Example:
+            Using `cfg` as defined above:
 
-            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").positions # doctest: +SKIP
+         .. doctest:: properties
+
+            >>> cfg.positions
             (1, 25, 2, 17, 23, 1)
 
         Note that for the plugboard and reflector, the position will always be **1** since the former
@@ -171,16 +177,19 @@ class EnigmaConfig(object):
 
     @property
     def rings(self):
-        """The ring settings.
+        """The ring settings (the |Ringstellung|_).
 
         Returns:
             tuple: The location of ring letter **A** on the rotor for each of the `components` in an `EnigmaConfig`,
             in machine processing order. Unchanged by `step`.
 
         Example:
+            Using `cfg` as defined above:
 
-            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").rings # doctest: +SKIP
-            (1, 25, 2, 17, 23, 1)
+         .. doctest:: properties
+
+            >>> cfg.rings
+            (1, 11, 21, 1, 16, 1)
 
         Note that for the plugboard and reflector, this will always be **1** since the former lacks a ring,
         and for latter ring position is irrelevant (the letter ring is not visible, and has no effect on `turnovers`)::
