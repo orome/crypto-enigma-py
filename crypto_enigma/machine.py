@@ -108,10 +108,12 @@ class EnigmaConfig(object):
         return self._rings
 
     # REV - Not used here except for display; possibly not needed in Haskell version either?
+    # REV - Implement as a property? <<<
     @property
     def stages(self):
         return self._stages
 
+    # REV - Implement as a property? <<<
     def windows(self):
         # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
         return ''.join([self._window_letter(st) for st in self._stages][1:-1][::-1])
