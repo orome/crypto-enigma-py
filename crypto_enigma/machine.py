@@ -31,22 +31,6 @@ class EnigmaConfig(object):
     """
     Class docs
     """
-    @property
-    def components(self):
-        return self._components
-
-    @property
-    def positions(self):
-        return self._positions
-
-    @property
-    def rings(self):
-        return self._rings
-
-    # REV - Not used here except for display; possibly not needed in Haskell version either?
-    @property
-    def stages(self):
-        return self._stages
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
@@ -111,6 +95,23 @@ class EnigmaConfig(object):
 
     def _window_letter(self, st):
         return chr_A0((self._positions[st] + self._rings[st] - 2) % 26)
+
+    @property
+    def components(self):
+        return self._components
+
+    @property
+    def positions(self):
+        return self._positions
+
+    @property
+    def rings(self):
+        return self._rings
+
+    # REV - Not used here except for display; possibly not needed in Haskell version either?
+    @property
+    def stages(self):
+        return self._stages
 
     def windows(self):
         # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
