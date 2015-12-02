@@ -6,10 +6,9 @@
 # released under the BSD-3 License (see LICENSE.txt).
 
 """ 
-Description
+The main Enigma machine module to import.
 
 .. note::
-    Any additional note.
 """
 
 # REV - Additional performance improvements
@@ -29,13 +28,13 @@ from .components import *
 
 class EnigmaConfig(object):
     """
-    Class docs
+    An Enigma machine, expressed as an unchanging configuration.
     """
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
         """
-        Init docs
+        The state of an Enigma machine, fully expressed by three values: `components`, `positions`, and `rings`.
         """
         # TBD - Assertions plugboard <<<
         assert all(name in rotors for name in components[1:-1])
