@@ -95,14 +95,64 @@ class EnigmaConfig(object):
 
     @property
     def components(self):
+        """The names of the components in the Enigma machine.
+
+        Returns:
+            tuple: The `name` of each `Component` in an `EnigmaConfig`, in processing order.
+            Unchanged by `step`.
+
+        Example:
+
+            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").components # doctest: +SKIP
+            (u'AM.EU.ZL', u'II', u'III', u'V', u'\u03b2', u'c')
+
+        """
         return self._components
 
     @property
     def positions(self):
+        """The positions of the components.
+
+        This determines the encoding performed by a component (see `component_mapping`).
+
+        Returns:
+            tuple: The position of each of the `components` in an `EnigmaConfig`, in machine processing order.
+            May be changed by `step`.
+
+        Example:
+
+            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").positions # doctest: +SKIP
+            (1, 25, 2, 17, 23, 1)
+
+        Note that for the plugboard and reflector, the position will always be **1** since the former
+        cannot rotate, and the latter does not (neither will be changed by `step`)::
+
+            cfg.positions[0] == 1
+            cfg.positions[-1] == 1
+
+        """
         return self._positions
 
     @property
     def rings(self):
+        """The ring settings.
+
+        Returns:
+            tuple: The location of ring letter **A** on the rotor for each of the `components` in an `EnigmaConfig`,
+            in machine processing order. Unchanged by `step`.
+
+        Example:
+
+            >>> EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11").rings # doctest: +SKIP
+            (1, 25, 2, 17, 23, 1)
+
+        Note that for the plugboard and reflector, this will always be **1** since the former lacks a ring,
+        and for latter ring position is irrelevant (the letter ring is not visible, and has no effect on `turnovers`)::
+
+            cfg.rings[0] == 1
+            cfg.rings[-1] == 1
+
+        """
         return self._rings
 
     # REV - Not used here except for display; possibly not needed in Haskell version either?
