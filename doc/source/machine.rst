@@ -84,4 +84,16 @@ Mappings
 .. automethod:: EnigmaConfig.enigma_mapping_list
 .. automethod:: EnigmaConfig.enigma_mapping
 
+Exceptions
+==========
+
+.. autoexception:: EnigmaError
+    :show-inheritance:
+
+.. autoexception:: EnigmaValueError
+    :show-inheritance:
+
+.. autoexception:: EnigmaDisplayError
+    :show-inheritance:
+
 
