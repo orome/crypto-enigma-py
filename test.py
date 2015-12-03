@@ -59,7 +59,7 @@ ec = EnigmaConfig.config_enigma('c-γ-I-VIII-III', 'UYZO', 'UX.MI', '03.22.04.09
 print(ec.components)
 print(ec.rings)
 print(ec.positions)
-print(ec.stages)
+print(ec._stages)
 # print(ec._window_letter(1))
 # print(ec._window_letter(2))
 # print(ec._window_letter(3))

@@ -56,7 +56,7 @@ class EnigmaConfig(object):
         in the form of four strings.
 
         Following convention, the elements of these specifications are in physical machine order as the operator
-        sees them, which is the reverse of the order in which they are encountered in processing (see `stages`).
+        sees them, which is the reverse of the order in which they are encountered in processing.
 
         Validation is permissive, allowing for ahistorical collections and numbers of rotors (including reflectors
         at the rotor stage, and trivial degenerate machines; e.g., `config_enigma("-", "A", "", "01")`,
@@ -200,12 +200,6 @@ class EnigmaConfig(object):
         """
         return self._rings
 
-    # REV - Not used here except for display; possibly not needed in Haskell version either?
-    # REV - Implement as a property? <<<
-    @property
-    def stages(self):
-        return self._stages
-
     # REV - Implement as a property? <<<
     def windows(self):
         # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
@@ -219,7 +213,7 @@ class EnigmaConfig(object):
         determined by the `positions` of rotors in the machine. In the physical machine, a step occurs in
         response to each operator keypress, prior to processing that key's letter (see `enigma_encoding`).
 
-        Stepping leaves the `components`, `stages` and `rings` of a configuration unchanged, changing only
+        Stepping leaves the `components` and `rings` of a configuration unchanged, changing only
         `positions`, which is manifest in changes of the letters visible at the `windows`:
 
         Returns:
@@ -436,10 +430,10 @@ class EnigmaConfig(object):
         # REV - Better way that avoids recalcs of cfg_mapping and cfg_mapping_list?
         letter_locations = [EnigmaConfig._locate_letter(m, l, s) for (m, l, s) in
                             zip([LETTERS] + cfg_mapping_list + [cfg_mapping],
-                                [letter] * (len(self.stages) * 2 + 1),
+                                [letter] * (len(self._stages) * 2 + 1),
                                 [LETTERS] + stg_mapping_list + [cfg_mapping])]
 
-        stg_labels = reflect_info(['P'] + list(self.stages)[1:-1] + ['R'])
+        stg_labels = reflect_info(['P'] + list(self._stages)[1:-1] + ['R'])
         stg_mappings = [EnigmaConfig._marked_mapping(m, i, mark_func) for (m, i) in zip(stg_mapping_list,
                                                                                         letter_locations[1:-1])]
         stg_windows = pad_info(list(self.windows())[::-1], ' ')
