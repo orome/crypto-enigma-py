@@ -39,8 +39,34 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
-        """
-        The complete description of the state of an Enigma machine, consisting `components`, `positions`, and `rings`.
+        """The low level specification of an Enigma configuration.
+
+        The conventional historical specification of an Enigma machine (as used in `~EnigmaConfig.config_enigma`)
+        includes redundant elements, and conceals properties that are directly relevant to the operation
+        of the machine and the encoding it performs — notably the actual rotational positions of the components.
+
+        A complete "low level" formal characterization of the state of an Enigma machine consists of
+        three elements: the list of `~EnigmaConfig.components`, their `~EnigmaConfig.positions`,
+        and the settings of their `~EnigmaConfig.rings`.
+        Here these lists are in *processing order* — as opposed to the physical order used in conventional
+        specifications — and the have positions and ring settings generalized and "padded" for consistency to
+        include the plugboard and reflector.
+
+        Note that though it is not likely to be useful, these elements can be used to instantiate an `EnigmaConfig`:
+
+        >>> cfg_conv = EnigmaConfig.config_enigma("B-I-II-III", "ABC", "XO.YM.QL", "01.02.03")
+        >>> cfg_intl = EnigmaConfig(cfg_conv.components, cfg_conv.positions, cfg_conv.rings)
+        >>> print(cfg_conv)
+        B-I-II-III ABC XO.YM.QL 01.02.03
+        >>> print(cfg_intl)
+        B-I-II-III ABC XO.YM.QL 01.02.03
+
+        They may also be useful in extending the functionality provided here, for example in constructing
+        additional representations of configurations beyond those provided in `config_string`:
+
+        >>> [b'{} {}'.format(c, p) for c, p in zip(cfg_intl.components, cfg_intl.positions)[1:]]
+        ['III 1', 'II 1', 'I 1', 'B 1']
+
         """
         # TBD - Assertions plugboard <<<
         assert all(name in rotors for name in components[1:-1])
