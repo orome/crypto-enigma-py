@@ -68,8 +68,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
-    'sphinx.ext.extlinks'
-    #'sphinx_paramlinks', # Not working witn Googly docstrings - http://stackoverflow.com/a/20845306/656912
+    'sphinx.ext.extlinks',
+    'sphinx_paramlinks' # Not working witn Googly docstrings - http://stackoverflow.com/a/20845306/656912
     # 'alabaster',
     # 'sphinxarg.ext',
     # 'sphinxcontrib.programoutput',
