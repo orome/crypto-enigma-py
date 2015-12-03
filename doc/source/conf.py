@@ -186,7 +186,7 @@ napoleon_numpy_docstring = False
 autodoc_member_order = 'bysource'
 # Incorporate __init__ documentation into the class documentation;
 # See: - http://sphinx-doc.org/ext/autodoc.html#confval-autoclass_content
-autoclass_content = 'both'
+autoclass_content = 'class'
 
 # sphinx.ext.extlinks - http://sphinx-doc.org/ext/extlinks.html
 extlinks = {
