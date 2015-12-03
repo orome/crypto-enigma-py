@@ -140,10 +140,10 @@ class EnigmaConfig(object):
         Example:
             Using `cfg` as defined above:
 
-        .. doctest:: properties
+            .. doctest:: properties
 
-            >>> cfg.components # doctest: +SKIP
-            (u'AM.EU.ZL', u'II', u'III', u'V', u'\u03b2', u'c')
+                >>> cfg.components # doctest: +SKIP
+                (u'AM.EU.ZL', u'II', u'III', u'V', u'\u03b2', u'c')
 
         """
         return self._components
@@ -161,10 +161,10 @@ class EnigmaConfig(object):
         Example:
             Using `cfg` as defined above:
 
-         .. doctest:: properties
+            .. doctest:: properties
 
-            >>> cfg.positions
-            (1, 25, 2, 17, 23, 1)
+                >>> cfg.positions
+                (1, 25, 2, 17, 23, 1)
 
         Note that for the plugboard and reflector, the position will always be **1** since the former
         cannot rotate, and the latter does not (neither will be changed by `step`)::
@@ -186,10 +186,10 @@ class EnigmaConfig(object):
         Example:
             Using `cfg` as defined above:
 
-         .. doctest:: properties
+            .. doctest:: properties
 
-            >>> cfg.rings
-            (1, 11, 21, 1, 16, 1)
+                >>> cfg.rings
+                (1, 11, 21, 1, 16, 1)
 
         Note that for the plugboard and reflector, this will always be **1** since the former lacks a ring,
         and for latter ring position is irrelevant (the letter ring is not visible, and has no effect on `turnovers`)::
