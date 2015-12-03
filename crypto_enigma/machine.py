@@ -97,14 +97,22 @@ class EnigmaConfig(object):
         and any number of (non-contradictory) plugboard wirings (including none).
 
         Args:
-            rotor_names (str): The rotor names, separated by dashes (e.g. `'C-V-I-II'`);
-                see `~.components.Component`.
-            window_letters (str): The letters visible at the windows (e.g. `'MQR'`);
-                see `windows`.
-            plugs (str): The plugboard specification (which may be omitted with `'~'`);
-                see `components`.
-            rings (str): The position of the letter ring on each rotor, separated by periods (e.g. `'22.11.16'`);
-                see `rings`. (the |Ringstellung|_)
+            rotor_names (str): The |Walzenlage|_:
+                The conventional letter or roman numeral designations
+                (e.g., **IV** or **β**) of the rotors, including reflector, separated by dashes (e.g. `'C-V-I-II'`);
+                See  `~.components.Component.name` and `components`.
+            window_letters (str): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
+                The letters visible at the windows (e.g. `'MQR'`).
+                See `windows`.
+            plugs (str): The |Steckerverbindungen|_:
+                The plugboard specification as a conventional string of letter pairs
+                (separated by periods), indicating letters wired together by plugging (e.g., `'AU.ZM.ZL.RQ'`).
+                Absence or non-use of a plugboard can be indicated with `'~'`.
+                See  `~.components.Component.name` and `components`.
+            rings (str): The |Ringstellung|_:
+                The location of the letter ring on each rotor (specifcially, the number on the
+                rotor under ring letter **A**), separated by periods (e.g. `'22.11.16'`).
+                See `rings`.
 
         Returns:
             EnigmaConfig:
