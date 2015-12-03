@@ -152,11 +152,13 @@ class EnigmaConfig(object):
     def positions(self):
         """The positions of the components.
 
-        This determines the encoding performed by a component (see `component_mapping`).
+        This (alone) determines the encoding performed by a component (see `component_mapping`).
+        Note that this is the only property of an enigma machine that changes when it is stepped (see `step`),
+        and the changes in the letters visible at the `windows` are the (only) visible manifestation
+        of this change.
 
         Returns:
             tuple: The position of each of the `components` in an `EnigmaConfig`, in machine processing order.
-            May be changed by `step`.
 
         Example:
             Using `cfg` as defined above:
@@ -181,7 +183,7 @@ class EnigmaConfig(object):
 
         Returns:
             tuple: The location of ring letter **A** on the rotor for each of the `components` in an `EnigmaConfig`,
-            in machine processing order. Unchanged by `step`.
+            in machine processing order.
 
         Example:
             Using `cfg` as defined above:
