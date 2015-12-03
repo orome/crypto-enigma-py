@@ -80,6 +80,8 @@ class EnigmaConfig(object):
 
         Example:
 
+            .. _testsetup_properties:
+
             >>> cfg = EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11") # doctest: +SKIP
 
             .. testsetup:: properties
@@ -138,7 +140,7 @@ class EnigmaConfig(object):
             in processing order.
 
         Example:
-            Using `cfg` as defined above:
+            Using `cfg` as defined :ref:`above <testsetup_properties>`:
 
             .. doctest:: properties
 
@@ -161,7 +163,7 @@ class EnigmaConfig(object):
             tuple: The position of each of the `components` in an `EnigmaConfig`, in machine processing order.
 
         Example:
-            Using `cfg` as defined above:
+            Using `cfg` as defined :ref:`above <testsetup_properties>`:
 
             .. doctest:: properties
 
@@ -186,7 +188,7 @@ class EnigmaConfig(object):
             in machine processing order.
 
         Example:
-            Using `cfg` as defined above:
+            Using `cfg` as defined :ref:`above <testsetup_properties>`:
 
             .. doctest:: properties
 
