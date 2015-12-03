@@ -564,12 +564,12 @@ class EnigmaConfig(object):
 
     @staticmethod
     @require_unicode('msg')
-    def postprocess(msg):
+    def _postprocess(msg):
         return '\n'.join(chunk_of(' '.join(chunk_of(msg, 4)), 60))
 
     @require_unicode('message')
     def print_encoding(self, message):
-        print(EnigmaConfig.postprocess(self.enigma_encoding(EnigmaConfig.make_message(message))))
+        print(EnigmaConfig._postprocess(self.enigma_encoding(EnigmaConfig.make_message(message))))
 
 
 class EnigmaError(Exception):
