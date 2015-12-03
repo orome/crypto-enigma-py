@@ -26,7 +26,15 @@ from .components import *
 
 class EnigmaConfig(object):
     """
-    An Enigma machine, expressed as an unchanging configuration.
+    An Enigma machine configuration.
+
+    An class representing the state of an Enigma machine, providing functionality for
+
+    * :ref:`generating a machine configuration <config_creation>` from a conventional specification,
+    * :ref:`examining the state <config_state>` of a configuration,
+    * simulating the :ref:`operation <config_operation>` of a machine by stepping between states, and
+    * :ref:`encoding messages <config_encoding>`.
+
     """
 
     # TBD - Make private somehow? <<<
