@@ -178,8 +178,8 @@ class EnigmaConfig(object):
         """The identities of the components in the Enigma machine.
 
         For rotors (including the reflector) these correspond to the
-        the :paramref:`~EnigmaConfig.config_enigma.rotor_names` supplied to `config_enigma`, while for the
-        plugboard this is just the :paramref:`~EnigmaConfig.config_enigma.plugs` argument.
+        the `~EnigmaConfig.config_enigma.rotor_names` supplied to `config_enigma`, while for the
+        plugboard this is just the `~EnigmaConfig.config_enigma.plugs` argument.
 
         Returns:
             tuple: The `~.components.Component.name` of each `~.components.Component` in an `EnigmaConfig`,
@@ -201,8 +201,8 @@ class EnigmaConfig(object):
         """The rotational positions of the components in the Enigma machine.
 
         For rotors, this is to the number on the rotor (not letter ring) that is at the "window position",
-        and is computed from the :paramref:`~EnigmaConfig.config_enigma.window_letters` and
-        :paramref:`~EnigmaConfig.config_enigma.rings` parameters for `config_enigma`.
+        and is computed from the `~EnigmaConfig.config_enigma.window_letters` and
+        `~EnigmaConfig.config_enigma.rings` parameters for `config_enigma`.
 
         This (alone) determines permutations applied to components' `~.components.Component.wiring` to
         produce the :ref:`mapping <config_encoding_mappings>` for a configuration and thus
@@ -238,7 +238,7 @@ class EnigmaConfig(object):
     def rings(self):
         """The ring settings in the Enigma machine.
 
-        For rotors, these are the :paramref:`~EnigmaConfig.config_enigma.rings` parameter for `config_enigma`.
+        For rotors, these are the `~EnigmaConfig.config_enigma.rings` parameter for `config_enigma`.
 
         Returns:
             tuple: The generalized location of ring letter **A** on the rotor for each of the `components`
