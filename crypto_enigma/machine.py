@@ -80,7 +80,7 @@ class EnigmaConfig(object):
 
         Example:
 
-            >>> cfg EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11") # doctest: +SKIP
+            >>> cfg = EnigmaConfig.config_enigma("c-β-V-III-II", "LQVI", "AM.EU.ZL", "16.01.21.11") # doctest: +SKIP
 
             .. testsetup:: properties
 
