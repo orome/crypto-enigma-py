@@ -70,7 +70,7 @@ class EnigmaConfig(object):
             plugs (str): The plugboard specification (which may be omitted with `'~'`);
                 see `components`.
             rings (str): The position of the letter ring on each rotor, separated by periods (e.g. `'22.11.16'`);
-                see `rings`.
+                see `rings`. (the |Ringstellung|_)
 
         Returns:
             EnigmaConfig:
@@ -135,6 +135,9 @@ class EnigmaConfig(object):
     def components(self):
         """The names of the components in the Enigma machine.
 
+        This is generated from the :paramref:`~EnigmaConfig.config_enigma.rotor_names` and
+        :paramref:`~EnigmaConfig.config_enigma.plugs` parameters for `config_enigma`.
+
         Returns:
             tuple: The `~.components.Component.name` of each `~.components.Component` in an `EnigmaConfig`,
             in processing order.
@@ -153,6 +156,9 @@ class EnigmaConfig(object):
     @property
     def positions(self):
         """The positions of the components.
+
+        This is computed from the :paramref:`~EnigmaConfig.config_enigma.window_letters` and
+        :paramref:`~EnigmaConfig.config_enigma.rings` parameters for `config_enigma`.
 
         This (alone) determines the encoding performed by a component (see `component_mapping`).
         Note that this is the only property of an enigma machine that changes when it is stepped (see `step`),
@@ -182,6 +188,8 @@ class EnigmaConfig(object):
     @property
     def rings(self):
         """The ring settings (the |Ringstellung|_).
+
+        This is generated from the :paramref:`~EnigmaConfig.config_enigma.rings` parameter for `config_enigma`.
 
         Returns:
             tuple: The location of ring letter **A** on the rotor for each of the `components` in an `EnigmaConfig`,
