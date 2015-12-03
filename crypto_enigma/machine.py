@@ -64,7 +64,7 @@ class EnigmaConfig(object):
 
         Args:
             rotor_names (str): The rotor names, separated by dashes (e.g. `'C-V-I-II'`);
-                see `Component`.
+                see `.components.Component`.
             window_letters (str): The letters visible at the windows (e.g. `'MQR'`);
                 see `windows`.
             plugs (str): The plugboard specification (which may be omitted with `'~'`);
@@ -134,7 +134,7 @@ class EnigmaConfig(object):
         """The names of the components in the Enigma machine.
 
         Returns:
-            tuple: The `name` of each `Component` in an `EnigmaConfig`, in processing order.
+            tuple: The `name` of each `.components.Component` in an `EnigmaConfig`, in processing order.
             Unchanged by `step`.
 
         Example:
