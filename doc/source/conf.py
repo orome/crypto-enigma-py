@@ -45,6 +45,23 @@ sys.dont_write_bytecode = True
 # wraps = no_op_wraps
 # update_wrapper = lambda wrapper, func: func
 
+# Add a directive to get just the docstring
+# See - http://stackoverflow.com/a/7832437/656912
+from sphinx.ext import autodoc
+
+class SimpleDocumenter(autodoc.MethodDocumenter):
+    objtype = "simple"
+
+    #do not indent the content
+    content_indent = ""
+
+    #do not add a header to the docstring
+    def add_directive_header(self, sig):
+        pass
+
+def setup(app):
+    app.add_autodocumenter(SimpleDocumenter)
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
