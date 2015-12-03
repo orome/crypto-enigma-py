@@ -178,6 +178,12 @@ rst_epilog = """
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
 .. _Ringstellung: https://en.wikipedia.org/wiki/Enigma_rotor_details#Ring_setting
+.. |Walzenlage| replace:: *Walzenlage*
+.. _Walzenlage: http://www.cryptomuseum.com/crypto/enigma/working.htm
+.. |Walzenstellung| replace:: *Walzenstellung*
+.. _Walzenstellung: http://www.cryptomuseum.com/crypto/enigma/working.htm
+.. |Steckerverbindungen| replace:: *Steckerverbindungen*
+.. _Steckerverbindungen: http://www.cryptomuseum.com/crypto/enigma/working.htm
 .. |Ringstellung| replace:: *Ringstellung*
 .. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
 .. _Hackage documentation: https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html
