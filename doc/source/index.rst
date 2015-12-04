@@ -41,9 +41,9 @@ Tasks
 
     Create a single location (section?) to where the following are defined:
 
-    * mapping
     * position
     * turnover
+    * stages/stage ("As noted (see 'stages') the term stage here encompasses reverse processing")
 
 .. todo::
 
@@ -62,5 +62,16 @@ Tasks
 
     Resolve difference (if any) between *Walzenstellung* and *Grundstellung*; adjust `config_enigma` docs.
 
+.. todo::
 
+    Ask how to document list and optional returns and arguments (these don't render correctly).
+    `List[]`, `list of ...`, `Optional[]`, `..., optional`
+
+.. todo::
+
+    Ask how to get `Yields` to render correctly.
+
+.. todo::
+
+    Review how to do terms/definitions systematically.
 
