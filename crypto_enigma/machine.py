@@ -46,7 +46,7 @@ class EnigmaConfig(object):
         of the machine and the encoding it performs — notably the actual rotational positions of the components.
 
         A complete "low level" formal characterization of the state of an Enigma machine consists of
-        three elements: the list of `~EnigmaConfig.components`, their `~EnigmaConfig.positions`,
+        three elements: lists of `~EnigmaConfig.components`, their `~EnigmaConfig.positions`,
         and the settings of their `~EnigmaConfig.rings`.
         Here these lists are in *processing order* — as opposed to the physical order used in conventional
         specifications — and the have positions and ring settings generalized and "padded" for consistency to
@@ -56,10 +56,6 @@ class EnigmaConfig(object):
 
         >>> cfg_conv = EnigmaConfig.config_enigma("B-I-II-III", "ABC", "XO.YM.QL", "01.02.03")
         >>> cfg_intl = EnigmaConfig(cfg_conv.components, cfg_conv.positions, cfg_conv.rings)
-        >>> print(cfg_conv)
-        B-I-II-III ABC XO.YM.QL 01.02.03
-        >>> print(cfg_intl)
-        B-I-II-III ABC XO.YM.QL 01.02.03
         >>> cfg_conv == cfg_intl
         True
 
@@ -109,7 +105,8 @@ class EnigmaConfig(object):
             plugs (unicode): The |Steckerverbindungen|_:
                 The plugboard specification as a conventional string of letter pairs
                 (separated by periods), indicating letters wired together by plugging (e.g., `'AU.ZM.ZL.RQ'`).
-                Absence or non-use of a plugboard can be indicated with `'~'`.
+                Absence or non-use of a plugboard can be indicated with `'~'` (or almost anything that isn't
+                a valid plugboard spec).
                 See  `~.components.Component.name` and `components`.
             rings (unicode): The |Ringstellung|_:
                 The location of the letter ring on each rotor (specifcially, the number on the
@@ -117,7 +114,7 @@ class EnigmaConfig(object):
                 See `rings`.
 
         Returns:
-            EnigmaConfig:
+            EnigmaConfig: A new Enigma machine configuration created from the specification arguments.
 
         Raises:
             EnigmaValueError: Raised when arguments do not pass validation.
@@ -163,7 +160,36 @@ class EnigmaConfig(object):
     @staticmethod
     @require_unicode('string')
     def config_enigma_from_string(string):
+        """Create an `EnigmaConfig` from a single string specifying its state.
 
+        Args:
+            string (unicode): The elements of a conventional specification (as supplied to `config_enigma`)
+            joined by spaces into a single string.
+
+        Returns:
+            EnigmaConfig: A new Enigma machine configuration created from the specification argument.
+
+        Raises:
+            EnigmaValueError: Raised when argument does not pass validation.
+
+        Example:
+            This is just a shortcut for invoking `config_enigma` using a sigle string:
+
+            >>> cfg_str = "c-β-V-III-II LQVI AM.EU.ZL 16.01.21.11" # doctest: +SKIP
+            >>> EnigmaConfig.config_enigma_from_string(cfg_str) == EnigmaConfig.config_enigma(*cfg_str.split(' ')) # doctest: +SKIP
+            True
+
+            Note that the `string` argument corresponds to the string representation of an `EnigmaConfig`
+
+            >>> print(EnigmaConfig.config_enigma_from_string(cfg_str))  # doctest: +SKIP
+            c-β-V-III-II LQVI AM.EU.ZL 16.01.21.11
+
+            so that this method is useful for instantiation of an `EnigmaConfig` from such strings (e.g., in files):
+
+            >>> unicode(EnigmaConfig.config_enigma_from_string(cfg_str)) == unicode(cfg_str) # doctest: +SKIP
+            True
+
+        """
         split_string = filter(lambda s: s != '', string.split(' '))
         if len(split_string) != 4:
             raise EnigmaValueError('Bad string - {0} should have 4 elements'.format(split_string))
@@ -255,7 +281,8 @@ class EnigmaConfig(object):
                 (1, 11, 21, 1, 16, 1)
 
         Note that for the plugboard and reflector, this will always be **1** since the former lacks a ring,
-        and for latter ring position is irrelevant (the letter ring is not visible, and has no effect on `turnovers`)::
+        and for latter ring position is irrelevant (the letter ring is not visible, and has no effect on when
+        turnovers occur)::
 
             cfg.rings[0] == 1
             cfg.rings[-1] == 1
@@ -265,6 +292,22 @@ class EnigmaConfig(object):
 
     # REV - Implement as a property? <<<
     def windows(self):
+        """The letters at the windows of an Enigma machine.
+
+        This is the (only) visible manifestation of configuration changes during :ref:`operation <config_operation>`.
+
+        Returns:
+            unicode: The letters at the windows in an `EnigmaConfig`, in physical, conventional order.
+
+        Example:
+            Using `cfg` as defined :ref:`above <testsetup_properties>`:
+
+            .. doctest:: properties
+
+                >>> cfg.windows()
+                u'LQVI'
+
+        """
         # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
         return ''.join([self._window_letter(st) for st in self._stages][1:-1][::-1])
         # return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
@@ -345,6 +388,38 @@ class EnigmaConfig(object):
         return EnigmaConfig(self._components, stepped_positions, self._rings)
 
     def stepped_configs(self, steps=None):
+        """Generate a series of stepped Enigma machine configurations.
+
+        Args:
+            steps (int, optional): An optional limit on the number of steps to take in generating configurations.
+
+        Yields:
+            EnigmaConfig: The `EnigmaConfig` resulting from applying `step` to the previous one.
+
+        Examples:
+            This allows the examples above to be rewritten as
+
+            .. doctest:: step
+
+                >>> for c in cfg.stepped_configs(5):
+                ...     print(c.windows())
+                LXZO
+                LXZP
+                LXZQ
+                LXZR
+                LXZS
+                LXZT
+
+                >>> for c in cfg.stepped_configs(5):
+                ...     print(c)
+                c-γ-V-I-II LXZO UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZP UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZQ UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZR UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZS UX.MO.KZ.AY.EF.PL 03.17.04.01
+                c-γ-V-I-II LXZT UX.MO.KZ.AY.EF.PL 03.17.04.01
+
+        """
         cur_config = self
         cur_step = 0
         while steps is None or cur_step <= steps:
@@ -356,6 +431,82 @@ class EnigmaConfig(object):
     # REV - Caching here isn't really needed
     @cached({})
     def stage_mapping_list(self):
+        """The list of |mappings| for each stage of an Enigma machine:
+
+        the encoding performed by the Component at that point in the progress through the machine.
+
+        These are arranged in processing order, beginning with the encoding performed by the plugboard,
+        followed by the forward encoding performed by each rotor (see componentMapping),
+        then the reflector, followed by the reverse encodings by each rotor, and finally by the plugboard again.
+
+        Returns:
+            list of unicode: A list of strings, corresponding the the |mappings| preformed by the corresponding stage
+                of the `EnigmaConfig` (see `~.components.Component.mapping`).
+
+        Examples:
+            This can be used to obtain lists of mappings for analysis:
+
+            .. testsetup:: config_mappings
+
+                cfg = EnigmaConfig.config_enigma("b-γ-VII-V-IV".decode(), u"VBOA", u"NZ.AY.FG.UX.MO.PL", u"05.16.11.21")
+
+            .. doctest:: config_mappings
+
+                >>> cfg = EnigmaConfig.config_enigma("b-γ-VII-V-IV", "VBOA", "NZ.AY.FG.UX.MO.PL", "05.16.11.21") # doctest: +SKIP
+                >>> cfg.stage_mapping_list() # doctest: +ELLIPSIS
+                [u'YBCDEGFHIJKPOZMLQRSTXVWUAN', u'DUSKOCLBRFHZNAEXWGQVYMIPJT', ...]
+
+            or more clearly
+
+            .. doctest:: config_mappings
+
+                >>> for m in cfg.stage_mapping_list():
+                ...     print(m)
+                YBCDEGFHIJKPOZMLQRSTXVWUAN
+                DUSKOCLBRFHZNAEXWGQVYMIPJT
+                CEPUQLOZJDHTWSIFMKBAYGRVXN
+                PCITOWJZDSYERHBNXVUFQLAMGK
+                UZYIGEPSMOBXTJWDNAQVKCRHLF
+                ENKQAUYWJICOPBLMDXZVFTHRGS
+                RKVPFZEXDNUYIQJGSWHMATOLCB
+                WOBILTYNCGZVXPEAUMJDSRFQKH
+                TSAJBPVKOIRFQZGCEWNLDXMYUH
+                NHFAOJRKWYDGVMEXSICZBTQPUL
+                YBCDEGFHIJKPOZMLQRSTXVWUAN
+
+            This list is a core part of the "internal" view of machine stage prduced by `config_string`
+            (compare the second through the next-to-last lines with the above):
+
+            .. doctest:: config_mappings
+
+                >>> print(cfg.config_string(format='internal'))
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  P YBCDEGFHIJKPOZMLQRSTXVWUAN         NZ.AY.FG.UX.MO.PL
+                  1 DUSKOCLBRFHZNAEXWGQVYMIPJT  A  07  IV
+                  2 CEPUQLOZJDHTWSIFMKBAYGRVXN  O  05  V
+                  3 PCITOWJZDSYERHBNXVUFQLAMGK  B  13  VII
+                  4 UZYIGEPSMOBXTJWDNAQVKCRHLF  V  18  γ
+                  R ENKQAUYWJICOPBLMDXZVFTHRGS         b
+                  4 RKVPFZEXDNUYIQJGSWHMATOLCB         γ
+                  3 WOBILTYNCGZVXPEAUMJDSRFQKH         VII
+                  2 TSAJBPVKOIRFQZGCEWNLDXMYUH         V
+                  1 NHFAOJRKWYDGVMEXSICZBTQPUL         IV
+                  P YBCDEGFHIJKPOZMLQRSTXVWUAN         NZ.AY.FG.UX.MO.PL
+                    XZJVGSEMTCYUHWQROPFILDNAKB
+
+            Note that, because plugboard mapping is established by paired exchanges of letters
+            it is always the case that:
+
+            .. doctest:: config_mappings
+
+                >>> cfg.stage_mapping_list()[0] == cfg.stage_mapping_list()[-1]
+                True
+
+            .. todo::
+                Add example of how in degenerate case first n are just the wiring (and explain stage as
+                reverse too).
+
+        """
         return ([component(comp).mapping(pos, FWD) for (comp, pos) in
                  zip(self._components, self._positions)] +
                 [component(comp).mapping(pos, REV) for (comp, pos) in
