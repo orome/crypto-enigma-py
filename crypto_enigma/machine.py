@@ -99,19 +99,19 @@ class EnigmaConfig(object):
         and any number of (non-contradictory) plugboard wirings (including none).
 
         Args:
-            rotor_names (str): The |Walzenlage|_:
+            rotor_names (unicode): The |Walzenlage|_:
                 The conventional letter or roman numeral designations
                 (e.g., **IV** or **β**) of the rotors, including reflector, separated by dashes (e.g. `'C-V-I-II'`);
                 See  `~.components.Component.name` and `components`.
-            window_letters (str): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
+            window_letters (unicode): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
                 The letters visible at the windows (e.g. `'MQR'`).
                 See `windows`.
-            plugs (str): The |Steckerverbindungen|_:
+            plugs (unicode): The |Steckerverbindungen|_:
                 The plugboard specification as a conventional string of letter pairs
                 (separated by periods), indicating letters wired together by plugging (e.g., `'AU.ZM.ZL.RQ'`).
                 Absence or non-use of a plugboard can be indicated with `'~'`.
                 See  `~.components.Component.name` and `components`.
-            rings (str): The |Ringstellung|_:
+            rings (unicode): The |Ringstellung|_:
                 The location of the letter ring on each rotor (specifcially, the number on the
                 rotor under ring letter **A**), separated by periods (e.g. `'22.11.16'`).
                 See `rings`.
@@ -379,10 +379,10 @@ class EnigmaConfig(object):
         which serves as the "starting" configuration for subsequent processing of the message.
 
         Args:
-            message (str): A message to encode.
+            message (unicode): A message to encode.
 
         Returns:
-            str: The machine-encoded message.
+            unicode: The machine-encoded message.
 
         Examples:
             Given machine configuration
@@ -529,10 +529,10 @@ class EnigmaConfig(object):
         (`enigma_encoding`).
 
         Args:
-            string (str): A string to convert to valid Enigma machine input.
+            string (unicode): A string to convert to valid Enigma machine input.
 
         Returns:
-            str: A string of valid Enigma machine input characters.
+            unicode: A string of valid Enigma machine input characters.
 
         """
         subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
