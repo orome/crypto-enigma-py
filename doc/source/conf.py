@@ -177,7 +177,9 @@ rst_epilog = """
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
+.. _simple substitution encoding: https://en.wikipedia.org/wiki/Substitution_cipher
 .. _Ringstellung: https://en.wikipedia.org/wiki/Enigma_rotor_details#Ring_setting
+.. |mappings| replace:: :ref:`mappings <config_encoding_mappings>`
 .. |Walzenlage| replace:: *Walzenlage*
 .. _Walzenlage: http://www.cryptomuseum.com/crypto/enigma/working.htm
 .. |Walzenstellung| replace:: *Walzenstellung*
