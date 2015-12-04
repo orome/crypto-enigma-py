@@ -60,6 +60,8 @@ class EnigmaConfig(object):
         B-I-II-III ABC XO.YM.QL 01.02.03
         >>> print(cfg_intl)
         B-I-II-III ABC XO.YM.QL 01.02.03
+        >>> cfg_conv == cfg_intl
+        True
 
         They may also be useful in extending the functionality provided here, for example in constructing
         additional representations of configurations beyond those provided in `config_string`:
@@ -433,7 +435,10 @@ class EnigmaConfig(object):
         return unicode(self).encode('utf-8')
 
     def __repr__(self):
-         return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
+        return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
+
+    def __eq__(self, cfg):
+        return all([self.components == cfg.components, self.positions == cfg.positions,  self.rings == cfg.rings])
 
     @staticmethod
     def _marked_mapping(mapping, i, mark_func=None):

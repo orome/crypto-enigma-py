@@ -48,3 +48,17 @@ def test_component_string():
         EnigmaConfig.config_enigma('c-γ-I-VIII-III', 'UYZO', 'UX.MI', '03.22.04.09'))
     assert 'b-β-I-II-III AAAA UX.LU.QW.MI 01.11.14.04' == unicode(
         EnigmaConfig.config_enigma('b-β-I-II-III', 'AAAA', 'UX.LU.QW.MI', '01.11.14.04'))
+
+
+def test_component_equality():
+    args_a = ['c-γ-I-VIII-III', 'UYZO', 'UX.MI', '03.22.04.09']
+    args_b = ['c-γ-I-VIII-III', 'UYZO', 'UX.MI', '03.22.04.09']
+    cfg_a = EnigmaConfig.config_enigma(*args_a)
+    cfg_b = EnigmaConfig.config_enigma(*args_b)
+    assert cfg_a == cfg_b
+    assert cfg_a.step() == cfg_b.step()
+    assert cfg_a == EnigmaConfig(cfg_b.components, cfg_b.positions, cfg_b.rings)
+    assert cfg_b == EnigmaConfig(cfg_b.components, cfg_b.positions, cfg_b.rings)
+    assert cfg_a == EnigmaConfig(cfg_a.components, cfg_a.positions, cfg_a.rings)
+    assert cfg_b == EnigmaConfig.config_enigma_from_string(' '.join(args_b))
+    assert cfg_b == EnigmaConfig.config_enigma_from_string(' '.join(args_a))
