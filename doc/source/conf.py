@@ -180,6 +180,7 @@ rst_epilog = """
 .. _simple substitution encoding: https://en.wikipedia.org/wiki/Substitution_cipher
 .. _Ringstellung: https://en.wikipedia.org/wiki/Enigma_rotor_details#Ring_setting
 .. |mappings| replace:: :ref:`mappings <config_encoding_mappings>`
+.. |mapping| replace:: :ref:`mapping <config_encoding_mappings>`
 .. |Walzenlage| replace:: *Walzenlage*
 .. _Walzenlage: http://www.cryptomuseum.com/crypto/enigma/working.htm
 .. |Walzenstellung| replace:: *Walzenstellung*
