@@ -96,22 +96,20 @@ class EnigmaConfig(object):
 
         Args:
             rotor_names (unicode): The |Walzenlage|_:
-                The conventional letter or roman numeral designations
-                (e.g., **IV** or **β**) of the rotors, including reflector, separated by dashes (e.g. `'C-V-I-II'`);
-                See  `~.components.Component.name` and `components`.
+                The conventional letter or Roman numeral designations (its `~.components.Component.name`)
+                of the rotors, including reflector, separated by dashes (e.g. `'b-β-V-I-II'`).
+                (See `components`.)
             window_letters (unicode): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
                 The letters visible at the windows (e.g. `'MQR'`).
-                See `windows`.
+                (See `windows`.)
             plugs (unicode): The |Steckerverbindungen|_:
-                The plugboard specification as a conventional string of letter pairs
-                (separated by periods), indicating letters wired together by plugging (e.g., `'AU.ZM.ZL.RQ'`).
-                Absence or non-use of a plugboard can be indicated with `'~'` (or almost anything that isn't
-                a valid plugboard spec).
-                See  `~.components.Component.name` and `components`.
+                The plugboard specification (its `~.components.Component.name`) as a conventional string of letter
+                pairs separated by periods, (e.g., `'AU.ZM.ZL.RQ'`).
+                (See `components`.)
             rings (unicode): The |Ringstellung|_:
                 The location of the letter ring on each rotor (specifcially, the number on the
                 rotor under ring letter **A**), separated by periods (e.g. `'22.11.16'`).
-                See `rings`.
+                (See `rings`.)
 
         Returns:
             EnigmaConfig: A new Enigma machine configuration created from the specification arguments.
