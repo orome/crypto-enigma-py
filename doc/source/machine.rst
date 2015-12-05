@@ -89,6 +89,10 @@ Message encoding
 Mappings
 --------
 
+.. todo::
+
+    Move this to a new `Mapping` class, with an encode method?
+
 The Enigma machine, and the components from which it is constructed, use **mappings** to perform a
 `simple substitution encoding`_.
 Mappings describe the cryptographic effects of each component's fixed `~.components.Component.wiring`;
