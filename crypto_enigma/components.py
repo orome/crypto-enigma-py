@@ -27,8 +27,21 @@ REV = -1
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
 # TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
+
     @property
     def name(self):
+        """The name identifying a component of an Enigma machine.
+
+        For rotors (including the reflector) this is one of the conventional letter or Roman numeral designations
+        (e.g., `'IV'` or `'β'`).
+        For the plugboard this is the conventional string of letter pairs, indicating letters wired together
+        by plugging (e.g., `'AU.ZM.ZL.RQ'`). Absence or non-use of a plugboard can be indicated with `'~'`
+        (or almost anything that isn't a valid plugboard spec).
+
+        Returns:
+            unicode: A string uniquely specifying a `Component`.
+
+        """
         return self._name
 
     @property
