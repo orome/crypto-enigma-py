@@ -28,6 +28,15 @@ REV = -1
 # TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
 
+    def __init__(self, name, wiring, turnovers):
+
+        # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
+        assert name not in _comps.keys()
+
+        self._name = name
+        self._wiring = wiring
+        self._turnovers = turnovers
+
     @property
     def name(self):
         """The name identifying a component of an Enigma machine.
@@ -46,24 +55,75 @@ class Component(object):
 
     @property
     def wiring(self):
+        """The physical wiring of a component, expressed as a |mapping|.
+
+        Returns:
+            unicode: The `mapping` established by the physical wiring of a `Component`:
+                the forward mapping when **01** is at the window position for rotors;
+                by the plug arrangement for the plugboard.
+
+        Examples:
+            A rotor's wiring is fixed by the physical connections of the wires inside the roter:
+
+            >>> cmp = component('V')
+            >>> cmp.wiring
+            u'VZBRGITYUPSDNHLXAWMJQOFECK'
+
+            For plugboards, it is established by the specified connections:
+
+            >>> component('AZ.BY').wiring
+            u'ZYCDEFGHIJKLMNOPQRSTUVWXBA'
+
+        """
         return self._wiring
 
     @property
     def turnovers(self):
+        """The turnover positions for a rotor.
+
+        Returns:
+            unicode: The letters on a rotor's ring that appear at the window (see `~.machine.EnigmaConfig.windows`)
+                when the ring is in the turnover position.
+                Not applicable (and empty) for the plugboard and for reflectors.
+                (See `.machine.EnigmaConfig.step`.)
+
+        """
         return self._turnovers
-
-    def __init__(self, name, wiring, turnovers):
-
-        # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
-        assert name not in _comps.keys()
-
-        self._name = name
-        self._wiring = wiring
-        self._turnovers = turnovers
 
     # Caching here is essential; see general not on caching.
     @cached({})
     def mapping(self, position, direction=FWD):
+        """The mapping performed by a component based on its rotational position.
+
+        The |mapping| performed by a `Component` as a function of its position (see `~.machine.EnigmaConfig.positions`)
+        in an Enigma machine and the direction of the signal passing through it.
+
+        For all other positions of rotors, the mapping is a cyclic permutation this wiring's inputs (backward)
+        and outputs (forward) by the rotational offset of the rotor away from the **01** position.
+
+        Args:
+            position (int): The rotational offset of the `Component` in the Enigma machine.
+            direction: The direction of signal passage through the component.
+
+        Returns:
+            unicode: The |mapping| performed by the component in the `direction` when `position` is
+                at the window position.
+
+        Examples:
+            Note that because the wiring of reflectors generates mappings that consist entirely of paired exchanges
+            of letters, reflectors (at any position) produce the same mapping in both directions (the same is true
+            of the plugboard):
+
+            >>> all(c.mapping(p, FWD) == c.mapping(p, REV) for c in map(component, reflectors) for p in range(1,26))
+            True
+
+        For rotors in their base position, with **01** at the window position, and for the plugboard,
+        this is just the `wiring`:
+
+        >>> cmp.wiring == cmp.mapping(1, FWD)
+        True
+
+        """
 
         assert direction in [FWD, REV]
 
