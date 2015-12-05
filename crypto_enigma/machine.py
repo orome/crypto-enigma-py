@@ -162,7 +162,7 @@ class EnigmaConfig(object):
 
         Args:
             string (unicode): The elements of a conventional specification (as supplied to `config_enigma`)
-            joined by spaces into a single string.
+                joined by spaces into a single string.
 
         Returns:
             EnigmaConfig: A new Enigma machine configuration created from the specification argument.
@@ -288,7 +288,6 @@ class EnigmaConfig(object):
         """
         return self._rings
 
-    # REV - Implement as a property? <<<
     def windows(self):
         """The letters at the windows of an Enigma machine.
 
@@ -314,8 +313,10 @@ class EnigmaConfig(object):
         """Step the Enigma machine to a new machine configuration.
 
         Step the Enigma machine by rotating the rightmost (first) rotor one position, and other rotors as
-        determined by the `positions` of rotors in the machine. In the physical machine, a step occurs in
-        response to each operator keypress, prior to processing that key's letter (see `enigma_encoding`).
+        determined by the `positions` of rotors in the machine,
+        based on the positions of their `.components.Component.turnovers`.
+        In the physical machine, a step occurs in response to each operator keypress,
+        prior to processing that key's letter (see `enigma_encoding`).
 
         Stepping leaves the `components` and `rings` of a configuration unchanged, changing only
         `positions`, which is manifest in changes of the letters visible at the `windows`:
