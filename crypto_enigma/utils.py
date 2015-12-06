@@ -40,18 +40,6 @@ def ordering(items):
     return [i[1] for i in sorted(zip(items, range(0, len(items))))]
 
 
-# standard simple-substitution cypher encoding
-def encode_char(mapping, ch):
-    if 0 <= num_A0(ch) < len(mapping):
-        return mapping[num_A0(ch)]
-    else:
-        return ' '
-
-
-def encode_string(mapping, string):
-    return ''.join([encode_char(mapping, ch) for ch in string])
-
-
 # scan, because it's missing from Python; implemented to anticipate Python 3
 def accumulate(l, f):
     it = iter(l)

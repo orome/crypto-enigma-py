@@ -514,7 +514,7 @@ class EnigmaConfig(object):
     # REV - Caching here isn't really needed
     @cached({})
     def enigma_mapping_list(self):
-        return list(accumulate(self.stage_mapping_list(), lambda s, m: encode_string(m, s)))
+        return list(accumulate(self.stage_mapping_list(), lambda s, m: Mapping(m.encode_string(s))))
 
     def enigma_mapping(self):
         return self.enigma_mapping_list()[-1]
@@ -571,7 +571,7 @@ class EnigmaConfig(object):
         """
         message = EnigmaConfig.make_message(message)
 
-        return ''.join([encode_char(step_config.enigma_mapping(), letter) for
+        return ''.join([step_config.enigma_mapping().encode_char(letter) for
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
 
     # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
@@ -613,7 +613,7 @@ class EnigmaConfig(object):
 
         # locate the index of the encoding with mapping of letter, in string
         # REV - Use of out of bounds index (-1) as failure return value; callers must check bounds (see above) <<<
-        return string.index(encode_char(mapping, letter)) if letter in string else -1
+        return string.index(mapping.encode_char(letter)) if letter in string else -1
 
     # Ensures a single uppercase character ("those that are valid Enigma input") or space, defaulting to a space
     @staticmethod
@@ -645,9 +645,9 @@ class EnigmaConfig(object):
 
         # REV - Better way that avoids recalcs of cfg_mapping and cfg_mapping_list?
         letter_locations = [EnigmaConfig._locate_letter(m, l, s) for (m, l, s) in
-                            zip([LETTERS] + cfg_mapping_list + [cfg_mapping],
+                            zip([Mapping(LETTERS)] + cfg_mapping_list + [cfg_mapping],
                                 [letter] * (len(self._stages) * 2 + 1),
-                                [LETTERS] + stg_mapping_list + [cfg_mapping])]
+                                [Mapping(LETTERS)] + stg_mapping_list + [cfg_mapping])]
 
         stg_labels = reflect_info(['P'] + list(self._stages)[1:-1] + ['R'])
         stg_mappings = [EnigmaConfig._marked_mapping(m, i, mark_func) for (m, i) in zip(stg_mapping_list,
@@ -664,7 +664,7 @@ class EnigmaConfig(object):
                                                                                     stg_windows,
                                                                                     stg_positions,
                                                                                     stg_coponents)]) +
-                "{0} {1}".format(encode_char(self.enigma_mapping(), letter) + ' <' if letter in LETTERS else '   ',
+                "{0} {1}".format(self.enigma_mapping().encode_char(letter) + ' <' if letter in LETTERS else '   ',
                                  EnigmaConfig._marked_mapping(cfg_mapping, letter_locations[-1], mark_func))
                 )
 
@@ -713,7 +713,7 @@ class EnigmaConfig(object):
 
             encoding_string = ''
             if letter in LETTERS and (show_encoding or format in EnigmaConfig._FMTS_ENCODING):
-                encoding_string = '  {0} > {1}'.format(letter, encode_char(self.enigma_mapping(),letter))
+                encoding_string = '  {0} > {1}'.format(letter, self.enigma_mapping().encode_char(letter))
 
             if format in EnigmaConfig._FMTS_INTERNAL:
                 return self._config_string_internal(letter, mark_func)

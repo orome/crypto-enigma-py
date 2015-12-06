@@ -14,20 +14,20 @@ from crypto_enigma.machine import *
 # Test utilities and internals
 
 def test_encoding_chars():
-    assert encode_char("PQR", 'Z') == ' '
-    assert encode_char("PQR", 'B') == 'Q'
-    assert encode_char("", ' ') == ' '
+    assert Mapping("PQR").encode_char('Z') == ' '
+    assert Mapping("PQR").encode_char('B') == 'Q'
+    assert Mapping("").encode_char(' ') == ' '
 
 
 def test_marked_mapping():
-    for s in ["AMC", "ANNCJDDJSJKKWKWK", "", "dkjfsldfjhsljdhflskjdfh"]:
+    for s in [Mapping("AMC"), Mapping("ANNCJDDJSJKKWKWK"), Mapping(""), Mapping("dkjfsldfjhsljdhflskjdfh")]:
         assert EnigmaConfig._marked_mapping(s, 50) == s
 
 
 def test_locate_letter():
-    for s in ["AMC", "ANNCJDDJSJKKWKWK", "A", "dkjfslAdfjhsljdhflskjdfh"]:
+    for s in [Mapping("AMC"), Mapping("ANNCJDDJSJKKWKWK"), Mapping("A"), Mapping("dkjfslAdfjhsljdhflskjdfh")]:
         assert EnigmaConfig._locate_letter(s, 'A', "zzzzz") == -1
-    for s in ["AMC", "ANNCJDDJSJKKWKWK", "A", "dkjfslAdfjhsljdhflskjdfh"]:
+    for s in [Mapping("AMC"), Mapping("ANNCJDDJSJKKWKWK"), Mapping("A"), Mapping("dkjfslAdfjhsljdhflskjdfh")]:
         assert EnigmaConfig._locate_letter(s, '5', "zzzzz") == -1
 
 

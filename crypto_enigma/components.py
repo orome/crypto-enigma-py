@@ -24,6 +24,23 @@ FWD = 1
 REV = -1
 
 
+class Mapping(unicode):
+
+    def __init__(self, str):
+        super(Mapping, self).__init__()
+        self._len = len(self)
+
+    # standard simple-substitution cypher encoding
+    def encode_char(self, ch):
+        if 0 <= num_A0(ch) < self._len:
+            return self[num_A0(ch)]
+        else:
+            return ' '
+
+    def encode_string(self, string):
+        return ''.join([self.encode_char(ch) for ch in string])
+
+
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
 # TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
@@ -34,7 +51,7 @@ class Component(object):
         assert name not in _comps.keys()
 
         self._name = name
-        self._wiring = wiring
+        self._wiring = Mapping(wiring)
         self._turnovers = turnovers
 
     @property
@@ -137,10 +154,10 @@ class Component(object):
         # REV - Use list comprehensions instead of map?
         if direction == REV:
             # return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
-            return ''.join([chr_A0(p) for p in ordering(self.mapping(position, FWD))])
+            return Mapping(''.join([chr_A0(p) for p in ordering(self.mapping(position, FWD))]))
         else:
             # return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
-            return ''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)])
+            return Mapping(''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)]))
 
     def __unicode__(self):
         return "{0} {1} {2}".format(self._name, self._wiring, self._turnovers)

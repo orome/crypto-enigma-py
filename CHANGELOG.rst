@@ -17,6 +17,7 @@ See also:
 ~~~~~~~~~
 
 * (Start documentation.)
+* (Implement mapping as a class.)
 
 `0.2.1b1`_
 ~~~~~~~~~~
