@@ -75,7 +75,7 @@ class Component(object):
         """The physical wiring of a component, expressed as a |mapping|.
 
         Returns:
-            unicode: The `mapping` established by the physical wiring of a `Component`:
+            Mapping: The `mapping` established by the physical wiring of a `Component`:
                 the forward mapping when **01** is at the window position for rotors;
                 by the plug arrangement for the plugboard.
 
@@ -123,7 +123,7 @@ class Component(object):
             direction: The direction of signal passage through the component.
 
         Returns:
-            unicode: The |mapping| performed by the component in the `direction` when `position` is
+            Mapping: The |mapping| performed by the component in the `direction` when `position` is
                 at the window position.
 
         Examples:
