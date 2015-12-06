@@ -25,10 +25,9 @@ from .components import *
 
 
 class EnigmaConfig(object):
-    """
-    An Enigma machine configuration.
+    """An Enigma machine configuration.
 
-    An class representing the state of an Enigma machine, providing functionality for
+    A class representing the state of an Enigma machine, providing functionality for
 
     * :ref:`generating a machine configuration <config_creation>` from a conventional specification,
     * :ref:`examining the state <config_state>` of a configuration,
@@ -39,7 +38,7 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
-        """The low level specification of an Enigma configuration.
+        """The core properties of an EnigmaConfig embody a low level specification of an Enigma configuration.
 
         The conventional historical specification of an Enigma machine (as used in `~EnigmaConfig.config_enigma`)
         includes redundant elements, and conceals properties that are directly relevant to the operation
@@ -439,7 +438,7 @@ class EnigmaConfig(object):
         then the reflector, followed by the reverse encodings by each rotor, and finally by the plugboard again.
 
         Returns:
-            list of unicode: A list of strings, corresponding the the |mappings| preformed by the corresponding stage
+            list of Mapping: A list of |mappings| preformed by the corresponding stage
                 of the `EnigmaConfig` (see `~.components.Component.mapping`).
 
         Examples:

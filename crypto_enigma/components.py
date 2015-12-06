@@ -25,8 +25,38 @@ REV = -1
 
 
 class Mapping(unicode):
+    """A substitution cypher mapping.
+
+    The Enigma machine, and the components from which it is constructed, use **mappings** to perform a
+    `simple substitution encoding`_. Mappings describe
+
+    * the cryptographic effects of each component's fixed `~.components.Component.wiring`;
+    * the encoding they perform individually in a machine based on their rotational `~EnigmaConfig.positions` and
+      the direction in which a signal passes through them (see `~.components.Component.mapping`); and,
+    * the progressive (`~EnigmaConfig.stage_mapping_list`) and overall (`~EnigmaConfig.enigma_mapping_list`
+      and `~EnigmaConfig.enigma_mapping`) encoding performed by the machine as a whole.
+
+    """
 
     def __init__(self, str):
+        """Mappings are  expressed as a string of letters indicating the mapped-to letter
+        for the letter at that position in the alphabet — i.e., as a permutation of the alphabet.
+        For example, the mapping **EKMFLGDQVZNTOWYHXUSPAIBRCJ** encodes
+        **A** to **E**, **B** to **K**, **C** to **M**, ..., **Y** to **C**, and **Z** to **J**:
+
+        >>> mpg = Mapping(u'EKMFLGDQVZNTOWYHXUSPAIBRCJ')
+        >>> mpg.encode_string(u'ABCYZJ')
+        u'EKMCJZ'
+        >>> mpg.encode_string(u'ABCDEFGHIJKLMNOPQRSTUVWXYZ') == mpg
+        True
+
+        Note that there is no way to directly create `Mapping` for use by an `EnigmaMachine` or `Component`.
+        The closest one can get is to configure a plugboard with `component`:
+
+        >>> component(u'AE.BK.CM.FD').wiring # doctest: +ELLIPSIS
+        u'EKMF...'
+
+        """
         super(Mapping, self).__init__()
         self._len = len(self)
 
