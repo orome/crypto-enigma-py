@@ -76,3 +76,33 @@ Tasks
 
     Review how to do terms/definitions systematically.
 
+.. todo::
+
+    Add use examples to readme and to intro (index and briefly top level for each module).
+    Expand package and module docstrings to do some of this.
+
+.. todo::
+
+    Add links and disclaimer about general understanding of Enigma machine operation.
+
+.. todo::
+
+    Add note on memoization?
+
+.. todo::
+
+    Review Unicode errors in tests and see if they can be re-enabled.
+
+.. todo::
+
+    Move all/some static methods out of class and make general functions?
+
+.. todo::
+
+    Add and link mathematical discussion and equivalences; e.g., formula for `~.components.Component.mapping` as:
+
+    .. math::
+
+        \mu_{i}(c)=\rho^{s_{i}(c)}\omega_{i}\rho^{-s_{i}(c)}
+
+
