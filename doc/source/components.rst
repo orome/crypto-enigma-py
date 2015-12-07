@@ -13,7 +13,16 @@
 Components - :mod:`crypto_enigma.components`
 ********************************************
 
+.. automodule:: crypto_enigma.components
+
+Machine components
+==================
+
 .. autoclass:: crypto_enigma.components.Component
     :members:
     :undoc-members:
-    :show-inheritance:
+
+Getting components
+==================
+
+.. autofunction:: crypto_enigma.components.component
