@@ -6,10 +6,8 @@
 # released under the BSD-3 License (see LICENSE.txt).
 
 """
-Description
-
-.. note::
-    Any additional note.
+This is a supporting module that implements the simple substitution cypher employed by the Enigma machine to
+encode messages. It will not generally be used directly.
 """
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)

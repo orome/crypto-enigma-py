@@ -6,7 +6,15 @@
 # released under the BSD-3 License (see LICENSE.txt).
 
 """ 
-The main Enigma machine module to import.
+This module supports all of the functionality of an Enigma machine using an `EnigmaConfig` class and
+several utility functions, which support examination of its state
+(including the details of the cyphers used for encoding messages), stepping during operation, and encoding messages.
+
+.. todo::
+    Flesh out and link to sections.
+
+.. todo::
+    Fix and document import organization.
 """
 
 # REV - Additional performance improvements
@@ -230,7 +238,7 @@ class EnigmaConfig(object):
         `~EnigmaConfig.config_enigma.rings` parameters for `config_enigma`.
 
         This (alone) determines permutations applied to components' `~.components.Component.wiring` to
-        produce the :ref:`mapping <config_encoding_mappings>` for a configuration and thus
+        produce the :ref:`mapping <config_state_mappings>` for a configuration and thus
         the :ref:`message encoding <config_encoding_message>` it performs.
 
         Note that this is the only property of an enigma machine that changes when it is stepped (see `step`),
