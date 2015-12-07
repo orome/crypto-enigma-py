@@ -42,7 +42,9 @@ then produces a series of configurations each with new state
 
 Formally, that state consists of :ref:`internal <config_state_internal>` elements not directly
 visible to the operator who can only indirectly :ref:`see changes <config_state_visible>` in the
-positions of the rotors as manifest in the rotor letters at the machine windows.
+positions of the rotors as manifest in the rotor letters at the machine windows. This internal
+state is entirely responsible for determining the :ref:`mappings used by the machine <config_state_mappings>` to
+encode messages.
 
 .. _config_state_visible:
 
@@ -61,6 +63,18 @@ Internal state
 .. autoattribute:: EnigmaConfig.components
 .. autoattribute:: EnigmaConfig.positions
 .. autoattribute:: EnigmaConfig.rings
+
+.. _config_state_mappings:
+
+Mappings
+--------
+
+The Enigma machine's state determines the |mappings| it uses to perform :ref:`encodings <config_encoding>`.
+Thes mappings can be examined in a number of ways:
+
+.. automethod:: EnigmaConfig.stage_mapping_list
+.. automethod:: EnigmaConfig.enigma_mapping_list
+.. automethod:: EnigmaConfig.enigma_mapping
 
 .. _config_operation:
 
@@ -85,18 +99,6 @@ Message encoding
 .. automethod:: EnigmaConfig.enigma_encoding
 .. automethod:: EnigmaConfig.print_encoding
 .. automethod:: EnigmaConfig.make_message
-
-.. _config_encoding_mappings:
-
-Mappings
---------
-
-The Enigma machine performs encoding using a simple substitution cypher based on |mappings|
-of its components determined by their state.
-
-.. automethod:: EnigmaConfig.stage_mapping_list
-.. automethod:: EnigmaConfig.enigma_mapping_list
-.. automethod:: EnigmaConfig.enigma_mapping
 
 Exceptions
 ==========
