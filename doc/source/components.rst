@@ -6,8 +6,8 @@
 
 .. note::
 
-   Full documentation for the API currently under construction (here). In the meantime the `Hackage documentation`_
-   for the `Haskell version`_ (which has essentially the same API) serves as a temporary substitute.
+    This documentation is in draft form. Reports of any errors or suggestions for improvement are welcomed and
+    should be submitted as `new issues`_.
 
 ********************************************
 Components - :mod:`crypto_enigma.components`

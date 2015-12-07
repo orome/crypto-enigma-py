@@ -176,6 +176,7 @@ rst_epilog = """
 .. _test versions: https://testpypi.python.org/pypi/crypto-enigma
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
+.. _new issues: https://github.com/orome/crypto-enigma-py/issues/new
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
 .. _simple substitution encoding: https://en.wikipedia.org/wiki/Substitution_cipher
 .. _Ringstellung: https://en.wikipedia.org/wiki/Enigma_rotor_details#Ring_setting
