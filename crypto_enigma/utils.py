@@ -28,16 +28,7 @@ def print_over(s, backup=True, delay=0.2):
     time.sleep(delay)
 
 
-def num_A0(c):
-    return ord(c) - ord('A')
 
-
-def chr_A0(n):
-    return chr(n + ord('A'))
-
-
-def ordering(items):
-    return [i[1] for i in sorted(zip(items, range(0, len(items))))]
 
 
 # scan, because it's missing from Python; implemented to anticipate Python 3

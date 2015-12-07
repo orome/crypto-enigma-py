@@ -25,6 +25,7 @@ Sitemap
 
     machine
     components
+    cypher
 
 Indices and tables
 ==================

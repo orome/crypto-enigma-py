@@ -91,16 +91,8 @@ Message encoding
 Mappings
 --------
 
-All encoding functionality is built upon a single class:
-
-.. autoclass:: Mapping()
-    :show-inheritance:
-
-.. autosimple:: Mapping.__init__
-
-.. todo::
-
-    Correct use of a term/definition for this, and a variable to link back consistently.
+The Enigma machine performs encoding using a simple substitution cypher based on |mappings|
+of its components determined by their state.
 
 .. automethod:: EnigmaConfig.stage_mapping_list
 .. automethod:: EnigmaConfig.enigma_mapping_list
