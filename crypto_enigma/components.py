@@ -17,6 +17,14 @@ from cachetools import cached
 
 from .cypher import *
 
+
+# REV - Additional performance improvements
+# A note on the use of caching (cachetools):
+# A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
+# This is effective because upper rotors don't change frequently so such cached mappings are reused many times.
+# And because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
+
+
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 FWD = 1
 REV = -1

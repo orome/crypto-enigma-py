@@ -17,12 +17,7 @@ several utility functions, which support examination of its state
     Fix and document import organization.
 """
 
-# REV - Additional performance improvements
-# A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
-# This is effective because upper rotors don't change frequently so such cached mappings are reused many times. And
-# because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
-# Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the loss
-# of clarity.
+
 # The mark_func argument should take a single character and return a string representing that character, "marked" to
 # highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
 from __future__ import (absolute_import, print_function, division, unicode_literals)

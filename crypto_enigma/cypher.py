@@ -14,6 +14,12 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 from .utils import *
 
+
+# A note on the use of string indexing to implement encryption:
+# Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the
+# loss of clarity and correspondence to the underlying math.
+
+
 def num_A0(c):
     return ord(c) - ord('A')
 
