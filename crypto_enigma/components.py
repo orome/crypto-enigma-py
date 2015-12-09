@@ -6,7 +6,7 @@
 # released under the BSD-3 License (see LICENSE.txt).
 
 """
-This is a supporting module that implements defines the components used to construct an Enigma machine.
+This is a supporting module that defines the components used to construct an Enigma machine.
 It will not generally be used directly.
 """
 
@@ -25,10 +25,20 @@ REV = -1
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
 # TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
+    """
+    A component used to construct an Enigma machine (as embodied in an `~.machine.EnigmaConfig`) identified by
+    its specification (see `name`), and characterized by its physical `wiring` and additionally — for rotors other
+    than the reflector — by `turnovers` which govern the stepping (see `~.machine.EnigmaConfig.step`)
+    of the machine in which it is installed.
+    """
 
+    # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
     def __init__(self, name, wiring, turnovers):
-
-        # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
+        """
+        There is no reason to construct a component directly, and no directly instantiated component
+        can  be used in an `~.machine.EnigmaConfig`. The properties of components
+        "outside of" an `~.machine.EnigmaConfig` can be :ref:`examined using <component_getting>` `component`.
+        """
         assert name not in _comps.keys()
 
         self._name = name
@@ -37,10 +47,10 @@ class Component(object):
 
     @property
     def name(self):
-        """The name identifying a component of an Enigma machine.
+        """The specification a component of an Enigma machine.
 
         For rotors (including the reflector) this is one of the conventional letter or Roman numeral designations
-        (e.g., `'IV'` or `'β'`).
+        (e.g., `'IV'` or `'β'`) or rotor "names".
         For the plugboard this is the conventional string of letter pairs, indicating letters wired together
         by plugging (e.g., `'AU.ZM.ZL.RQ'`). Absence or non-use of a plugboard can be indicated with `'~'`
         (or almost anything that isn't a valid plugboard spec).
@@ -61,11 +71,13 @@ class Component(object):
                 by the plug arrangement for the plugboard.
 
         Examples:
-            A rotor's wiring is fixed by the physical connections of the wires inside the roter:
+            A rotor's wiring is fixed by the physical connections of the wires inside the rotor:
 
             >>> cmp = component('V')
             >>> cmp.wiring
             u'VZBRGITYUPSDNHLXAWMJQOFECK'
+            >>> component('VI').wiring
+            u'JPGVOUMFYQBENHZRDKASXLICTW'
 
             For plugboards, it is established by the specified connections:
 
@@ -83,12 +95,32 @@ class Component(object):
             unicode: The letters on a rotor's ring that appear at the window (see `~.machine.EnigmaConfig.windows`)
                 when the ring is in the turnover position.
                 Not applicable (and empty) for the plugboard and for reflectors.
-                (See `.machine.EnigmaConfig.step`.)
+                (See `~.machine.EnigmaConfig.step`.)
+
+        Examples:
+            Only "full-width" rotors have turnovers:
+
+            >>> component('V').turnovers
+            u'Z'
+            >>> component('VI').turnovers
+            u'ZM'
+            >>> component('I').turnovers
+            u'Q'
+
+            Reflectors, "half-width" rotors, and the plugboard never do:
+
+            >>> component('B').turnovers
+            u''
+            >>> component('β').turnovers
+            u''
+            >>> component('AG.OI.LM.ER.KU').turnovers
+            u''
+
 
         """
         return self._turnovers
 
-    # Caching here is essential; see general not on caching.
+    # Caching here is essential; see general note on caching.
     @cached({})
     def mapping(self, position, direction=FWD):
         """The mapping performed by a component based on its rotational position.
@@ -172,12 +204,42 @@ _comps['c'] = _refs['c'] = Component('c', 'RDOBJNTKVEHMLFCWZAXGYIPSUQ', '')
 _kbd = dict()
 _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 
+
+#: The list of valid (non-reflector) rotor names.
+#:
+#: >>> rotors # doctest: +SKIP
+#: [u'I', u'II', u'III', u'IV', u'V', u'VI', u'VII', u'VIII', u'β', u'γ']
 rotors = sorted(_rots.keys())
+
+#: The list of valid reflector rotor names
+#:
+#: >>> reflectors
+#: [u'A', u'B', u'C', u'b', u'c']
 reflectors = sorted(_refs.keys())
 
 
 @require_unicode('name')
 def component(name):
+    """Retrieve a specified component.
+
+    Args:
+        name: The `name` of a `Component`
+
+    Returns:
+        Component: The component with the specified name.
+
+    Examples:
+        Components are displayed as a string consisting of their properties:
+
+        >>> print(component('VI'))
+        VI JPGVOUMFYQBENHZRDKASXLICTW ZM
+
+        Components with the same `name` are always identical:
+
+        >>> component('AG.OI.LM.ER.KU') is component('AG.OI.LM.ER.KU')
+        True
+
+    """
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
             # return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)

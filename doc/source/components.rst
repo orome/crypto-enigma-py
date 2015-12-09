@@ -18,11 +18,31 @@ Components - :mod:`crypto_enigma.components`
 Machine components
 ==================
 
-.. autoclass:: crypto_enigma.components.Component
-    :members:
-    :undoc-members:
+.. autoclass:: Component
+
+.. autosimple:: Component.__init__
+
+Component properties
+====================
+
+.. autoattribute:: Component.name
+.. autoattribute:: Component.wiring
+.. autoattribute:: Component.turnovers
+
+The component mapping
+=====================
+
+.. automethod:: Component.mapping
+
+.. _component_getting:
 
 Getting components
 ==================
 
 .. autofunction:: crypto_enigma.components.component
+
+.. autodata:: crypto_enigma.components.rotors
+    :annotation:
+
+.. autodata:: crypto_enigma.components.reflectors
+    :annotation:
