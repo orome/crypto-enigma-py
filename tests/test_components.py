@@ -28,18 +28,18 @@ def test_component_keys():
 
 def test_component_rotation():
     # Component rotation
-    assert 'EKMFLGDQVZNTOWYHXUSPAIBRCJ' == component('I').mapping(1, FWD)
-    assert 'QGCLFMUKTWZDNJYVOESIBPRAHX' == component('II').mapping(-1, FWD)
-    assert 'CEGIKBOQSWUYMXDHVFZJLTRPNA' == component('III').mapping(2, FWD)
-    assert 'PZEHVRYSCMDBTXLUKAOQIWJNGF' == component('IV').mapping(-2, FWD)
+    assert 'EKMFLGDQVZNTOWYHXUSPAIBRCJ' == component('I').mapping(1, Direction.FWD)
+    assert 'QGCLFMUKTWZDNJYVOESIBPRAHX' == component('II').mapping(-1, Direction.FWD)
+    assert 'CEGIKBOQSWUYMXDHVFZJLTRPNA' == component('III').mapping(2, Direction.FWD)
+    assert 'PZEHVRYSCMDBTXLUKAOQIWJNGF' == component('IV').mapping(-2, Direction.FWD)
 
-    assert 'RVHKXCSFBUMPJWNEGZYDIQOTLA' == component('VIII').mapping(11, REV)
-    assert 'XZVROSMPJIWNGLEHUDFYQCKATB' == component('B').mapping(-12, REV)
-    assert 'DUEACLXWRVPFZTSKYIONBJHGQM' == component('C').mapping(17, REV)
-    assert 'MTPRJAYQKZLHUGFNWOCIXBVESD' == component('V').mapping(-8, REV)
+    assert 'RVHKXCSFBUMPJWNEGZYDIQOTLA' == component('VIII').mapping(11, Direction.REV)
+    assert 'XZVROSMPJIWNGLEHUDFYQCKATB' == component('B').mapping(-12, Direction.REV)
+    assert 'DUEACLXWRVPFZTSKYIONBJHGQM' == component('C').mapping(17, Direction.REV)
+    assert 'MTPRJAYQKZLHUGFNWOCIXBVESD' == component('V').mapping(-8, Direction.REV)
 
     for r in rotors + reflectors:
-        assert component(r).wiring == component(r).mapping(1, FWD)
+        assert component(r).wiring == component(r).mapping(1, Direction.FWD)
 
 
 def test_component_string():

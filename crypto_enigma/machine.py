@@ -508,9 +508,9 @@ class EnigmaConfig(object):
                 reverse too).
 
         """
-        return ([component(comp).mapping(pos, FWD) for (comp, pos) in
+        return ([component(comp).mapping(pos, Direction.FWD) for (comp, pos) in
                  zip(self._components, self._positions)] +
-                [component(comp).mapping(pos, REV) for (comp, pos) in
+                [component(comp).mapping(pos, Direction.REV) for (comp, pos) in
                  zip(self._components, self._positions)][:-1][::-1])
 
     # REV - Caching here isn't really needed

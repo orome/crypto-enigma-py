@@ -14,6 +14,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 
 from itertools import cycle, islice
 from cachetools import cached
+from enum import Enum
 
 from .cypher import *
 
@@ -26,8 +27,11 @@ from .cypher import *
 
 
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-FWD = 1
-REV = -1
+
+
+class Direction(Enum):
+    FWD = 1
+    REV = 2
 
 
 # ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
@@ -130,7 +134,7 @@ class Component(object):
 
     # Caching here is essential; see general note on caching.
     @cached({})
-    def mapping(self, position, direction=FWD):
+    def mapping(self, position, direction=Direction.FWD):
         """The mapping performed by a component based on its rotational position.
 
         The |mapping| performed by a `Component` as a function of its position (see `~.machine.EnigmaConfig.positions`)
@@ -141,7 +145,7 @@ class Component(object):
 
         Args:
             position (int): The rotational offset of the `Component` in the Enigma machine.
-            direction: The direction of signal passage through the component.
+            direction (Direction): The direction of signal passage through the component.
 
         Returns:
             Mapping: The |mapping| performed by the component in the `direction` when `position` is
@@ -152,18 +156,18 @@ class Component(object):
             of letters, reflectors (at any position) produce the same mapping in both directions (the same is true
             of the plugboard):
 
-            >>> all(c.mapping(p, FWD) == c.mapping(p, REV) for c in map(component, reflectors) for p in range(1,26))
+            >>> all(c.mapping(p, Direction.FWD) == c.mapping(p, Direction.REV) for c in map(component, reflectors) for p in range(1,26))
             True
 
         For rotors in their base position, with **01** at the window position, and for the plugboard,
         this is just the `wiring`:
 
-        >>> cmp.wiring == cmp.mapping(1, FWD)
+        >>> cmp.wiring == cmp.mapping(1, Direction.FWD)
         True
 
         """
 
-        assert direction in [FWD, REV]
+        assert direction in [Direction.FWD, Direction.REV]
 
         # REV - Smarter handling of edge cases and bounds?
         def rot_map(mp, st):
@@ -173,9 +177,9 @@ class Component(object):
         steps = position - 1
 
         # REV - Use list comprehensions instead of map?
-        if direction == REV:
+        if direction == Direction.REV:
             # return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
-            return Mapping(''.join([chr_A0(p) for p in ordering(self.mapping(position, FWD))]))
+            return Mapping(''.join([chr_A0(p) for p in ordering(self.mapping(position, Direction.FWD))]))
         else:
             # return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
             return Mapping(''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)]))
