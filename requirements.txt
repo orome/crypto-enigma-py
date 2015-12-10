@@ -1,1 +1,2 @@
 cachetools>=1.1.5
+enum34>=1.1.1
