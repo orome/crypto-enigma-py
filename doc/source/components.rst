@@ -34,6 +34,8 @@ The component mapping
 
 .. automethod:: Component.mapping
 
+.. autoclass:: Direction
+
 .. _component_getting:
 
 Getting components

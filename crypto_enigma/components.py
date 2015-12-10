@@ -30,6 +30,13 @@ LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 class Direction(Enum):
+    """The direction that a signal flows through a component.
+
+    During encoding of a character, the signal passes first through the wiring of each `Component`,
+    from right to left in the machine, in a forward (`~Direction.FWD`) direction, then through the reflector,
+    and then, from left to right, through each component again, in reverse (`~Direction.REV`).
+    This direction affects the encoding performed by the component (see `mapping`).
+    """
     FWD = 1
     REV = 2
 
@@ -138,7 +145,7 @@ class Component(object):
         """The mapping performed by a component based on its rotational position.
 
         The |mapping| performed by a `Component` as a function of its position (see `~.machine.EnigmaConfig.positions`)
-        in an Enigma machine and the direction of the signal passing through it.
+        in an Enigma machine and the `Direction` of the signal passing through it.
 
         For all other positions of rotors, the mapping is a cyclic permutation this wiring's inputs (backward)
         and outputs (forward) by the rotational offset of the rotor away from the **01** position.
