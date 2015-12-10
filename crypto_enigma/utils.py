@@ -29,6 +29,8 @@ def print_over(s, backup=True, delay=0.2):
 
 
 
+def ordering(items):
+    return [i[1] for i in sorted(zip(items, range(0, len(items))))]
 
 
 # scan, because it's missing from Python; implemented to anticipate Python 3

@@ -28,10 +28,6 @@ def chr_A0(n):
     return chr(n + ord('A'))
 
 
-def ordering(items):
-    return [i[1] for i in sorted(zip(items, range(0, len(items))))]
-
-
 class Mapping(unicode):
     """A substitution cypher mapping.
 
