@@ -11,10 +11,10 @@ It will not generally be used directly.
 """
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
+from enum import Enum
 
 from itertools import cycle, islice
 from cachetools import cached
-from enum import Enum
 
 from .cypher import *
 
