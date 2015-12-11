@@ -20,6 +20,7 @@ from .utils import *
 # loss of clarity and correspondence to the underlying math.
 
 
+# TBD - Fix encapsulation here; sould not be used by other modules (e.g., reversed encoding should start with mapping) <<<
 def num_A0(c):
     return ord(c) - ord('A')
 
