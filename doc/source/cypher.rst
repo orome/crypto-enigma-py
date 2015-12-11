@@ -30,9 +30,9 @@ Mapping encoding
 
 .. autosimple:: Mapping.__init__
 
+For reference, two functions are provided to perform a mappings substitution cypher, though
+these will rarely be used directly:
+
 .. automethod:: Mapping.encode_string
 .. automethod:: Mapping.encode_char
 
-.. todo::
-
-    Correct use of a term/definition for this, and a variable to link back consistently.
