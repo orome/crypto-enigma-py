@@ -41,8 +41,6 @@ class Direction(Enum):
     REV = 2
 
 
-# ASK - How to make private so it can't be instantiated outside of module? Make private to EnigmaConfig? <<<
-# TBD - http://stackoverflow.com/a/25041285/656912
 class Component(object):
     """
     A component used to construct an Enigma machine (as embodied in an `~.machine.EnigmaConfig`) identified by
@@ -51,13 +49,14 @@ class Component(object):
     of the machine in which it is installed.
     """
 
-    # REV - Decide what goal to pursue here. What kind of flexibility to allow in creating Components
+    # REV - Have this raise a more infomative error if used? -- http://stackoverflow.com/a/26025786/656912
     def __init__(self, name, wiring, turnovers):
         """
         There is no reason to construct a component directly, and no directly instantiated component
         can  be used in an `~.machine.EnigmaConfig`. The properties of components
         "outside of" an `~.machine.EnigmaConfig` can be :ref:`examined using <component_getting>` `component`.
         """
+        # Should never happen if correct constructor has been used.
         assert name not in _comps.keys()
 
         self._name = name
