@@ -182,12 +182,9 @@ class Component(object):
 
         steps = position - 1
 
-        # REV - Use list comprehensions instead of map?
         if direction == Direction.REV:
-            # return ''.join(map(chr_A0, ordering(self.mapping(position, FWD))))
             return Mapping(''.join([chr_A0(p) for p in ordering(self.mapping(position, Direction.FWD))]))
         else:
-            # return ''.join(map(lambda ch: rot_map(LETTERS, -steps)[num_A0(ch)], rot_map(self._wiring, steps)))
             return Mapping(''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)]))
 
     def __unicode__(self):
@@ -266,7 +263,6 @@ def component(name):
     """
     def plug(letters, swap):
         if len(swap) == 2 and swap[0] in LETTERS and swap[1] in letters:
-            # return map(lambda ch: swap[0] if ch == swap[1] else (swap[1] if ch == swap[0] else ch), letters)
             return [swap[0] if c == swap[1] else swap[1] if c == swap[0] else c for c in letters]
         else:
             return letters
