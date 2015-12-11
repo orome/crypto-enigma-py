@@ -22,6 +22,24 @@ Enigma machine configurations and their functionality are represented using sing
 
 .. autoclass:: EnigmaConfig()
 
+.. autosummary::
+    :nosignatures:
+
+      ~EnigmaConfig.config_enigma
+      ~EnigmaConfig.config_enigma_from_string
+      ~EnigmaConfig.windows
+      ~EnigmaConfig.components
+      ~EnigmaConfig.positions
+      ~EnigmaConfig.rings
+      ~EnigmaConfig.stage_mapping_list
+      ~EnigmaConfig.enigma_mapping_list
+      ~EnigmaConfig.enigma_mapping
+      ~EnigmaConfig.step
+      ~EnigmaConfig.stepped_configs
+      ~EnigmaConfig.print_operation
+      ~EnigmaConfig.enigma_encoding
+      ~EnigmaConfig.print_encoding
+
 .. _config_creation:
 
 Creating configurations
