@@ -41,7 +41,7 @@ class EnigmaConfig(object):
 
     # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
-        """The core properties of an EnigmaConfig embody a low level specification of an Enigma configuration.
+        """The core properties of an `EnigmaConfig` embody a low level specification of an Enigma configuration.
 
         The conventional historical specification of an Enigma machine (as used in `~EnigmaConfig.config_enigma`)
         includes redundant elements, and conceals properties that are directly relevant to the operation
@@ -432,13 +432,15 @@ class EnigmaConfig(object):
     # REV - Caching here isn't really needed
     @cached({})
     def stage_mapping_list(self):
-        """The list of |mappings| for each stage of an Enigma machine:
+        """The list of mappings for each stage of an Enigma machine.
 
-        the encoding performed by the Component at that point in the progress through the machine.
+        The list of |mappings| for each stage of in an `EnigmaConfig`:
+        The encoding performed by the `~.components.Component` *at that point* in the progress through the machine.
 
         These are arranged in processing order, beginning with the encoding performed by the plugboard,
-        followed by the forward encoding performed by each rotor (see componentMapping),
-        then the reflector, followed by the reverse encodings by each rotor, and finally by the plugboard again.
+        followed by the forward (see `~.component.Direction`) encoding performed by each rotor
+        (see `~.components.Component.mapping`), then the reflector, followed by the reverse encodings by each rotor,
+        and finally by the plugboard again.
 
         Returns:
             list of Mapping: A list of |mappings| preformed by the corresponding stage
@@ -516,9 +518,75 @@ class EnigmaConfig(object):
     # REV - Caching here isn't really needed
     @cached({})
     def enigma_mapping_list(self):
+        """The list of progressive mappings of an Enigma machine at each stage.
+
+        The list of |mappings| an `EnigmaConfig` has performed by each stage:
+        The encoding performed by the `EnigmaConfig` as a whole *up to that point* in the progress through the machine.
+
+        These are arranged in processing order, beginning with the encoding performed by the plugboard,
+        followed by the forward (see `~.component.Direction`) encoding performed up to each rotor
+        (see `~.components.Component.mapping`), then the reflector, followed by the reverse encodings up to each
+        rotor, and finally by the plugboard again.
+
+        Returns:
+            list of Mapping: A list of |mappings| preformed by the `EnigmaConfig` up to the corresponding stage
+                of the `EnigmaConfig` (see `~.components.Component.mapping`).
+
+        Examples:
+            This can be used to obtain lists of mappings for analysis:
+
+            .. doctest:: config_mappings
+
+                >>> cfg = EnigmaConfig.config_enigma("b-γ-VII-V-IV", "VBOA", "NZ.AY.FG.UX.MO.PL", "05.16.11.21") # doctest: +SKIP
+                >>> cfg.enigma_mapping_list() # doctest: +ELLIPSIS
+                [u'YBCDEGFHIJKPOZMLQRSTXVWUAN', u'JUSKOLCBRFHXETNZWGQVPMIYDA', ...]
+
+            or more clearly
+
+            .. doctest:: config_mappings
+
+                >>> for m in cfg.enigma_mapping_list():
+                ...     print(m)
+                YBCDEGFHIJKPOZMLQRSTXVWUAN
+                JUSKOLCBRFHXETNZWGQVPMIYDA
+                DYBHITPEKLZVQASNROMGFWJXUC
+                TGCZDFNOYEKLXPUHVBRJWASMQI
+                VPYFIEJWLGBXHDKSCZAORUQTNM
+                TMGUJAIHOYNRWQCZKSELXFDVBP
+                MIEANRDXJCQWOSVBUHFYLZPTKG
+                XCLWPMIQGBUFEJROSNTKVHADZY
+                YAFMCQOEVSDPBIWGNZLRXKTJHU
+                UNJVFSEOTCAXHWQRMLGIPDZYKB
+                XZJVGSEMTCYUHWQROPFILDNAKB
+
+            Since these may be thought of as cumulative encodings by the machine, the final element of the list
+            will be the mapping used by the machine for encoding:
+
+            .. doctest:: config_mappings
+
+                >>> cfg.enigma_mapping() == cfg.enigma_mapping_list()[-1]
+                True
+
+        """
         return list(accumulate(self.stage_mapping_list(), lambda s, m: Mapping(m.encode_string(s))))
 
     def enigma_mapping(self):
+        """The mapping used by an Enigma machine for encoding.
+
+        The |mapping| used by an `EnigmaConfig` to encode a letter entered at the keyboard.
+
+        Returns:
+            Mapping: The |mapping| used by the `EnigmaConfig` encode a single character.
+
+        Examples:
+            This is the final element in the corresponding `enigma_mapping_list`:
+
+            .. doctest:: config_mappings
+
+                >>> cfg.enigma_mapping()
+                u'XZJVGSEMTCYUHWQROPFILDNAKB'
+
+        """
         return self.enigma_mapping_list()[-1]
 
     @require_unicode('message')
