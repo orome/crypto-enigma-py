@@ -42,7 +42,8 @@ class Direction(Enum):
 
 
 class Component(object):
-    """
+    """A component of an Enigma machine.
+
     A component used to construct an Enigma machine (as embodied in an `~.machine.EnigmaConfig`) identified by
     its specification (see `name`), and characterized by its physical `wiring` and additionally — for rotors other
     than the reflector — by `turnovers` which govern the stepping (see `~.machine.EnigmaConfig.step`)
