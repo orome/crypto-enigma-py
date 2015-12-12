@@ -124,6 +124,10 @@ Message encoding
 .. automethod:: EnigmaConfig.print_encoding
 .. automethod:: EnigmaConfig.make_message
 
+.. todo::
+
+    Move exeptions to own module.
+
 Exceptions
 ==========
 
