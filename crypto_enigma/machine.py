@@ -778,27 +778,27 @@ class EnigmaConfig(object):
     @require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
 
-            # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
-            letter = EnigmaConfig._make_enigma_char(letter)
+        # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
+        letter = EnigmaConfig._make_enigma_char(letter)
 
-            encoding_string = ''
-            if letter in LETTERS and (show_encoding or format in EnigmaConfig._FMTS_ENCODING):
-                encoding_string = '  {0} > {1}'.format(letter, self.enigma_mapping().encode_char(letter))
+        encoding_string = ''
+        if letter in LETTERS and (show_encoding or format in EnigmaConfig._FMTS_ENCODING):
+            encoding_string = '  {0} > {1}'.format(letter, self.enigma_mapping().encode_char(letter))
 
-            if format in EnigmaConfig._FMTS_INTERNAL:
-                return self._config_string_internal(letter, mark_func)
-            elif format in EnigmaConfig._FMTS_SINGLE:
-                return self._config_string(letter, mark_func)
-            elif format in EnigmaConfig._FMTS_WINDOWS:
-                return self.windows() + encoding_string
-            elif format in EnigmaConfig._FMTS_CONFIG:
-                return str(self) + encoding_string
-            elif format in EnigmaConfig._FMTS_DEBUG:
-                return self.__repr__() + encoding_string
-            elif format in EnigmaConfig._FMTS_ENCODING:
-                return encoding_string[2:]
-            else:
-                raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
+        if format in EnigmaConfig._FMTS_INTERNAL:
+            return self._config_string_internal(letter, mark_func)
+        elif format in EnigmaConfig._FMTS_SINGLE:
+            return self._config_string(letter, mark_func)
+        elif format in EnigmaConfig._FMTS_WINDOWS:
+            return self.windows() + encoding_string
+        elif format in EnigmaConfig._FMTS_CONFIG:
+            return str(self) + encoding_string
+        elif format in EnigmaConfig._FMTS_DEBUG:
+            return self.__repr__() + encoding_string
+        elif format in EnigmaConfig._FMTS_ENCODING:
+            return encoding_string[2:]
+        else:
+            raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
     @require_unicode('letter')
     def config_string_internal(self, letter='', mark_func=None):
