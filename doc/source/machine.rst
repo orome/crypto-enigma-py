@@ -31,6 +31,7 @@ Overview
       ~EnigmaConfig.stage_mapping_list
       ~EnigmaConfig.enigma_mapping_list
       ~EnigmaConfig.enigma_mapping
+      ~EnigmaConfig.config_string
       ~EnigmaConfig.step
       ~EnigmaConfig.stepped_configs
       ~EnigmaConfig.print_operation
@@ -70,6 +71,9 @@ positions of the rotors as manifest in the rotor letters at the machine windows.
 state is entirely responsible for determining the :ref:`mappings used by the machine <config_state_mappings>` to
 encode messages.
 
+Thes aspects of state can be used to costruct a varity of :ref:`representations  <config_state_strings>`
+of the configuration of an Enigma machine.
+
 .. _config_state_visible:
 
 Visible state
@@ -99,6 +103,13 @@ Thes mappings can be examined in a number of ways:
 .. automethod:: EnigmaConfig.stage_mapping_list
 .. automethod:: EnigmaConfig.enigma_mapping_list
 .. automethod:: EnigmaConfig.enigma_mapping
+
+.. _config_state_strings:
+
+State representations
+---------------------
+
+.. automethod:: EnigmaConfig.config_string
 
 .. _config_operation:
 
