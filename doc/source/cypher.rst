@@ -15,6 +15,26 @@ Cypher - :mod:`crypto_enigma.cypher`
 
 .. automodule:: crypto_enigma.cypher
 
+Overview
+========
+
+Substitution cypher mappings
+----------------------------
+
+.. autosummary::
+    :nosignatures:
+
+      Mapping
+
+Mapping encoding
+----------------
+
+.. autosummary::
+    :nosignatures:
+
+      ~Mapping.encode_string
+      ~Mapping.encode_char
+
 Substitution cypher mappings
 ============================
 

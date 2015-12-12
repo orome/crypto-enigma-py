@@ -99,6 +99,11 @@ Tasks
 
 .. todo::
 
+    Review "overview" sections. Remove? Get headers working as (properly formatted in sidebar) links.
+    Try styling of overview section?
+
+.. todo::
+
     Add and link mathematical discussion and equivalences; e.g., formula for `~.components.Component.mapping` as:
 
     .. math::

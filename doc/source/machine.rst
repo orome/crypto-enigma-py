@@ -15,18 +15,32 @@ Machine - :mod:`crypto_enigma.machine`
 
 .. automodule:: crypto_enigma.machine
 
+Overview
+========
+
 Machine configurations
-======================
-
-Enigma machine configurations and their functionality are represented using single class:
-
-.. autoclass:: EnigmaConfig()
+----------------------
 
 .. autosummary::
     :nosignatures:
 
-      ~EnigmaConfig.config_enigma
-      ~EnigmaConfig.config_enigma_from_string
+      EnigmaConfig
+
+Creating configurations
+-----------------------
+
+.. autosummary::
+    :nosignatures:
+
+      EnigmaConfig.config_enigma
+      EnigmaConfig.config_enigma_from_string
+
+State
+-----
+
+.. autosummary::
+    :nosignatures:
+
       ~EnigmaConfig.windows
       ~EnigmaConfig.components
       ~EnigmaConfig.positions
@@ -34,11 +48,34 @@ Enigma machine configurations and their functionality are represented using sing
       ~EnigmaConfig.stage_mapping_list
       ~EnigmaConfig.enigma_mapping_list
       ~EnigmaConfig.enigma_mapping
+
+State transitions and operation
+-------------------------------
+
+.. autosummary::
+    :nosignatures:
+
       ~EnigmaConfig.step
       ~EnigmaConfig.stepped_configs
       ~EnigmaConfig.print_operation
+
+Encoding
+--------
+
+.. autosummary::
+    :nosignatures:
+
       ~EnigmaConfig.enigma_encoding
       ~EnigmaConfig.print_encoding
+
+.. _config:
+
+Machine configurations
+======================
+
+Enigma machine configurations and their functionality are represented using single class:
+
+.. autoclass:: EnigmaConfig()
 
 .. _config_creation:
 
