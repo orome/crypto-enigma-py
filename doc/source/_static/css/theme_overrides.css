@@ -56,3 +56,24 @@ li {
     /*border: 1px solid red !important;*/
 /*}*/
 
+/* Test wrapping of table contents */
+/* table.longtable td { display: block; } */
+/* table.longtable td {display: inline-block; } */
+/*td {*/
+    /*vertical-align: top;*/
+/*}*/
+table.longtable td {
+    vertical-align: top  !important;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+
+}
+
+table.longtable td {
+	padding-top: 0 !important;
+/* 	spacing: 0 !important; */
+}
+
