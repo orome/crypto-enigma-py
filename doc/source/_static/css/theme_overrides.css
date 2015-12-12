@@ -1,0 +1,5 @@
+/* Get rid of autosummary table borders */
+table.docutils td, table.docutils th {
+    border: solid #00ffff !important;
+}
+
