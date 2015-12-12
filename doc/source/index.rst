@@ -99,7 +99,7 @@ Tasks
 
 .. todo::
 
-    Review "overview" sections: Remove? Fix wrapping of description in second column. Remove `~`s for full names?
+    Review "overview" sections: Remove? Remove `~` for full names?
 
 .. todo::
 
