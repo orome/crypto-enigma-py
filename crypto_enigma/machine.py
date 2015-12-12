@@ -777,7 +777,25 @@ class EnigmaConfig(object):
     # TBD - Add components format that lists the components and their attributes <<<
     @require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
+        """TBD
 
+        TBD
+
+        .. image:: _static/figs/configinternal.jpg
+             :scale: 50 %
+             :alt: alternate text
+             :align: center
+
+        Args:
+            letter:
+            format:
+            show_encoding:
+            mark_func:
+
+        Returns:
+            str:
+
+        """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
         letter = EnigmaConfig._make_enigma_char(letter)
 
