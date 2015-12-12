@@ -99,8 +99,7 @@ Tasks
 
 .. todo::
 
-    Review "overview" sections. Remove? Get headers working as (properly formatted in sidebar) links.
-    Try styling of overview section?
+    Review "overview" sections: Remove? Fix wrapping of description in second column. Remove `~`s for full names?
 
 .. todo::
 
