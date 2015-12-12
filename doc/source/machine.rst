@@ -18,29 +18,12 @@ Machine - :mod:`crypto_enigma.machine`
 Overview
 ========
 
-Machine configurations
-----------------------
-
 .. autosummary::
     :nosignatures:
 
       EnigmaConfig
-
-Creating configurations
------------------------
-
-.. autosummary::
-    :nosignatures:
-
-      EnigmaConfig.config_enigma
-      EnigmaConfig.config_enigma_from_string
-
-State
------
-
-.. autosummary::
-    :nosignatures:
-
+      ~EnigmaConfig.config_enigma
+      ~EnigmaConfig.config_enigma_from_string
       ~EnigmaConfig.windows
       ~EnigmaConfig.components
       ~EnigmaConfig.positions
@@ -48,23 +31,9 @@ State
       ~EnigmaConfig.stage_mapping_list
       ~EnigmaConfig.enigma_mapping_list
       ~EnigmaConfig.enigma_mapping
-
-State transitions and operation
--------------------------------
-
-.. autosummary::
-    :nosignatures:
-
       ~EnigmaConfig.step
       ~EnigmaConfig.stepped_configs
       ~EnigmaConfig.print_operation
-
-Encoding
---------
-
-.. autosummary::
-    :nosignatures:
-
       ~EnigmaConfig.enigma_encoding
       ~EnigmaConfig.print_encoding
 

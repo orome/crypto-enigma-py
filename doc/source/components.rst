@@ -18,39 +18,15 @@ Components - :mod:`crypto_enigma.components`
 Overview
 ========
 
-Machine components
-------------------
-
 .. autosummary::
     :nosignatures:
 
       Component
-
-Component properties
---------------------
-
-.. autosummary::
-    :nosignatures:
-
       ~Component.name
       ~Component.wiring
       ~Component.turnovers
-
-The component mapping
----------------------
-
-.. autosummary::
-    :nosignatures:
-
       ~Component.mapping
       ~Direction
-
-Getting components
-------------------
-
-.. autosummary::
-    :nosignatures:
-
       ~crypto_enigma.components.component
       ~crypto_enigma.components.rotors
       ~crypto_enigma.components.reflectors
