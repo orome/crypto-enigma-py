@@ -1,5 +1,58 @@
-/* Get rid of autosummary table borders */
+/* Tweaks --------------------------------------------------------------------*/
+
+/* Get rid of autosummary table borders and coloring */
 table.docutils td, table.docutils th {
-    border: solid #00ffff !important;
+    border: 0px solid #ffffff !important;
 }
+table.docutils {
+    border: 0px solid #ffffff !important;
+}
+table.docutils td {
+	background: none !important;
+}
+
+/* Fix code size and decoration */
+code, pre {
+	font-size: 90% !important;
+	border: solid 0 !important;
+	padding:  0  !important;
+    background: transparent !important;
+}
+
+/* Fix links (debugging styles) */
+div.document a {
+    color:darkblue !important;
+    text-decoration: none !important;
+}
+div.document a:hover {
+    color:green !important;
+    text-decoration: underline !important;
+}
+div.document a:active {
+    color: blue !important;
+    text-decoration: underline !important;
+}
+div.document a:visited {
+    color:darkblue !important;
+    text-decoration: underline !important;
+}
+div.document a:focus {
+    color:orange !important;
+    text-decoration: dashed !important;
+}
+
+/* Better bullets */
+li {
+    list-style: square  !important;
+}
+/* table.field-list li {
+    list-style-type: none  !important;
+    padding: 0  !important;
+    text-indent:-1.5em  !important;
+} */
+
+
+/*div.warning {*/
+    /*border: 1px solid red !important;*/
+/*}*/
 

@@ -59,11 +59,11 @@ class SimpleDocumenter(autodoc.MethodDocumenter):
     def add_directive_header(self, sig):
         pass
 
-#html_static_path = ["../theme"]
 
 def setup(app):
     app.add_autodocumenter(SimpleDocumenter)
-    app.add_stylesheet("css/theme_overrides.css")
+    app.add_stylesheet("css/theme_overrides.css")   # Fix childish RTD styles (tweak the worst offenders, at least)
+
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
