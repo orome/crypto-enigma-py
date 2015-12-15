@@ -880,8 +880,8 @@ class EnigmaConfig(object):
             This can be represented schematically (with input arriving and output exiting on the left) as
 
             .. image:: _static/figs/configinternal.jpg
-                 :scale: 50 %
-                 :alt: alternate text
+                 :scale: 75 %
+                 :alt: Detailed schematic of encoding of K to G
                  :align: center
 
         """
