@@ -777,23 +777,112 @@ class EnigmaConfig(object):
     # TBD - Add components format that lists the components and their attributes <<<
     @require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
-        """TBD
+        """A string representing a schematic of an Enigma machine's state.
 
-        TBD
-
-        .. image:: _static/figs/configinternal.jpg
-             :scale: 50 %
-             :alt: alternate text
-             :align: center
+        A string represeiting the stat of an `EnigmaConfig` in a selected format (see examples),
+        optionally indicating how specified character is encoded by the configuration.
 
         Args:
-            letter:
-            format:
-            show_encoding:
-            mark_func:
+            letter (char, optional): A character to indicate the encoding of by the `EnigmaConfig`.
+            format (str, optional): A string specifying the format used to display the `EnigmaConfig`.
+            show_encoding (bool, optional): Whether to indicate the encoding for formats that do not
+                include it by default.
+            mark_func (function, optional): TBD
 
         Returns:
-            str:
+            str: A string shemattically representing an `EnigmaConfig`
+
+        Examples:
+            Use `format='single'` or omit the argument to display a summary of the Enigma machine configuration
+            as its `~.cypher.Mapping` (see `enigma_mapping`), the letters at the `windows`,
+            and the `positions` of the rotors. If a valid message character is provided as a value for `letter`,
+            that is indicated as input and the letter it is encoded to is highlighted.
+
+            For example,
+
+            .. testsetup:: enigma_config_string
+
+                cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II".decode("UTF-8"), u"LFAQ", u"UX.MO.KZ.AY.EF.PL", u"03.17.04.11")
+
+            .. doctest:: enigma_config_string
+
+                >>> cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAQ", "UX.MO.KZ.AY.EF.PL",u"03.17.04.11") # doctest: +SKIP
+                >>> print(cfg.config_string(letter='K'))
+                K > CMAWFEKLNVG̲̅HBIUYTXZQOJDRPS  LFAQ  10 16 24 07
+
+            shows the process of encoding of the letter **K** to **G**.
+
+            The default method if highlighting the encoded-to character (see `~.cypher.Mapping`) may not display
+            correctly on all systems, so the `marc_func` argument can be used to define a simpler marking that
+            does:
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(letter='K', mark_func=lambda c: '[' + c + ']'))
+                K > CMAWFEKLNV[G]HBIUYTXZQOJDRPS  LFAQ  10 16 24 07
+                >>> print(cfg.config_string(letter='K', mark_func=lambda c: '(' + c + ')'))
+                K > CMAWFEKLNV(G)HBIUYTXZQOJDRPS  LFAQ  10 16 24 07
+
+            Use `format='internal'` to display a summary of the Enigma machine configuration as a detailed
+            schematic of each processing stage of the `EnigmaConfig` (proceeding from top to bottom), in which
+
+            * each line indicates the `~.cypher.Mapping` preformed by the component at that stage
+              (see `stage_mapping_list`);
+            * each line begins with an indication of the stage (rotor number, **P** for plugboard, or **R**
+              for reflector) at that stage, and ends with the specification (see `~.components.Component.name`)
+              of the component at that stage;
+            * rotors additionally indicate their window letter, and position; and
+            * if a valid `letter` is provided, it is indicated as input and its
+              encoding at each stage is marked;
+
+            The schematic is followed by the mapping for the machine as a whole (as
+            for the `'single'` format), and preceded by a (trivial, no-op) keyboard "mapping"
+            for reference.
+
+            For example,
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(letter='K', format='internal', mark_func=lambda c: '(' + c + ')'))
+                K > ABCDEFGHIJ(K)LMNOPQRSTUVWXYZ
+                  P YBCDFEGHIJ(Z)PONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL
+                  1 LORVFBQNGWKATHJSZPIYUDXEM(C)  Q  07  II
+                  2 BJ(Y)INTKWOARFEMVSGCUDPHZQLX  A  24  VIII
+                  3 ILHXUBZQPNVGKMCRTEJFADOY(S)W  F  16  V
+                  4 YDSKZPTNCHGQOMXAUW(J)FBRELVI  L  10  γ
+                  R ENKQAUYWJ(I)COPBLMDXZVFTHRGS         b
+                  4 PUIBWTKJ(Z)SDXNHMFLVCGQYROAE         γ
+                  3 UFOVRTLCASMBNJWIHPYQEKZDX(G)         V
+                  2 JARTML(Q)VDBGYNEIUXKPFSOHZCW         VIII
+                  1 LFZVXEINSOKAYHBR(G)CPMUDJWTQ         II
+                  P YBCDFE(G)HIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL
+                G < CMAWFEKLNV(G)HBIUYTXZQOJDRPS
+
+            shows the process of encoding of the letter 'K' to 'G':
+
+            * **K** is entered at the keyboard, which is then
+            * encoded by the plugboard (**P**), which includes **KZ** in its specification (see Name), to **Z**, which is then
+            * encoded by the first rotor (**1**), a **II** rotor in the 06 position (and **Q** at the window), to **C**, which is then
+            * encoded by the second rotor (**2**), a **VIII** rotor in the 24 position (and **A** at the window), to **Y**, which is then
+            * encoded by the third rotor (**3**), a **V** rotor in the 16 position (and **F** at the window), to **S**, which is then
+            * encoded by the fourth rotor (**4**), a **γ** rotor in the 10 position (and **L** at the window), to **J**, which is then
+            * encoded by the reflector rotor (**U**), a **b** reflector, to **I**, which reverses the signal sending it back through the rotors, where it is then
+            * encoded in reverse by the fourth rotor (**4**), to **Z**, which is then
+            * encoded in reverse by the third rotor (**3**), to **G**, which is then
+            * encoded in reverse by the second rotor (**2**), to **Q**, which is then
+            * encoded in reverse by the first rotor (**1**), to **G**, which is then
+            * left unchanged by the plugboard (**P**), and finally
+            * displayed as **G**.
+
+            Note that (as follows from Mapping) the position of the marked letter at each stage is the alphabetic
+            position of the marked letter at the previous stage.
+
+            This can be represented schematically (with input arriving and output exiting on the left) as
+
+            .. image:: _static/figs/configinternal.jpg
+                 :scale: 50 %
+                 :alt: alternate text
+                 :align: center
 
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
