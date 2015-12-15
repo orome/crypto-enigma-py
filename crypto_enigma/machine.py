@@ -858,7 +858,7 @@ class EnigmaConfig(object):
                   P YBCDFE(G)HIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL
                 G < CMAWFEKLNV(G)HBIUYTXZQOJDRPS
 
-            shows the process of encoding of the letter 'K' to 'G':
+            shows the process of encoding of the letter **K** to **G**:
 
             * **K** is entered at the keyboard, which is then
             * encoded by the plugboard (**P**), which includes **KZ** in its specification (see Name), to **Z**, which is then
