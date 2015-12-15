@@ -861,12 +861,18 @@ class EnigmaConfig(object):
             shows the process of encoding of the letter **K** to **G**:
 
             * **K** is entered at the keyboard, which is then
-            * encoded by the plugboard (**P**), which includes **KZ** in its specification (see Name), to **Z**, which is then
-            * encoded by the first rotor (**1**), a **II** rotor in the 06 position (and **Q** at the window), to **C**, which is then
-            * encoded by the second rotor (**2**), a **VIII** rotor in the 24 position (and **A** at the window), to **Y**, which is then
-            * encoded by the third rotor (**3**), a **V** rotor in the 16 position (and **F** at the window), to **S**, which is then
-            * encoded by the fourth rotor (**4**), a **γ** rotor in the 10 position (and **L** at the window), to **J**, which is then
-            * encoded by the reflector rotor (**U**), a **b** reflector, to **I**, which reverses the signal sending it back through the rotors, where it is then
+            * encoded by the plugboard (**P**), which includes **KZ** in its specification (see Name),
+              to **Z**, which is then
+            * encoded by the first rotor (**1**), a **II** rotor in the 06 position (and **Q** at the window),
+              to **C**, which is then
+            * encoded by the second rotor (**2**), a **VIII** rotor in the 24 position (and **A** at the window),
+              to **Y**, which is then
+            * encoded by the third rotor (**3**), a **V** rotor in the 16 position (and **F** at the window),
+              to **S**, which is then
+            * encoded by the fourth rotor (**4**), a **γ** rotor in the 10 position (and **L** at the window),
+              to **J**, which is then
+            * encoded by the reflector rotor (**U**), a **b** reflector,
+              to **I**, which reverses the signal sending it back through the rotors, where it is then
             * encoded in reverse by the fourth rotor (**4**), to **Z**, which is then
             * encoded in reverse by the third rotor (**3**), to **G**, which is then
             * encoded in reverse by the second rotor (**2**), to **Q**, which is then
