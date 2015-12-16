@@ -783,7 +783,7 @@ class EnigmaConfig(object):
         optionally indicating how specified character is encoded by the configuration.
 
         Args:
-            letter (char, optional): A character to indicate the encoding of by the `EnigmaConfig`.
+            letter (unicode, optional): A character to indicate the encoding of by the `EnigmaConfig`.
             format (str, optional): A string specifying the format used to display the `EnigmaConfig`.
             show_encoding (bool, optional): Whether to indicate the encoding for formats that do not
                 include it by default.
