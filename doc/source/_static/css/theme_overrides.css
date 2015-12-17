@@ -41,6 +41,16 @@ div.document a:focus {
     text-decoration: dashed !important;
 }
 
+a.fa-github, a.fa-github:visited {
+    color:darkgray !important;
+    text-decoration: none !important;
+}
+
+a.fa-github:hover, a.fa-github:active, a.fa-github:focus {
+    color:black !important;
+    text-decoration: none !important;
+}
+
 /* Better bullets */
 li {
     list-style: square  !important;
