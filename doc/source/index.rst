@@ -106,4 +106,8 @@ Tasks
 
         \mu_{i}(c)=\rho^{s_{i}(c)}\omega_{i}\rho^{-s_{i}(c)}
 
+.. todo::
+
+    Add command line documentation to start page.?
+
 

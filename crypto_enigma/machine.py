@@ -963,6 +963,9 @@ class EnigmaConfig(object):
                 >>> cfg.config_string(format='internal').split('\\n') # doctest: +ELLIPSIS
                 [u'    ABCDEFGHIJKLMNOPQRSTUVWXYZ', u'  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL', ...]
 
+        .. todo::
+            Document `marc_func`.
+
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
         letter = EnigmaConfig._make_enigma_char(letter)
@@ -1020,6 +1023,12 @@ class EnigmaConfig(object):
             show_encoding (bool, optional): Whether to indicate the encoding of each character for formats
                 that do not include it by default; see `config_string`.
             mark_func (function, optional): TBD; see `config_string`.
+
+        .. todo::
+            Document `marc_func`.
+
+        .. todo::
+            Document Examples.
 
         """
         def print_config_string(cfg_str):
