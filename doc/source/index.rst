@@ -2,10 +2,6 @@
 
 .. _home:
 
-.. warning::
-
-   This documentation under construction and incomplete.
-
 .. note::
 
     This documentation is in draft form. Reports of any errors or suggestions for improvement are welcomed and
