@@ -12,6 +12,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 import pytest
 
 from crypto_enigma.machine import *
+from crypto_enigma.exceptions import *
 
 
 # Comparing output with output generated from Haskell version

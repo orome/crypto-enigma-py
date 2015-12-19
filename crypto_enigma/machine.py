@@ -25,6 +25,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 from unicodedata import combining
 
 from .components import *
+from .exceptions import *
 
 
 class EnigmaConfig(object):
@@ -970,17 +971,6 @@ class EnigmaConfig(object):
     def print_encoding(self, message):
         print(EnigmaConfig._postprocess(self.enigma_encoding(EnigmaConfig.make_message(message))))
 
-
-class EnigmaError(Exception):
-    pass
-
-
-class EnigmaValueError(EnigmaError, ValueError):
-    pass
-
-
-class EnigmaDisplayError(EnigmaError):
-    pass
 
 # TBD - Tidy printing code so that the structures and names in config_string_internal and config_string match <<<
 # TBD - Check spacing of lines, esp at end in .._string and print_... methods <<<

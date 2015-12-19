@@ -135,20 +135,5 @@ Message encoding
 .. automethod:: EnigmaConfig.print_encoding
 .. automethod:: EnigmaConfig.make_message
 
-.. todo::
-
-    Move exeptions to own module.
-
-Exceptions
-==========
-
-.. autoexception:: EnigmaError
-    :show-inheritance:
-
-.. autoexception:: EnigmaValueError
-    :show-inheritance:
-
-.. autoexception:: EnigmaDisplayError
-    :show-inheritance:
 
 
