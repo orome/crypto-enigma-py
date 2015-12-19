@@ -743,7 +743,7 @@ class EnigmaConfig(object):
     def make_message(string):
         """Convert a string to valid Enigma machine input.
 
-        Replace any symbols for which there are standard Kriegsmarine substitutions,
+        Replace any symbols for which there are standard *Kriegsmarine* substitutions,
         remove any remaining non-letter characters, and convert to uppercase.
         This function is applied automatically to `message` arguments for functions defined here
         (`enigma_encoding`).
