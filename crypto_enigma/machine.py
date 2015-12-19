@@ -1011,7 +1011,7 @@ class EnigmaConfig(object):
                 Each character will be used as a `letter` in the `config_string` specified by the `format`.
             steps (int, optional): A number of steps to run; if omitted when a `message` is provided,
                 will default to the length of the message; otherwise defaults to 1
-            overwrite (bool, optional): Whether to overwrite the display of step after a pause.
+            overwrite (bool, optional): Whether to overwrite the display of each step after a pause.
                 (May result in garbled output on some systems.)
             format (str, optional): A string specifying the format used to display the `EnigmaConfig` at each
                 step of message processing; see `config_string`.
