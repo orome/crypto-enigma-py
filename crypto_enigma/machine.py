@@ -40,7 +40,6 @@ class EnigmaConfig(object):
 
     """
 
-    # TBD - Make private somehow? <<<
     def __init__(self, components, positions, rings):
         """The core properties of an `EnigmaConfig` embody a low level specification of an Enigma configuration.
 
