@@ -779,7 +779,7 @@ class EnigmaConfig(object):
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
         """A string representing a schematic of an Enigma machine's state.
 
-        A string represeiting the stat of an `EnigmaConfig` in a selected format (see examples),
+        A string representing the stat of an `EnigmaConfig` in a selected format (see examples),
         optionally indicating how specified character is encoded by the configuration.
 
         Args:
@@ -790,15 +790,10 @@ class EnigmaConfig(object):
             mark_func (function, optional): TBD
 
         Returns:
-            str: A string shemattically representing an `EnigmaConfig`
+            str: A string schematically representing an `EnigmaConfig`
 
         Examples:
-            Use `format='single'` or omit the argument to display a summary of the Enigma machine configuration
-            as its `~.cypher.Mapping` (see `enigma_mapping`), the letters at the `windows`,
-            and the `positions` of the rotors. If a valid message character is provided as a value for `letter`,
-            that is indicated as input and the letter it is encoded to is highlighted.
-
-            For example,
+            A variety of formats are available for representing the state of the Enigma machine:
 
             .. testsetup:: enigma_config_string
 
@@ -807,6 +802,38 @@ class EnigmaConfig(object):
             .. doctest:: enigma_config_string
 
                 >>> cfg = EnigmaConfig.config_enigma("b-γ-V-VIII-II", "LFAQ", "UX.MO.KZ.AY.EF.PL",u"03.17.04.11") # doctest: +SKIP
+                >>> print(cfg.config_string(format='single'))
+                    CMAWFEKLNVGHBIUYTXZQOJDRPS  LFAQ  10 16 24 07
+                >>> print(cfg.config_string(format='internal'))
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL
+                  1 LORVFBQNGWKATHJSZPIYUDXEMC  Q  07  II
+                  2 BJYINTKWOARFEMVSGCUDPHZQLX  A  24  VIII
+                  3 ILHXUBZQPNVGKMCRTEJFADOYSW  F  16  V
+                  4 YDSKZPTNCHGQOMXAUWJFBRELVI  L  10  γ
+                  R ENKQAUYWJICOPBLMDXZVFTHRGS         b
+                  4 PUIBWTKJZSDXNHMFLVCGQYROAE         γ
+                  3 UFOVRTLCASMBNJWIHPYQEKZDXG         V
+                  2 JARTMLQVDBGYNEIUXKPFSOHZCW         VIII
+                  1 LFZVXEINSOKAYHBRGCPMUDJWTQ         II
+                  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL
+                    CMAWFEKLNVGHBIUYTXZQOJDRPS
+                >>> print(cfg.config_string(format='windows'))
+                LFAQ
+                >>> print(cfg.config_string(format='config'))
+                b-γ-V-VIII-II LFAQ UX.MO.KZ.AY.EF.PL 03.17.04.11
+                >>> print(cfg.config_string(format='encoding', letter='K'))
+                K > G
+
+            Use `format='single'` or omit the argument to display a summary of the Enigma machine configuration
+            as its `~.cypher.Mapping` (see `enigma_mapping`), the letters at the `windows`,
+            and the `positions` of the rotors. If a valid message character is provided as a value for `letter`,
+            that is indicated as input and the letter it is encoded to is highlighted.
+
+            For example,
+
+            .. doctest:: enigma_config_string
+
                 >>> print(cfg.config_string(letter='K'))
                 K > CMAWFEKLNVG̲̅HBIUYTXZQOJDRPS  LFAQ  10 16 24 07
 
@@ -889,6 +916,42 @@ class EnigmaConfig(object):
                  :scale: 85 %
                  :alt: Detailed schematic of encoding of K to G
                  :align: center
+
+            Use `format='windows'` to simply show the letters at the `windows` as the operator would see them.
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(format='windows'))
+                LFAQ
+
+            And use `format='config'` to simply show a conventional specification of an `EnigmaConfig`
+            (as used for `config_enigma_from_string`):
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(format='config'))
+                b-γ-V-VIII-II LFAQ UX.MO.KZ.AY.EF.PL 03.17.04.11
+
+            For both of the preceeding two formats, it is possible to also indicate the encoding of a character
+            (not displayed by default) by setting `show_encoding` to `True`:
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(format='windows', letter='K'))
+                LFAQ
+                >>> print(cfg.config_string(format='windows', letter='K', show_encoding=True))
+                LFAQ  K > G
+                >>> print(cfg.config_string(format='config', letter='K'))
+                b-γ-V-VIII-II LFAQ UX.MO.KZ.AY.EF.PL 03.17.04.11
+                >>> print(cfg.config_string(format='config', letter='K', show_encoding=True))
+                b-γ-V-VIII-II LFAQ UX.MO.KZ.AY.EF.PL 03.17.04.11  K > G
+
+            Use `format='encoding'` to show this encoding alone:
+
+            .. doctest:: enigma_config_string
+
+                >>> print(cfg.config_string(format='encoding', letter='K'))
+                K > G
 
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
