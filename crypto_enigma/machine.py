@@ -953,6 +953,16 @@ class EnigmaConfig(object):
                 >>> print(cfg.config_string(format='encoding', letter='K'))
                 K > G
 
+            Note that though the examples above have been wrapped in `print` for clarity, these functions
+            return strings:
+
+            .. doctest:: enigma_config_string
+
+                >>> cfg.config_string(format='windows', letter='K', show_encoding=True)
+                u'LFAQ  K > G'
+                >>> cfg.config_string(format='internal').split('\\n') # doctest: +ELLIPSIS
+                [u'    ABCDEFGHIJKLMNOPQRSTUVWXYZ', u'  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL', ...]
+
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
         letter = EnigmaConfig._make_enigma_char(letter)
