@@ -997,7 +997,31 @@ class EnigmaConfig(object):
     @require_unicode('message')
     def print_operation(self, message='', steps=None, overwrite=False, format='single', initial=True, delay=0.1,
                         show_step=False, show_encoding=False, mark_func=None):
+        """Show the operation of the Enigma machine as a series of configurations.
 
+        Show the operation of the Enigma machine as a series of `EnigmaConfig`, as it encodes a `message` and/or
+        for a specified number of `steps`.
+
+        Args:
+            message (unicode): A message to encode. Characters that are not letters will be replaced with
+                standard *Kriegsmarine* substitutions or be removed (see `make_message`).
+                Each character will be used as a `letter` in the `config_string` specified by the `format`.
+            steps (int, optional): A number of steps to run; if omitted when a `message` is provided,
+                will default to the length of the message; otherwise defaults to 1
+            overwrite (bool, optional): Whether to overwrite the display of step after a pause.
+                (May result in garbled output on some systems.)
+            format (str, optional): A string specifying the format used to display the `EnigmaConfig` at each
+                step of message processing; see `config_string`.
+            initial (bool, optional): Whether to show the initial starting step; the `EnigmaConfig` before
+                encoding begins.
+            delay (float, optional): The number of seconds to wait (see `time.sleep`) between the display of
+                each processing step; defaults to 0.2.
+            show_step (bool, optional): Whether to include the step number in the display.
+            show_encoding (bool, optional): Whether to indicate the encoding of each character for formats
+                that do not include it by default; see `config_string`.
+            mark_func (function, optional): TBD; see `config_string`.
+
+        """
         def print_config_string(cfg_str):
             if step_num != 0 or initial:
                 if show_step:
