@@ -1027,8 +1027,99 @@ class EnigmaConfig(object):
         .. todo::
             Document `marc_func`.
 
-        .. todo::
-            Document Examples.
+        Examples:
+            (For details on differences among formats used for displaying each step, see the
+            examples for `config_string`.)
+
+            Show the operation of a machine for 10 steps, indicating step numbers:
+
+            .. testsetup:: enigma_print_operation
+
+                cfg = EnigmaConfig.config_enigma("B-I-III-I".decode("UTF-8"),u"EMO", u"UX.MO.AY", u"13.04.11")
+
+            .. doctest:: enigma_print_operation
+
+                >>> cfg = EnigmaConfig.config_enigma("B-I-III-I", "EMO", "UX.MO.AY", "13.04.11") # doctest: +SKIP
+                >>> cfg.print_operation(format='single', steps=10, show_step=True)
+                0000      CNAUJVQSLEMIKBZRGPHXDFYTWO  EMO  19 10 05
+                0001      UNXKGVERLYDIQBTWMHZOAFPCJS  EMP  19 10 06
+                0002      QTYJZXUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
+                0003      DMXAPTRWKYINBLUESGQFOZHCJV  ENR  19 11 08
+                0004      IUSMHRPEAQTVDYWGJFCKBLOZNX  ENS  19 11 09
+                0005      WMVXQRLSPYOGBTKIEFHNZCADJU  ENT  19 11 10
+                0006      WKIQXNRSCVBOYFLUDGHZPJAEMT  ENU  19 11 11
+                0007      RVPTWSLKYXHGNMQCOAFDZBEJIU  ENV  19 11 12
+                0008      IYTKRVSMALDJHZWXUEGCQFOPBN  ENW  19 11 13
+                0009      PSWGMODULZVIERFAXNBYHKCQTJ  ENX  19 11 14
+                0010      IVOWZKHGARFSPUCMXJLYNBDQTE  ENY  19 11 15
+
+            Show the operation of a machine as it encodes a message, with step numbers:
+
+            .. doctest:: enigma_print_operation
+
+                >>> cfg.print_operation(format='single', message='TESTING', show_step=True)
+                0000      CNAUJVQSLEMIKBZRGPHXDFYTWO  EMO  19 10 05
+                0001  T > UNXKGVERLYDIQBTWMHZO̲̅AFPCJS  EMP  19 10 06
+                0002  E > QTYJZ̲̅XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
+                0003  S > DMXAPTRWKYINBLUESGQ̲̅FOZHCJV  ENR  19 11 08
+                0004  T > IUSMHRPEAQTVDYWGJFCK̲̅BLOZNX  ENS  19 11 09
+                0005  I > WMVXQRLSP̲̅YOGBTKIEFHNZCADJU  ENT  19 11 10
+                0006  N > WKIQXNRSCVBOYF̲̅LUDGHZPJAEMT  ENU  19 11 11
+                0007  G > RVPTWSL̲̅KYXHGNMQCOAFDZBEJIU  ENV  19 11 12
+
+            Show the same process, but just what the operator would see:
+
+            .. doctest:: enigma_print_operation
+
+                >>> cfg.print_operation(format='windows', message='TESTING', show_encoding=True, show_step=True)
+                0000  EMO
+                0001  EMP  T > O
+                0002  EMQ  E > Z
+                0003  ENR  S > Q
+                0004  ENS  T > K
+                0005  ENT  I > P
+                0006  ENU  N > F
+                0007  ENV  G > L
+
+            Show detailed internal version of the same process:
+
+            .. doctest:: enigma_print_operation
+
+                >>> cfg.print_operation(format='internal', message='TESTING', show_step=True) # doctest: +ELLIPSIS
+                0000
+                    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                  P YBCDEFGHIJKLONMPQRSTXVWUAZ         UX.MO.AY
+                  1 HCZMRVJPKSUDTQOLWEXNYFAGIB  O  05  I
+                  2 KOMQEPVZNXRBDLJHFSUWYACTGI  M  10  III
+                  3 AXIQJZKRMSUNTOLYDHVBWEGPFC  E  19  I
+                  R YRUHQSLDPXNGOKMIEBFZCWVJAT         B
+                  3 ATZQVYWRCEGOILNXDHJMKSUBPF         I
+                  2 VLWMEQYPZOANCIBFDKRXSGTJUH         III
+                  1 WZBLRVXAYGIPDTOHNEJMKFQSUC         I
+                  P YBCDEFGHIJKLONMPQRSTXVWUAZ         UX.MO.AY
+                    CNAUJVQSLEMIKBZRGPHXDFYTWO
+                <BLANKLINE>
+                0001
+                T > ABCDEFGHIJKLMNOPQRST̲̅UVWXYZ
+                  P YBCDEFGHIJKLONMPQRST̲̅XVWUAZ         UX.MO.AY
+                  1 BYLQUIOJRTCSPNKVDWMX̲̅EZFHAG  P  06  I
+                  2 KOMQEPVZNXRBDLJHFSUWYACT̲̅GI  M  10  III
+                  3 AXIQJZKRMSUNTOLYDHVB̲̅WEGPFC  E  19  I
+                  R YR̲̅UHQSLDPXNGOKMIEBFZCWVJAT         B
+                  3 ATZQVYWRCEGOILNXDH̲̅JMKSUBPF         I
+                  2 VLWMEQYP̲̅ZOANCIBFDKRXSGTJUH         III
+                  1 YAKQUWZXFHOCSNGM̲̅DILJEPRTBV         I
+                  P YBCDEFGHIJKLO̲̅NMPQRSTXVWUAZ         UX.MO.AY
+                O < UNXKGVERLYDIQBTWMHZO̲̅AFPCJS
+                <BLANKLINE>
+                0002
+                E > ABCDE̲̅FGHIJKLMNOPQRSTUVWXYZ
+                  P YBCDE̲̅FGHIJKLONMPQRSTXVWUAZ         UX.MO.AY
+                  1 XKPTH̲̅NIQSBROMJUCVLWDYEGZFA  Q  07  I
+                  2 KOMQEPVZ̲̅NXRBDLJHFSUWYACTGI  M  10  III
+                  3 AXIQJZKRMSUNTOLYDHVBWEGPFC̲̅  E  19  I
+                  R YRU̲̅HQSLDPXNGOKMIEBFZCWVJAT         B
+                ...
 
         """
         def print_config_string(cfg_str):
