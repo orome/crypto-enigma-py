@@ -27,6 +27,9 @@ from crypto_enigma._version import __version__, __release__, __author__
 # Has no effect -- http://stackoverflow.com/q/34025113/656912
 sys.dont_write_bytecode = True
 
+# Detect whether we're on RTD
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
 # TBD - Has no effect, but something like this is needed <<<
 #       http://stackoverflow.com/q/33977457/656912
 #       https://github.com/sphinx-doc/sphinx/issues/1711
