@@ -787,7 +787,10 @@ class EnigmaConfig(object):
             format (str, optional): A string specifying the format used to display the `EnigmaConfig`.
             show_encoding (bool, optional): Whether to indicate the encoding for formats that do not
                 include it by default.
-            mark_func (function, optional): TBD
+            mark_func (function, optional): A `function` that highlights its argument by taking a single character
+                as an argument and returning a string with additional characters added to (usually surrounding)
+                that charater. Used in cases where default method of highlighting the encoded-to character
+                (see `~.cypher.Mapping`) does not display correctly or clearly.
 
         Returns:
             str: A string schematically representing an `EnigmaConfig`
@@ -839,7 +842,7 @@ class EnigmaConfig(object):
 
             shows the process of encoding of the letter **K** to **G**.
 
-            The default method if highlighting the encoded-to character (see `~.cypher.Mapping`) may not display
+            The default method of highlighting the encoded-to character (see `~.cypher.Mapping`) may not display
             correctly on all systems, so the `marc_func` argument can be used to define a simpler marking that
             does:
 
@@ -963,9 +966,6 @@ class EnigmaConfig(object):
                 >>> cfg.config_string(format='internal').split('\\n') # doctest: +ELLIPSIS
                 [u'    ABCDEFGHIJKLMNOPQRSTUVWXYZ', u'  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL', ...]
 
-        .. todo::
-            Document `marc_func`.
-
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
         letter = EnigmaConfig._make_enigma_char(letter)
@@ -1022,10 +1022,10 @@ class EnigmaConfig(object):
             show_step (bool, optional): Whether to include the step number in the display.
             show_encoding (bool, optional): Whether to indicate the encoding of each character for formats
                 that do not include it by default; see `config_string`.
-            mark_func (function, optional): TBD; see `config_string`.
-
-        .. todo::
-            Document `marc_func`.
+            mark_func (function, optional): A `function` that highlights its argument by taking a single character
+                as an argument and returning a string with additional characters added to (usually surrounding)
+                that charater. Used in cases where default method of highlighting the encoded-to character
+                (see `~.cypher.Mapping`) does not display correctly or clearly.
 
         Examples:
             (For details on differences among formats used for displaying each step, see the
