@@ -1002,7 +1002,7 @@ class EnigmaConfig(object):
                         show_step=False, show_encoding=False, mark_func=None):
         """Show the operation of the Enigma machine as a series of configurations.
 
-        Show the operation of the Enigma machine as a series of `EnigmaConfig`, as it encodes a `message` and/or
+        Print out the operation of the Enigma machine as a series of `EnigmaConfig`, as it encodes a `message` and/or
         for a specified number of `steps`.
 
         Args:
