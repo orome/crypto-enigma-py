@@ -13,12 +13,12 @@ See also:
 
 * (`First stable release`_.)
 
-(0.2.1b2)
-~~~~~~~~~
+`0.2.1b2`_
+~~~~~~~~~~
 
-* (Start documentation.)
-* (Implement mapping as a class.)
-* (Implement direction as a class.)
+* Add documentation.
+* Implement mapping as a class.
+* Implement direction as a class.
 
 `0.2.1b1`_
 ~~~~~~~~~~

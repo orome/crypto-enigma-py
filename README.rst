@@ -65,16 +65,13 @@ Documentation
 
 |Stable Docs|
 
+Full documentation is available at `Read the Docs`_.
+
 Command line documentation is available as help from the command line script:
 
 .. parsed-literal::
 
    $ |script| --help
-
-.. _undocumented:
-
-Full documentation for the API is not yet available, but the `Hackage documentation`_ for the
-`Haskell version`_ (which has essentially the same API) serves as a temporary substitute.
 
 Limitations
 ~~~~~~~~~~~
@@ -86,7 +83,7 @@ Unicode. This is a `known
 limitation <https://github.com/orome/crypto-enigma-py/issues/1>`__ that
 will be addressed in a future release.
 
-Note also that if you are daring and use the (currently `undocumented <#undocumented>`__) API, you should
+Note also that at the start of any scripts that use this package, you should
 
 .. parsed-literal::
 
@@ -126,6 +123,7 @@ may not work as expected.
 .. _test versions: https://testpypi.python.org/pypi/crypto-enigma
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
+.. _Read the Docs: http://crypto-enigma.readthedocs.org/en/stable/
 
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
 .. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
@@ -139,7 +137,7 @@ may not work as expected.
    :target: http://crypto-enigma.readthedocs.org/en/latest/?badge=latest
    :alt: Documentation Status
 .. |Stable Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=stable
-   :target: http://crypto-enigma.readthedocs.org/en/latest/?badge=stable
+   :target: http://crypto-enigma.readthedocs.org/en/stable/?badge=stable
    :alt: Documentation Status
 .. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/crypto-enigma.svg
    :target: https://pypi.python.org/pypi/crypto-enigma/
