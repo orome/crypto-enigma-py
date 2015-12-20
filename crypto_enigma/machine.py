@@ -1165,6 +1165,28 @@ class EnigmaConfig(object):
 
     @require_unicode('message')
     def print_encoding(self, message):
+        """Show the conventionally formatted encoding of a message.
+
+        Print out the encoding of a message by an (initial) `EnigmaConfig`, formatted into conventional
+        blocks of four characters.
+
+        Args:
+            message (unicode): A message to encode. Characters that are not letters will be replaced with
+                standard *Kriegsmarine* substitutions or be removed (see `make_message`).
+
+        Examples:
+
+            .. testsetup:: enigma_print_encoding
+
+                cfg = EnigmaConfig.config_enigma("c-β-V-VI-VIII".decode("UTF-8"), u"CDTJ", u"AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW", u"05.16.05.12")
+
+            .. doctest:: enigma_print_encoding
+
+                >>> cfg = EnigmaConfig.config_enigma("c-β-V-VI-VIII", "CDTJ", "AE.BF.CM.DQ.HU.JN.LX.PR.SZ.VW", "05.16.05.12") # doctest: +SKIP
+                >>> cfg.print_encoding("FOLGENDES IST SOFORT BEKANNTZUGEBEN")
+                RBBF PMHP HGCZ XTDY GAHG UFXG EWKB LKGJ
+
+        """
         print(EnigmaConfig._postprocess(self.enigma_encoding(EnigmaConfig.make_message(message))))
 
 
