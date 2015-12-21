@@ -11,6 +11,9 @@ widespread general use during the war years: the `I`_, `M3`_, and `M4`_.
 Functionality
 ~~~~~~~~~~~~~
 
+Command line
+^^^^^^^^^^^^
+
 Encode messages:
 
 .. parsed-literal::
@@ -21,8 +24,7 @@ Encode messages:
     $ |script| encode "B-I-III-I EMO UX.MO.AY 13.04.11" "OZQKPFLPYZRPYTFVU"
     TESTINGXTESTINGUD
 
-Show configuration details (explained in more detail in the
-`documentation <https://hackage.haskell.org/package/crypto-enigma-0.0.2.5/docs/Crypto-Enigma-Display.html#v:showEnigmaConfigInternal>`__ for the Haskell version):
+Show configuration details (explained in more detail in the command line help):
 
 .. parsed-literal::
 
@@ -39,8 +41,7 @@ Show configuration details (explained in more detail in the
       P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
     T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
 
-Simulate machine operation (explained in more detail in the
-`documentation <https://hackage.haskell.org/package/crypto-enigma-0.0.2.5/docs/Crypto-Enigma-Display.html#v:showEnigmaOperation>`__ for the Haskell version):
+Simulate machine operation (explained in more detail command line help):
 
 .. parsed-literal::
 
@@ -59,6 +60,62 @@ Watch the machine as it runs for 500 steps:
 .. parsed-literal::
 
     $ |script| run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+
+API
+^^^
+
+.. parsed-literal::
+
+    >>> from crypto_enigma import *
+    >>> cfg = EnigmaConfig.config_enigma_from_string(u'B-I-III-I EMO UX.MO.AY 13.04.11')
+
+Encode messages:
+
+.. parsed-literal::
+
+    >>> cfg.enigma_encoding(u'TESTINGXTESTINGUD')
+    u'OZQKPFLPYZRPYTFVU'
+
+    >>> cfg.enigma_encoding(u'OZQKPFLPYZRPYTFVU')
+    u'TESTINGXTESTINGUD'
+
+Show configuration details (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.config_string>`__ for :code:`config_string`):
+
+.. parsed-literal::
+
+    >>> print(cfg.config_string(letter=u'X', format='internal', mark_func=lambda c: '(' + c + ')'))
+    X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
+      P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
+      1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
+      2 KOMQEPVZNXRBDLJHFSUWYACT(G)I  M  10  III
+      3 AXIQJZ(K)RMSUNTOLYDHVBWEGPFC  E  19  I
+      R YRUHQSLDPX(N)GOKMIEBFZCWVJAT         B
+      3 ATZQVYWRCEGOI(L)NXDHJMKSUBPF         I
+      2 VLWMEQYPZOA(N)CIBFDKRXSGTJUH         III
+      1 WZBLRVXAYGIPD(T)OHNEJMKFQSUC         I
+      P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
+    T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
+
+Simulate machine operation (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.print_operation>`__ for :code:`print_operation`):
+
+.. parsed-literal::
+
+    >>> cfg.print_operation(message=u'TESTING', show_step=True, mark_func=lambda c: '(' + c + ')')
+    0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
+    0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
+    0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
+    0003  S > DMXAPTRWKYINBLUESG(Q)FOZHCJV  ENR  19 11 08
+    0004  T > IUSMHRPEAQTVDYWGJFC(K)BLOZNX  ENS  19 11 09
+    0005  I > WMVXQRLS(P)YOGBTKIEFHNZCADJU  ENT  19 11 10
+    0006  N > WKIQXNRSCVBOY(F)LUDGHZPJAEMT  ENU  19 11 11
+    0007  G > RVPTWS(L)KYXHGNMQCOAFDZBEJIU  ENV  19 11 12
+
+Watch the machine as it runs for 500 steps:
+
+.. parsed-literal::
+
+    >>> cfg.print_operation(steps=500, show_step=True, format='internal', overwrite=True)
+
 
 Documentation
 ~~~~~~~~~~~~~
@@ -89,7 +146,13 @@ Note also that at the start of any scripts that use this package, you should
 
    from __future__ import unicode_literals
 
-before any code that uses the API
+before any code that uses the API, or confiure IPython (in `ipython_config.py`) with
+
+.. parsed-literal::
+
+   c.InteractiveShellApp.exec_lines += ["from __future__ import unicode_literals"]
+
+or explictly suppply Unicode strings (e.g., as in the examples above with `u'TESTING'`).
 
 Alternatives
 ~~~~~~~~~~~~
