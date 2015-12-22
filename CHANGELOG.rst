@@ -13,6 +13,12 @@ See also:
 
 * (`First stable release`_.)
 
+(0.2.1b3)
+~~~~~~~~~
+
+* (Possible testing-only release.)
+
+
 `0.2.1b2`_
 ~~~~~~~~~~
 
@@ -86,3 +92,5 @@ Initial PyPi version, without documentation.
 .. _0.2.0b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.0b1
 .. _0.2.1b1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.1b1
 .. _0.2.1b2: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.1b2
+.. _0.2.1b3: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.1b3
+.. _0.2.1: https://github.com/orome/crypto-enigma-py/releases/tag/0.2.1
