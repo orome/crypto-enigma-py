@@ -78,7 +78,7 @@ Watch the machine as it runs for 500 steps:
 Functionality: command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A command line script, |script|, provides almost all the functionality of the API.
+A command line script, |script_code|, provides almost all the functionality of the API.
 
 Encode messages:
 
@@ -188,6 +188,7 @@ may not work as expected.
 
 
 .. |script| replace:: enigma.py
+.. |script_code| replace:: `enigma.py`
 
 .. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
 .. _I: http://www.cryptomuseum.com/crypto/enigma/i/index.htm
