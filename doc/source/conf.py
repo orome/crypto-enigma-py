@@ -197,6 +197,13 @@ rst_epilog = """
 .. |Ringstellung| replace:: *Ringstellung*
 .. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
 .. _Hackage documentation: https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html
+.. |script| replace:: enigma.py
+.. |script_code| replace:: `enigma.py`
+.. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
+.. _I: http://www.cryptomuseum.com/crypto/enigma/i/index.htm
+.. _M3: http://www.cryptomuseum.com/crypto/enigma/m3/index.htm
+.. _M4: http://www.cryptomuseum.com/crypto/enigma/m4/index.htm
+.. _Crypto Museum: http://www.cryptomuseum.com/crypto/enigma/index.htm
 """
 
 
