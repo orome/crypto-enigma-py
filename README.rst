@@ -8,6 +8,8 @@ An Enigma machine simulator with state and encoding display for Python 2.7.
 Currently support is only provided for those `machine models`_ in most
 widespread general use during the war years: the `I`_, `M3`_, and `M4`_.
 
+.. _functionality_commandline:
+
 Functionality: command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -57,6 +59,8 @@ Watch the machine as it runs for 500 steps:
 .. parsed-literal::
 
     $ |script| run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+
+.. _functionality_api:
 
 Functionality: package API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,6 +117,7 @@ Watch the machine as it runs for 500 steps:
 
     >>> cfg.print_operation(steps=500, show_step=True, format='internal', overwrite=True)
 
+.. _documentation:
 
 Documentation
 ~~~~~~~~~~~~~
