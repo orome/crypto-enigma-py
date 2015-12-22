@@ -8,11 +8,8 @@ An Enigma machine simulator with state and encoding display for Python 2.7.
 Currently support is only provided for those `machine models`_ in most
 widespread general use during the war years: the `I`_, `M3`_, and `M4`_.
 
-Functionality
-~~~~~~~~~~~~~
-
-Command line
-^^^^^^^^^^^^
+Functionality: command line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Encode messages:
 
@@ -61,8 +58,8 @@ Watch the machine as it runs for 500 steps:
 
     $ |script| run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
-API
-^^^
+Functionality: package API
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. parsed-literal::
 
@@ -152,7 +149,7 @@ before any code that uses the API, or confiure IPython (in `ipython_config.py`) 
 
    c.InteractiveShellApp.exec_lines += ["from __future__ import unicode_literals"]
 
-or explictly suppply Unicode strings (e.g., as in the examples above with `u'TESTING'`).
+or explicitly suppply Unicode strings (e.g., as in the examples above with :code:`u'TESTING'`).
 
 Alternatives
 ~~~~~~~~~~~~
