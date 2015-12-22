@@ -17,7 +17,7 @@ Sitemap
 =======
 
 .. toctree::
-    :maxdepth: 5
+    :maxdepth: 2
 
     machine
     components
