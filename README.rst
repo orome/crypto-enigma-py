@@ -158,7 +158,7 @@ Note also that at the start of any scripts that use this package, you should
 
    from __future__ import unicode_literals
 
-before any code that uses the API, or confiure IPython (in `ipython_config.py`) with
+before any code that uses the API, or confiure IPython (in :code:`ipython_config.py`) with
 
 .. parsed-literal::
 
@@ -188,7 +188,7 @@ may not work as expected.
 
 
 .. |script| replace:: enigma.py
-.. |script_code| replace:: `enigma.py`
+.. |script_code| replace:: :code:`enigma.py`
 
 .. _machine models: http://www.cryptomuseum.com/crypto/enigma/tree.htm
 .. _I: http://www.cryptomuseum.com/crypto/enigma/i/index.htm
