@@ -18,14 +18,14 @@ from a conventional specification, examining the state of a configuration, simul
 the operation of a machine by stepping between states, and
 encoding messages:
 
-Create a machine configuration (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.config_enigma_from_string>`__ for :code:`config_enigma_from_string`):
+Create a machine configuration (see the `documentation <http://crypto-enigma.readthedocs.org/en/pypi/machine.html#crypto_enigma.machine.EnigmaConfig.config_enigma_from_string>`__ for :code:`config_enigma_from_string`):
 
 .. parsed-literal::
 
     >>> from crypto_enigma import *
     >>> cfg = EnigmaConfig.config_enigma_from_string(u'B-I-III-I EMO UX.MO.AY 13.04.11')
 
-Encode messages (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.enigma_encoding>`__ for :code:`enigma_encoding`):
+Encode messages (see the `documentation <http://crypto-enigma.readthedocs.org/en/pypi/machine.html#crypto_enigma.machine.EnigmaConfig.enigma_encoding>`__ for :code:`enigma_encoding`):
 
 
 .. parsed-literal::
@@ -36,7 +36,7 @@ Encode messages (see the `documentation <http://crypto-enigma.readthedocs.org/en
     >>> cfg.enigma_encoding(u'OZQKPFLPYZRPYTFVU')
     u'TESTINGXTESTINGUD'
 
-Show configuration details (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.config_string>`__ for :code:`config_string`):
+Show configuration details (see the `documentation <http://crypto-enigma.readthedocs.org/en/pypi/machine.html#crypto_enigma.machine.EnigmaConfig.config_string>`__ for :code:`config_string`):
 
 .. parsed-literal::
 
@@ -53,7 +53,7 @@ Show configuration details (see the `documentation <http://crypto-enigma.readthe
       P YBCDEFGHIJKLONMPQRS(T)XVWUAZ         UX.MO.AY
     T < CNAUJVQSLEMIKBZRGPHXDFY(T)WO
 
-Simulate machine operation (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.print_operation>`__ for :code:`print_operation`):
+Simulate machine operation (see the `documentation <http://crypto-enigma.readthedocs.org/en/pypi/machine.html#crypto_enigma.machine.EnigmaConfig.print_operation>`__ for :code:`print_operation`):
 
 .. parsed-literal::
 
@@ -199,7 +199,7 @@ may not work as expected.
 .. _test versions: https://testpypi.python.org/pypi/crypto-enigma
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
-.. _Read the Docs: http://crypto-enigma.readthedocs.org/en/stable/
+.. _Read the Docs: http://crypto-enigma.readthedocs.org/en/pypi/
 
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
 .. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
@@ -212,8 +212,8 @@ may not work as expected.
 .. |Development Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=latest
    :target: http://crypto-enigma.readthedocs.org/en/latest/?badge=latest
    :alt: Documentation Status
-.. |Stable Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=stable
-   :target: http://crypto-enigma.readthedocs.org/en/stable/?badge=stable
+.. |Stable Docs| image:: https://readthedocs.org/projects/crypto-enigma/badge/?version=pypi
+   :target: http://crypto-enigma.readthedocs.org/en/pypi/?badge=pypi
    :alt: Documentation Status
 .. |Supported Python versions| image:: https://img.shields.io/pypi/pyversions/crypto-enigma.svg
    :target: https://pypi.python.org/pypi/crypto-enigma/
