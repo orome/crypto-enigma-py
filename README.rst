@@ -65,6 +65,13 @@ Watch the machine as it runs for 500 steps:
 Functionality: package API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The package provides functionality for :ref:`generating a machine configuration <config_creation>`
+from a conventional specification, :ref:`examining the state <config_state>` of a configuration, simulating
+the :ref:`operation <config_operation>` of a machine by stepping between states, and
+:ref:`encoding messages <config_encoding>`:
+
+Create a machine configuration:
+
 .. parsed-literal::
 
     >>> from crypto_enigma import *
