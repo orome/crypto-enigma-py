@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-""" 
-Description
-
-.. note::
-    Any additional note.
-"""
 
 from __future__ import (absolute_import, print_function, division, unicode_literals)
 
