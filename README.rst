@@ -65,19 +65,20 @@ Watch the machine as it runs for 500 steps:
 Functionality: package API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The package provides functionality for :ref:`generating a machine configuration <config_creation>`
-from a conventional specification, :ref:`examining the state <config_state>` of a configuration, simulating
-the :ref:`operation <config_operation>` of a machine by stepping between states, and
-:ref:`encoding messages <config_encoding>`:
+The package provides functionality for generating a machine configuration
+from a conventional specification, examining the state of a configuration, simulating
+the operation of a machine by stepping between states, and
+encoding messages:
 
-Create a machine configuration:
+Create a machine configuration (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.config_enigma_from_string>`__ for :code:`config_enigma_from_string`):
 
 .. parsed-literal::
 
     >>> from crypto_enigma import *
     >>> cfg = EnigmaConfig.config_enigma_from_string(u'B-I-III-I EMO UX.MO.AY 13.04.11')
 
-Encode messages:
+Encode messages (see the `documentation <http://crypto-enigma.readthedocs.org/en/stable/machine.html#crypto_enigma.machine.EnigmaConfig.enigma_encoding>`__ for :code:`enigma_encoding`):
+
 
 .. parsed-literal::
 
