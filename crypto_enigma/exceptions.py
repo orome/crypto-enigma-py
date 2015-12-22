@@ -8,8 +8,6 @@
 """
 This module defines some placeholders for custom exceptions and errors.
 
-.. todo::
-    Document.
 """
 
 

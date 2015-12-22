@@ -10,11 +10,6 @@ This module supports all of the functionality of an Enigma machine using an `Eni
 several utility functions, which support examination of its state
 (including the details of the cyphers used for encoding messages), stepping during operation, and encoding messages.
 
-.. todo::
-    Flesh out and link to sections.
-
-.. todo::
-    Fix and document import organization.
 """
 
 
@@ -504,10 +499,6 @@ class EnigmaConfig(object):
 
                 >>> cfg.stage_mapping_list()[0] == cfg.stage_mapping_list()[-1]
                 True
-
-            .. todo::
-                Add example of how in degenerate case first n are just the wiring (and explain stage as
-                reverse too).
 
         """
         return ([component(comp).mapping(pos, Direction.FWD) for (comp, pos) in
