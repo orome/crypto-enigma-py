@@ -173,6 +173,8 @@ For other Python Enigma machines see:
 
 -  `py-enigma <https://pypi.python.org/pypi/py-enigma/>`__ (Python 3)
 
+This package is based on a `Haskell version`_, with essentially the same API.
+
 
 Development status
 ~~~~~~~~~~~~~~~~~~
