@@ -7,7 +7,7 @@ from __future__ import (absolute_import, print_function, division, unicode_liter
 # See - http://www.python.org/dev/peps/pep-0440/
 # See - http://semver.org
 __author__ = 'Roy Levien'
-__copyright__ = '(c) 2014-2015 Roy Levien'
+__copyright__ = '(c) 2014-2016 Roy Levien'
 __release__ = '0.2.1'  # N(.N)*
 __pre_release__ = 'b3'  # aN | bN | cN |
 __suffix__ = '.dev2'  # .devN | | .postN
