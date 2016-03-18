@@ -541,3 +541,5 @@ if __name__ == '__main__':
 # Defaults - http://stackoverflow.com/a/15301183/656912
 
 # # ASK - No way to do -ddd as --detail=3? <<<
+# TBD - Confirm proper encoding of all files <<<
+
