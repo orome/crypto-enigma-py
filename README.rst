@@ -1,7 +1,7 @@
 crypto-enigma
 -------------
 
-|Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status|
+|Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status| |Gitter|
 
 An Enigma machine simulator with state and encoding display for Python 2.7.
 
@@ -26,7 +26,6 @@ Create a machine configuration (see the `documentation <http://crypto-enigma.rea
     >>> cfg = EnigmaConfig.config_enigma_from_string(u'B-I-III-I EMO UX.MO.AY 13.04.11')
 
 Encode messages (see the `documentation <http://crypto-enigma.readthedocs.org/en/pypi/machine.html#crypto_enigma.machine.EnigmaConfig.enigma_encoding>`__ for :code:`enigma_encoding`):
-
 
 .. parsed-literal::
 
@@ -206,6 +205,9 @@ may not work as expected.
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
 .. _Haskell version: https://hackage.haskell.org/package/crypto-enigma
 .. _Hackage documentation: https://hackage.haskell.org/package/crypto-enigma/docs/Crypto-Enigma.html
+
+.. |Gitter| image:: https://img.shields.io/gitter/room/badges/shields.svg
+   :target: https://gitter.im/orome/crypto-enigma-py
 
 .. |Python Programming Language| image:: https://img.shields.io/badge/language-Python-blue.svg
    :target: https://www.python.org
