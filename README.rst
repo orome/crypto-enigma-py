@@ -1,7 +1,7 @@
 crypto-enigma
 -------------
 
-|Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status| |Gitter|
+|Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status| |Waffle| |Gitter|
 
 An Enigma machine simulator with state and encoding display for Python 2.7.
 
@@ -182,7 +182,8 @@ Development status
 
 This package is in the early stages of development, and I and can't promise the current
 `development version`_ will work. More detail about planned releases and activities
-can be found the list of scheduled `milestones`_ and in the list of `open issues`_.
+can be found the list of scheduled `milestones`_ and in the list of `open issues`_
+and the projects Waffle `status board`_.
 Various `test versions`_ may be available for installation or issues review, but these also
 may not work as expected.
 
@@ -200,6 +201,7 @@ may not work as expected.
 .. _test versions: https://testpypi.python.org/pypi/crypto-enigma
 .. _milestones: https://github.com/orome/crypto-enigma-py/milestones
 .. _open issues: https://github.com/orome/crypto-enigma-py/issues
+.. _status board: https://waffle.io/orome/crypto-enigma-py
 .. _Read the Docs: http://crypto-enigma.readthedocs.org/en/pypi/
 
 .. _Enigma machines: http://en.wikipedia.org/wiki/Enigma_machine
@@ -208,6 +210,9 @@ may not work as expected.
 
 .. |Gitter| image:: https://img.shields.io/gitter/room/badges/shields.svg
    :target: https://gitter.im/orome/crypto-enigma-py
+.. |Waffle| image:: https://img.shields.io/waffle/label/orome/crypto-enigma-py/in%20progress.svg?label=active&colorA=66d9ff
+   :target: https://waffle.io/orome/crypto-enigma-py
+   :alt: 'In Progress Issues'
 
 .. |Python Programming Language| image:: https://img.shields.io/badge/language-Python-blue.svg
    :target: https://www.python.org
