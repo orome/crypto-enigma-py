@@ -971,6 +971,7 @@ class EnigmaConfig(object):
             return self._config_string(letter, mark_func)
         elif format in EnigmaConfig._FMTS_WINDOWS:
             return self.windows() + encoding_string
+        # !!! BUG - config and debug both give: UnicodeDecodeError: 'ascii' codec can't decode byte 0xce in position 2: ordinal not in range(128) <<<
         elif format in EnigmaConfig._FMTS_CONFIG:
             return str(self) + encoding_string
         elif format in EnigmaConfig._FMTS_DEBUG:
