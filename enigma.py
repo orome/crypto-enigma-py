@@ -333,13 +333,13 @@ include:
    encoded to by letter at that position in the alphabet) preformed by the
    machine as a whole, followed by window letters (as '{fmt_windows_val}') and
    positions, and indicating a {let_arg} and its encoding, if provided;
- + '{fmt_internal_val}', which will show a detailed schematic of each processing step
+ + '{fmt_internal_val}', which will show a detailed schematic of each processing stage
    (proceeding from top to bottom), in which
     - each line indicates the mapping (see '{fmt_single_val}') preformed by the
-      component at that step;
+      component at that stage;
     - each line begins with an indication of the stage (rotor number, "P" for
-      plugboard, or "R" for reflector) at that step, and ends with the
-      specification of the component at that stage;
+      plugboard, or "R" for reflector), and ends with the specification of the 
+      component at that stage;
     - rotors also indicate their window letter, and position;
     - if a valid {let_arg} is provided, it is indicated as input and its
       encoding at each stage is marked;
