@@ -124,7 +124,7 @@ Watch the machine as it runs for 500 steps:
 
 .. parsed-literal::
 
-    $ |script| run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
+    $ |script| run "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 .. _documentation:
 
@@ -163,7 +163,7 @@ before any code that uses the API, or confiure IPython (in :code:`ipython_config
 
    c.InteractiveShellApp.exec_lines += ["from __future__ import unicode_literals"]
 
-or explicitly suppply Unicode strings (e.g., as in the examples above with :code:`u'TESTING'`).
+or explicitly supply Unicode strings (e.g., as in the examples above with :code:`u'TESTING'`).
 
 Alternatives
 ~~~~~~~~~~~~
@@ -187,7 +187,7 @@ and the projects Waffle `status board`_.
 Various `test versions`_ may be available for installation or issues review, but these also
 may not work as expected.
 
-Migration to Python 3 is underway on a [seperate branch](https://github.com/orome/crypto-enigma-py/tree/python3).
+Migration to Python 3 is underway on a `seperate branch <https://github.com/orome/crypto-enigma-py/tree/python3>`__.
 
 
 
