@@ -187,6 +187,8 @@ and the projects Waffle `status board`_.
 Various `test versions`_ may be available for installation or issues review, but these also
 may not work as expected.
 
+Migration to Python 3 is underway on a [seperate branch](https://github.com/orome/crypto-enigma-py/tree/python3).
+
 
 
 .. |script| replace:: enigma.py
