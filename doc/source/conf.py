@@ -113,11 +113,11 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'crypto-enigma'
-copyright = u'2014-2015, ' + __author__
+project = 'crypto-enigma'
+copyright = '2014-2019, ' + __author__
 author = __author__
 
-# The version info for the project you're documenting, acts as replacement for
+# The version info for the project yo're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
@@ -241,10 +241,6 @@ extlinks = {
 doctest_test_doctest_blocks = 'docs'
 doctest_global_setup = (
     '#encoding: utf8\n\n'
-    'from __future__ import unicode_literals #Has no effect?\n'
-    'import sys\n'
-    'reload(sys)\n'
-    'sys.setdefaultencoding("UTF-8")\n'
     'from crypto_enigma.machine import *\n'
 )
 
@@ -339,8 +335,8 @@ html_show_sphinx = False
 
 # Language to be used for generating the HTML full-text search index.
 # Sphinx supports the following languages:
-#   'da', 'de', 'en', 'es', 'fi', 'fr', 'hu', 'it', 'ja'
-#   'nl', 'no', 'pt', 'ro', 'ru', 'sv', 'tr'
+#   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
+#   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr'
 #html_search_language = 'en'
 
 # A dictionary with options for the search language support, empty by default.
@@ -374,7 +370,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'crypto-enigma.tex', u'crypto-enigma Documentation',
+  (master_doc, 'crypto-enigma.tex', 'crypto-enigma Documentation',
    author, 'manual'),
 ]
 
@@ -404,7 +400,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'crypto-enigma', u'crypto-enigma Documentation',
+    (master_doc, 'crypto-enigma', 'crypto-enigma Documentation',
      [author], 1)
 ]
 
@@ -418,7 +414,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'crypto-enigma', u'crypto-enigma Documentation',
+  (master_doc, 'crypto-enigma', 'crypto-enigma Documentation',
    author, 'crypto-enigma', 'One line description of project.',
    'Miscellaneous'),
 ]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf8
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 ''' Simple test file for debugging and testing at the shell. To use simply
         python test.py
@@ -30,7 +30,7 @@ def print_header(level, label='', mark=None):
                                                                header_string=header_string))
 
 
-test_result = pytest.main(b"--cache-clear -v --color=yes --exitfirst --showlocals --durations=5")
+test_result = pytest.main(['--cache-clear', '-v', '--color=yes', '--exitfirst', '--showlocals', '--durations=5'])
 if test_result != 0:
     exit(test_result)
 
@@ -38,8 +38,8 @@ if test_result != 0:
 print_header(1, 'eyeball checks')
 print_header(2, 'components')
 print_header(3, 'instantiation')
-print(component(u'UX.MI'))
-print(component(u'I'))
+print(component('UX.MI'))
+print(component('I'))
 
 print_header(3, 'mapping rotation')
 print(component('I').mapping(1, Direction.FWD))
@@ -109,7 +109,7 @@ print(EnigmaConfig._marked_mapping(LETTERS, 25, lambda c: '[' + c + ']'))
 # print(len(EnigmaConfig._marked_mapping(LETTERS, 3)))
 # print(len(EnigmaConfig._marked_mapping(LETTERS, 25, lambda c: '[' + c + ']')))
 print_header(3, 'config strings')
-print_header(4, unicode(cfg))
+print_header(4, str(cfg))
 print(cfg.config_string('A'))
 print(cfg.config_string(' '))
 print(cfg.config_string('Z'))
@@ -129,7 +129,7 @@ print(cfg.config_string_internal())
 #print(cfg.enigma_mapping_list())
 print_header(3, 'operation')
 print_header(4, "{0} using '{1}'".format(cfg, '[..]'))
-cfg.print_operation('ABCDE', lambda c: '[' + c + ']')
+cfg.print_operation('ABCDE', lambda c: '[' + c + ']') # !!! - Why does this test error <<<
 
 print_header(3, 'operation internal')
 print_header(4, "{0} using '{1}'".format(cfg, '(..)'))
@@ -242,11 +242,11 @@ cfg.print_operation(message='ABCD EFGH IJK    L', initial=False)
 # print(rotors)
 #
 # for cfg in [EnigmaConfig.config_enigma_from_string('b-γ-V-I-I XXXX UX.MO.KZ.AY.EF.PL 03.17.04.11'),
-#             EnigmaConfig.config_enigma_from_string(u'b-γ-V-I-I UUUU UX.MO.KZ.AY.EF.PL 03.17.04.11'),
-#             EnigmaConfig.config_enigma_from_string(u'b-γ-V-I-I BBBB UX.MO.KZ.AY.EF.PL 03.17.04.11'),
+#             EnigmaConfig.config_enigma_from_string('b-γ-V-I-I UUUU UX.MO.KZ.AY.EF.PL 03.17.04.11'),
+#             EnigmaConfig.config_enigma_from_string('b-γ-V-I-I BBBB UX.MO.KZ.AY.EF.PL 03.17.04.11'),
 #             EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'XXXX', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11'),
-#             EnigmaConfig.config_enigma(u'b-γ-V-VIII-II', u'UUUU', u'UX.MO.KZ.AY.EF.PL', u'03.17.04.11'),
-#             EnigmaConfig.config_enigma(u'b-γ-V-VIII-II', u'BBBB', u'UX.MO.KZ.AY.EF.PL', u'03.17.04.11')]:
+#             EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'UUUU', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11'),
+#             EnigmaConfig.config_enigma('b-γ-V-VIII-II', 'BBBB', 'UX.MO.KZ.AY.EF.PL', '03.17.04.11')]:
 #     print(cfg)
 #
 # cfgC = EnigmaConfig.config_enigma_from_string('b-γ-V-I-I LEZO UX.MO.KZ.AY.EF.PL 03.17.04.11')
@@ -302,7 +302,7 @@ cfg.print_operation(message='ABCD EFGH IJK    L', initial=False)
 # UnicodePuzzler.config('ABγ')
 #
 # print('config_string converts a to unicode ')
-# UnicodePuzzler.config_string(u'ABγ')
+# UnicodePuzzler.config_string('ABγ')
 # print('')
 # UnicodePuzzler.config('ABγ')
 # print('\n\nForced')

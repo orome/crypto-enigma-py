@@ -12,7 +12,7 @@ Description
     Any additional note.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 import argparse
 
@@ -23,7 +23,7 @@ from crypto_enigma import *
 # Decode the Enigma specification string
 # http://stackoverflow.com/q/33811930/; http://stackoverflow.com/q/22947181/
 def unicode_literal(str_, encoding=sys.stdin.encoding):
-    if not isinstance(str_, unicode):
+    if not isinstance(str_, str):
         return str_.decode(encoding)
     else:
         return str_
@@ -490,12 +490,12 @@ if __name__ == '__main__':
         else:
             uni_arg_err = "Unable to decode '{}' to Unicode; report this error!"
 
-            assert isinstance(args.config, unicode), uni_arg_err.format(_CONFIG_KWARGS['metavar'])
+            assert isinstance(args.config, str), uni_arg_err.format(_CONFIG_KWARGS['metavar'])
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
 
             if args.command == 'encode':
-                assert isinstance(args.message, unicode), uni_arg_err.format(_ENCODE_MESSAGE_KWARGS['metavar'])
+                assert isinstance(args.message, str), uni_arg_err.format(_ENCODE_MESSAGE_KWARGS['metavar'])
                 msg = args.message
                 if fmt:
                     cfg.print_encoding(msg)
@@ -505,20 +505,20 @@ if __name__ == '__main__':
                 sst = args.command == 'run' and (args.showstep or args.verbose)
                 sec = args.showencoding or args.verbose
                 if args.highlight is not None:
-                    assert isinstance(args.highlight, unicode), uni_arg_err.format(_HIGHLIGHT_KWARGS['metavar'])
+                    assert isinstance(args.highlight, str), uni_arg_err.format(_HIGHLIGHT_KWARGS['metavar'])
                 mks = (lambda c: args.highlight[0] + c + args.highlight[1]) if args.highlight and len(
                     args.highlight) == 2 else None
                 if args.command == 'show':
                     let = '' if args.letter is None else args.letter
-                    assert isinstance(let, unicode), uni_arg_err.format(_LETTER_KWARGS['metavar'])
+                    assert isinstance(let, str), uni_arg_err.format(_LETTER_KWARGS['metavar'])
                     if args.verbose:
-                        print(unicode(cfg) + ':\n')
+                        print(str(cfg) + ':\n')
                     print(cfg.config_string(let, fmt, show_encoding=sec, mark_func=mks))
                 elif args.command == 'run':
                     msg = '' if args.message is None else args.message
-                    assert isinstance(msg, unicode), uni_arg_err.format(_RUN_MESSAGE_KWARGS['metavar'])
+                    assert isinstance(msg, str), uni_arg_err.format(_RUN_MESSAGE_KWARGS['metavar'])
                     if args.verbose:
-                        print(unicode(cfg) + ':\n')
+                        print(str(cfg) + ':\n')
                     cfg.print_operation(message=msg, steps=args.steps, overwrite=args.overwrite,
                                         format=args.format, initial=args.initial, delay=0.1 + (0.1 * args.slower),
                                         show_encoding=sec,

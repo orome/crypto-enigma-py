@@ -25,23 +25,23 @@ Create a machine configuration (see the `~.machine.EnigmaConfig.config_enigma_fr
 .. parsed-literal::
 
     >>> from crypto_enigma import *
-    >>> cfg = EnigmaConfig.config_enigma_from_string(u'B-I-III-I EMO UX.MO.AY 13.04.11')
+    >>> cfg = EnigmaConfig.config_enigma_from_string('B-I-III-I EMO UX.MO.AY 13.04.11')
 
 Encode messages (see the `~.machine.EnigmaConfig.enigma_encoding`):
 
 .. parsed-literal::
 
-    >>> cfg.enigma_encoding(u'TESTINGXTESTINGUD')
-    u'OZQKPFLPYZRPYTFVU'
+    >>> cfg.enigma_encoding('TESTINGXTESTINGUD')
+    'OZQKPFLPYZRPYTFVU'
 
-    >>> cfg.enigma_encoding(u'OZQKPFLPYZRPYTFVU')
-    u'TESTINGXTESTINGUD'
+    >>> cfg.enigma_encoding('OZQKPFLPYZRPYTFVU')
+    'TESTINGXTESTINGUD'
 
 Show configuration details (see the `~.machine.EnigmaConfig.config_string`):
 
 .. parsed-literal::
 
-    >>> print(cfg.config_string(letter=u'X', format='internal', mark_func=lambda c: '(' + c + ')'))
+    >>> print(cfg.config_string(letter='X', format='internal', mark_func=lambda c: '(' + c + ')'))
     X > ABCDEFGHIJKLMNOPQRSTUVW(X)YZ
       P YBCDEFGHIJKLONMPQRSTXVW(U)AZ         UX.MO.AY
       1 HCZMRVJPKSUDTQOLWEXN(Y)FAGIB  O  05  I
@@ -58,7 +58,7 @@ Simulate machine operation (see the `~.machine.EnigmaConfig.print_operation`):
 
 .. parsed-literal::
 
-    >>> cfg.print_operation(message=u'TESTING', show_step=True, mark_func=lambda c: '(' + c + ')')
+    >>> cfg.print_operation(message='TESTING', show_step=True, mark_func=lambda c: '(' + c + ')')
     0000       CNAUJVQSLEMIKBZRGPHXDFYTWO   EMO  19 10 05
     0001  T > UNXKGVERLYDIQBTWMHZ(O)AFPCJS  EMP  19 10 06
     0002  E > QTYJ(Z)XUPKDIMLSWHAVNBGROFCE  EMQ  19 10 07
@@ -148,7 +148,7 @@ before any code that uses the API, or confiure IPython (in `ipython_config.py`) 
 
    c.InteractiveShellApp.exec_lines += ["from __future__ import unicode_literals"]
 
-or explicitly supply Unicode strings (e.g., as in many of the examples here with :code:`u'TESTING'`).
+or explicitly supply Unicode strings (e.g., as in many of the examples here with :code:`'TESTING'`).
 
 """
 

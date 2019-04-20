@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf8
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 ''' Simple test file for debugging and testing at the shell. To use simply
         python test.py
@@ -44,9 +44,9 @@ def test_component_rotation():
 
 def test_component_string():
     # Components as strings
-    assert 'c-γ-I-VIII-III UYZO UX.MI 03.22.04.09' == unicode(
+    assert 'c-γ-I-VIII-III UYZO UX.MI 03.22.04.09' == str(
         EnigmaConfig.config_enigma('c-γ-I-VIII-III', 'UYZO', 'UX.MI', '03.22.04.09'))
-    assert 'b-β-I-II-III AAAA UX.LU.QW.MI 01.11.14.04' == unicode(
+    assert 'b-β-I-II-III AAAA UX.LU.QW.MI 01.11.14.04' == str(
         EnigmaConfig.config_enigma('b-β-I-II-III', 'AAAA', 'UX.LU.QW.MI', '01.11.14.04'))
 
 

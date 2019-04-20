@@ -13,7 +13,7 @@ Description
     Any additional note.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 from os.path import join, dirname
 
@@ -51,7 +51,7 @@ setup(name=b'crypto-enigma',
       # scripts=['test.py'],
       classifiers=['Development Status :: {}'.format('4 - Beta'),
                    'Programming Language :: Python',
-                   'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.7',
                    'Environment :: Console',
                    'Intended Audience :: End Users/Desktop',
                    'Intended Audience :: Developers',

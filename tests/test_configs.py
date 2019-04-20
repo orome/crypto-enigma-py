@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf8
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 ''' Simple test file for debugging and testing at the shell. To use simply
         python test.py
@@ -21,20 +21,20 @@ from crypto_enigma.exceptions import *
 def test_config_constructor():
     with pytest.raises(EnigmaValueError) as e:
         cfg = EnigmaConfig.config_enigma('B-XX-VI-VII', 'AZU', '', '14.22.11')
-    assert e.value.message == "Bad configuration - Invalid rotor name, XX"
+    assert "Bad configuration - Invalid rotor name, XX" in str(e)
     with pytest.raises(EnigmaValueError) as e:
         cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'aZU', '', '14.22.11')
-    assert e.value.message == "Bad configuration: window letter, a"
+    assert "Bad configuration: window letter, a" in str(e)
     with pytest.raises(EnigmaValueError) as e:
         cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'AZU', '', '99.22.11')
-    assert e.value.message == "Bad configuration: invalid ring position number, 99"
+    assert "Bad configuration: invalid ring position number, 99" in str(e)
     with pytest.raises(EnigmaValueError) as e:
         cfg = EnigmaConfig.config_enigma('B-III-VI-VII', 'AU', '', '14.22.11')
-    assert e.value.message == "Bad configuration: number rotors (3), rings (3), and window letters (2) must match"
+    assert "Bad configuration: number rotors (3), rings (3), and window letters (2) must match" in str(e)
 
     with pytest.raises(EnigmaValueError) as e:
         cfg = EnigmaConfig.config_enigma_from_string('B-III-VI-VII AU 14.22.11')
-    assert e.value.message == "Bad string - [u'B-III-VI-VII', u'AU', u'14.22.11'] should have 4 elements"
+    assert "Bad string - ['B-III-VI-VII', 'AU', '14.22.11'] should have 4 elements" in str(e)
 
 
 def test_config_stepping():

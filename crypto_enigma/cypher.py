@@ -10,7 +10,7 @@ This is a supporting module that implements the simple substitution cypher emplo
 encode messages. It will not generally be used directly.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 from .utils import *
 
@@ -29,7 +29,7 @@ def chr_A0(n):
     return chr(n + ord('A'))
 
 
-class Mapping(unicode):
+class Mapping(str):
     """A substitution cypher mapping.
 
     The Enigma machine, and the components from which it is constructed, use **mappings** to perform a
@@ -49,17 +49,17 @@ class Mapping(unicode):
         For example, the mapping **EKMFLGDQVZNTOWYHXUSPAIBRCJ** encodes
         **A** to **E**, **B** to **K**, **C** to **M**, ..., **Y** to **C**, and **Z** to **J**:
 
-        >>> mpg = Mapping(u'EKMFLGDQVZNTOWYHXUSPAIBRCJ')
-        >>> mpg.encode_string(u'ABCYZJ')
-        u'EKMCJZ'
-        >>> mpg.encode_string(u'ABCDEFGHIJKLMNOPQRSTUVWXYZ') == mpg
+        >>> mpg = Mapping('EKMFLGDQVZNTOWYHXUSPAIBRCJ')
+        >>> mpg.encode_string('ABCYZJ')
+        'EKMCJZ'
+        >>> mpg.encode_string('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == mpg
         True
 
         Note that there is no way to directly create `Mapping` for use by an `EnigmaMachine` or `Component`.
         The closest one can get is to configure a plugboard with `component`:
 
-        >>> component(u'AE.BK.CM.FD').wiring # doctest: +ELLIPSIS
-        u'EKMF...'
+        >>> component('AE.BK.CM.FD').wiring # doctest: +ELLIPSIS
+        'EKMF...'
 
         """
         super(Mapping, self).__init__()
@@ -78,21 +78,21 @@ class Mapping(unicode):
         Example:
             In the context of this package, this is most useful in low level analysis of the encoding process:
 
-            >>> wng = component(u'AE.BK.CM.FD').wiring
-            >>> wng.encode_char(u'A')
-            u'E'
-            >>> wng.encode_char(u'K')
-            u'B'
-            >>> wng.encode_char(u'Q')
-            u'Q'
+            >>> wng = component('AE.BK.CM.FD').wiring
+            >>> wng.encode_char('A')
+            'E'
+            >>> wng.encode_char('K')
+            'B'
+            >>> wng.encode_char('Q')
+            'Q'
 
             For example, it can be used to confirm that only letters connected in a plugboard are unaltered
             by the encoding it performs:
 
-            >>> pbd = component(u'AE.BK.CM.FD')
-            >>> all(pbd.wiring.encode_char(c) == c for c in filter(lambda c: c not in pbd.name,  u'ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+            >>> pbd = component('AE.BK.CM.FD')
+            >>> all(pbd.wiring.encode_char(c) == c for c in filter(lambda c: c not in pbd.name,  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
             True
-            >>> all(pbd.wiring.encode_char(c) != c for c in filter(lambda c: c in pbd.name,  u'ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+            >>> all(pbd.wiring.encode_char(c) != c for c in filter(lambda c: c in pbd.name,  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
             True
 
         """
@@ -114,10 +114,10 @@ class Mapping(unicode):
         Examples:
             This just the collected results of applying `encode_char` to each letter of the string:
 
-            >>> component(u'AE.BK.CM.FD').wiring.encode_string(u'ABKCFEKMD')
-            u'EKBMDABCF'
-            >>> ''.join(component(u'AE.BK.CM.FD').wiring.encode_char(c) for c in u'ABKCFEKMD')
-            u'EKBMDABCF'
+            >>> component('AE.BK.CM.FD').wiring.encode_string('ABKCFEKMD')
+            'EKBMDABCF'
+            >>> ''.join(component('AE.BK.CM.FD').wiring.encode_char(c) for c in 'ABKCFEKMD')
+            'EKBMDABCF'
 
             Note that, critically, the mapping used by an Enigma machine *changes before each character is encoded*
             so that:
@@ -125,7 +125,7 @@ class Mapping(unicode):
              .. testsetup::
 
                 cfg = EnigmaConfig.config_enigma(u"B-I-II-III", u"ABC", u"XO.YM.QL", u"01.02.03")
-                str=u'ABKCJFIRUFDLSLKFDHLSJHFLSDJFHLJSDHFLSJDFHSLDJFHSLDFJHSFEKMD'
+                str='ABKCJFIRUFDLSLKFDHLSJHFLSDJFHLJSDHFLSJDFHSLDJFHSLDFJHSFEKMD'
 
             >>> cfg.enigma_mapping().encode_string(str) != cfg.enigma_encoding(str)
             True

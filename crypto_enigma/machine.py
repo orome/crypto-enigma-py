@@ -15,12 +15,13 @@ several utility functions, which support examination of its state
 
 # The mark_func argument should take a single character and return a string representing that character, "marked" to
 # highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 from unicodedata import combining
 
 from .components import *
 from .exceptions import *
+from functools import reduce
 
 
 class EnigmaConfig(object):
@@ -59,7 +60,7 @@ class EnigmaConfig(object):
         They may also be useful in extending the functionality provided here, for example in constructing
         additional representations of configurations beyond those provided in `config_string`:
 
-        >>> [b'{} {}'.format(c, p) for c, p in zip(cfg_intl.components, cfg_intl.positions)[1:]]
+        >>> ['{} {}'.format(c, p) for c, p in list(zip(cfg_intl.components, cfg_intl.positions))[1:]]
         ['III 1', 'II 1', 'I 1', 'B 1']
 
         """
@@ -77,7 +78,7 @@ class EnigmaConfig(object):
         self._stages = tuple(range(0, len(self._components)))
 
     @staticmethod
-    @require_unicode('rotor_names', 'window_letters', 'plugs', 'rings')
+    #@require_unicode('rotor_names', 'window_letters', 'plugs', 'rings')
     def config_enigma(rotor_names, window_letters, plugs, rings):
         """Create an `EnigmaConfig` from strings specifying its state.
 
@@ -92,18 +93,18 @@ class EnigmaConfig(object):
         and any number of (non-contradictory) plugboard wirings (including none).
 
         Args:
-            rotor_names (unicode): The |Walzenlage|_:
+            rotor_names (str): The |Walzenlage|_:
                 The conventional letter or Roman numeral designations (its `~.components.Component.name`)
                 of the rotors, including reflector, separated by dashes (e.g. `'b-β-V-I-II'`).
                 (See `components`.)
-            window_letters (unicode): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
+            window_letters (str): The |Walzenstellung|_ (or, incorrectly, the *Grundstellung*):
                 The letters visible at the windows (e.g. `'MQR'`).
                 (See `windows`.)
-            plugs (unicode): The |Steckerverbindungen|_:
+            plugs (str): The |Steckerverbindungen|_:
                 The plugboard specification (its `~.components.Component.name`) as a conventional string of letter
                 pairs separated by periods, (e.g., `'AU.ZM.ZL.RQ'`).
                 (See `components`.)
-            rings (unicode): The |Ringstellung|_:
+            rings (str): The |Ringstellung|_:
                 The location of the letter ring on each rotor (specifcially, the number on the
                 rotor under ring letter **A**), separated by periods (e.g. `'22.11.16'`).
                 (See `rings`.)
@@ -153,12 +154,12 @@ class EnigmaConfig(object):
         return EnigmaConfig(comps, [((w - r + 1) % 26) + 1 for w, r in zip(winds, rngs)], rngs)
 
     @staticmethod
-    @require_unicode('string')
+    #@require_unicode('string')
     def config_enigma_from_string(string):
         """Create an `EnigmaConfig` from a single string specifying its state.
 
         Args:
-            string (unicode): The elements of a conventional specification (as supplied to `config_enigma`)
+            string (str): The elements of a conventional specification (as supplied to `config_enigma`)
                 joined by spaces into a single string.
 
         Returns:
@@ -170,22 +171,22 @@ class EnigmaConfig(object):
         Example:
             This is just a shortcut for invoking `config_enigma` using a sigle string:
 
-            >>> cfg_str = "c-β-V-III-II LQVI AM.EU.ZL 16.01.21.11" # doctest: +SKIP
-            >>> EnigmaConfig.config_enigma_from_string(cfg_str) == EnigmaConfig.config_enigma(*cfg_str.split(' ')) # doctest: +SKIP
+            >>> cfg_str = "c-β-V-III-II LQVI AM.EU.ZL 16.01.21.11"
+            >>> EnigmaConfig.config_enigma_from_string(cfg_str) == EnigmaConfig.config_enigma(*cfg_str.split(' '))
             True
 
             Note that the `string` argument corresponds to the string representation of an `EnigmaConfig`
 
-            >>> print(EnigmaConfig.config_enigma_from_string(cfg_str))  # doctest: +SKIP
+            >>> print(EnigmaConfig.config_enigma_from_string(cfg_str))
             c-β-V-III-II LQVI AM.EU.ZL 16.01.21.11
 
             so that this method is useful for instantiation of an `EnigmaConfig` from such strings (e.g., in files):
 
-            >>> unicode(EnigmaConfig.config_enigma_from_string(cfg_str)) == unicode(cfg_str) # doctest: +SKIP
+            >>> str(EnigmaConfig.config_enigma_from_string(cfg_str)) == cfg_str
             True
 
         """
-        split_string = filter(lambda s: s != '', string.split(' '))
+        split_string = [s for s in string.split(' ') if s != '']
         if len(split_string) != 4:
             raise EnigmaValueError('Bad string - {0} should have 4 elements'.format(split_string))
 
@@ -214,7 +215,7 @@ class EnigmaConfig(object):
             .. doctest:: properties
 
                 >>> cfg.components # doctest: +SKIP
-                (u'AM.EU.ZL', u'II', u'III', u'V', u'\u03b2', u'c')
+                ('AM.EU.ZL', 'II', 'III', 'V', '\u03b2', 'c')
 
         """
         return self._components
@@ -299,7 +300,7 @@ class EnigmaConfig(object):
             .. doctest:: properties
 
                 >>> cfg.windows()
-                u'LQVI'
+                'LQVI'
 
         """
         # return ''.join(list(reversed([self._window_letter(st) for st in self._stages][1:-1])))
@@ -425,7 +426,7 @@ class EnigmaConfig(object):
             cur_step += 1
 
     # REV - Caching here isn't really needed
-    @cached({})
+    #@cached({})
     def stage_mapping_list(self):
         """The list of mappings for each stage of an Enigma machine.
 
@@ -452,7 +453,7 @@ class EnigmaConfig(object):
 
                 >>> cfg = EnigmaConfig.config_enigma("b-γ-VII-V-IV", "VBOA", "NZ.AY.FG.UX.MO.PL", "05.16.11.21") # doctest: +SKIP
                 >>> cfg.stage_mapping_list() # doctest: +ELLIPSIS
-                [u'YBCDEGFHIJKPOZMLQRSTXVWUAN', u'DUSKOCLBRFHZNAEXWGQVYMIPJT', ...]
+                ['YBCDEGFHIJKPOZMLQRSTXVWUAN', 'DUSKOCLBRFHZNAEXWGQVYMIPJT', ...]
 
             or more clearly
 
@@ -507,7 +508,7 @@ class EnigmaConfig(object):
                  zip(self._components, self._positions)][:-1][::-1])
 
     # REV - Caching here isn't really needed
-    @cached({})
+    #@cached({})
     def enigma_mapping_list(self):
         """The list of progressive mappings of an Enigma machine at each stage.
 
@@ -530,7 +531,7 @@ class EnigmaConfig(object):
 
                 >>> cfg = EnigmaConfig.config_enigma("b-γ-VII-V-IV", "VBOA", "NZ.AY.FG.UX.MO.PL", "05.16.11.21") # doctest: +SKIP
                 >>> cfg.enigma_mapping_list() # doctest: +ELLIPSIS
-                [u'YBCDEGFHIJKPOZMLQRSTXVWUAN', u'JUSKOLCBRFHXETNZWGQVPMIYDA', ...]
+                ['YBCDEGFHIJKPOZMLQRSTXVWUAN', 'JUSKOLCBRFHXETNZWGQVPMIYDA', ...]
 
             or more clearly
 
@@ -575,12 +576,12 @@ class EnigmaConfig(object):
             .. doctest:: config_mappings
 
                 >>> cfg.enigma_mapping()
-                u'XZJVGSEMTCYUHWQROPFILDNAKB'
+                'XZJVGSEMTCYUHWQROPFILDNAKB'
 
         """
         return self.enigma_mapping_list()[-1]
 
-    @require_unicode('message')
+    #@require_unicode('message')
     def enigma_encoding(self, message):
         """Encode a message using the machine configuration.
 
@@ -590,10 +591,10 @@ class EnigmaConfig(object):
         which serves as the "starting" configuration for subsequent processing of the message.
 
         Args:
-            message (unicode): A message to encode.
+            message (str): A message to encode.
 
         Returns:
-            unicode: The machine-encoded message.
+            str: The machine-encoded message.
 
         Examples:
             Given machine configuration
@@ -609,7 +610,7 @@ class EnigmaConfig(object):
             .. doctest:: enigma_encoding
 
                 >>> cfg.enigma_encoding('KRIEG')
-                u'GOWNW'
+                'GOWNW'
 
             The details of this encoding and its relationship to stepping from one configuration to another are illustrated
             using `print_operation`:
@@ -636,17 +637,17 @@ class EnigmaConfig(object):
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
 
     # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
-    def __unicode__(self):
+    def __str__(self):
         return "{0} {1} {2} {3}".format('-'.join(self._components[1:][::-1]),
                                         self.windows(),
                                         self._components[0],
                                         '.'.join(['{:02d}'.format(r) for r in self._rings[1:-1]][::-1]))
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
+    # def __str__(self):
+    #     return str(self).encode('utf-8')
 
     def __repr__(self):
-        return '{0} ({1})'.format(object.__repr__(self), unicode(self)).encode('utf-8')
+        return '{0} ({1})'.format(object.__repr__(self), str(self))
 
     def __eq__(self, cfg):
         return all([self.components == cfg.components, self.positions == cfg.positions,  self.rings == cfg.rings])
@@ -660,7 +661,7 @@ class EnigmaConfig(object):
                 return c + '\u0332\u0305'
                 #return '[' + c + ']'
                 # REV - Would be nice, but has limited support: http://www.fileformat.info/info/unicode/char/20de/
-                # return c + u'\u20DE'
+                # return c + '\u20DE'
             else:
                 return mark_func(c)
 
@@ -679,7 +680,7 @@ class EnigmaConfig(object):
     # Ensures a single uppercase character ("those that are valid Enigma input") or space, defaulting to a space
     @staticmethod
     def _make_enigma_char(letter):
-        return filter(lambda l: l in LETTERS + ' ', (letter + ' ').upper())[0]
+        return [l for l in (letter + ' ').upper() if l in LETTERS + ' '][0]
 
     def _config_string(self, letter, mark_func=None):
 
@@ -730,7 +731,7 @@ class EnigmaConfig(object):
                 )
 
     @staticmethod
-    @require_unicode('string')
+    #@require_unicode('string')
     def make_message(string):
         """Convert a string to valid Enigma machine input.
 
@@ -740,10 +741,10 @@ class EnigmaConfig(object):
         (`enigma_encoding`).
 
         Args:
-            string (unicode): A string to convert to valid Enigma machine input.
+            string (str): A string to convert to valid Enigma machine input.
 
         Returns:
-            unicode: A string of valid Enigma machine input characters.
+            str: A string of valid Enigma machine input characters.
 
         """
         subs = [(' ', ''), ('.', 'X'), (',', 'Y'), ("'", 'J'), ('>', 'J'), ('<', 'J'), ('!', 'X'),
@@ -751,10 +752,10 @@ class EnigmaConfig(object):
                 ('1', 'YQ'), ('2', 'YW'), ('3', 'YE'), ('4', 'YR'), ('5', 'YT'),
                 ('6', 'YZ'), ('7', 'YU'), ('8', 'YI'), ('9', 'YO'), ('0', 'YP')]
 
-        msg = filter(lambda c: c in LETTERS, reduce(lambda s, (o, n): s.replace(o, n), subs, string.upper()))
+        msg = [c for c in reduce(lambda s, o_n: s.replace(o_n[0], o_n[1]), subs, string.upper()) if c in LETTERS]
         assert all(letter in LETTERS for letter in msg)
 
-        return msg
+        return ''.join(msg)
 
     # TBD - Additional formats, e.g., components listed, etc.
     _FMTS_INTERNAL = ['internal', 'detailed', 'schematic']
@@ -766,7 +767,7 @@ class EnigmaConfig(object):
 
     # TBD - Add encoding note to config and windows (e.g with P > K) <<<
     # TBD - Add components format that lists the components and their attributes <<<
-    @require_unicode('letter')
+    ##@require_unicode('letter')
     def config_string(self, letter='', format='single', show_encoding=False, mark_func=None):
         """A string representing a schematic of an Enigma machine's state.
 
@@ -774,7 +775,7 @@ class EnigmaConfig(object):
         optionally indicating how specified character is encoded by the configuration.
 
         Args:
-            letter (unicode, optional): A character to indicate the encoding of by the `EnigmaConfig`.
+            letter (str, optional): A character to indicate the encoding of by the `EnigmaConfig`.
             format (str, optional): A string specifying the format used to display the `EnigmaConfig`.
             show_encoding (bool, optional): Whether to indicate the encoding for formats that do not
                 include it by default.
@@ -953,9 +954,9 @@ class EnigmaConfig(object):
             .. doctest:: enigma_config_string
 
                 >>> cfg.config_string(format='windows', letter='K', show_encoding=True)
-                u'LFAQ  K > G'
+                'LFAQ  K > G'
                 >>> cfg.config_string(format='internal').split('\\n') # doctest: +ELLIPSIS
-                [u'    ABCDEFGHIJKLMNOPQRSTUVWXYZ', u'  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL', ...]
+                ['    ABCDEFGHIJKLMNOPQRSTUVWXYZ', '  P YBCDFEGHIJZPONMLQRSTXVWUAK         UX.MO.KZ.AY.EF.PL', ...]
 
         """
         # TBD - Check that mark_func returns Unicode, or that it 'succeeds'? - #13
@@ -981,7 +982,7 @@ class EnigmaConfig(object):
         else:
             raise EnigmaDisplayError('Bad argument - Unrecognized format, {0}'.format(format))
 
-    @require_unicode('letter')
+    #@require_unicode('letter')
     def config_string_internal(self, letter='', mark_func=None):
         """
         .. deprecated:: 0.0.2
@@ -989,7 +990,7 @@ class EnigmaConfig(object):
         """
         return self.config_string(letter, format='internal', mark_func=mark_func)
 
-    @require_unicode('message')
+    #@require_unicode('message')
     def print_operation(self, message='', steps=None, overwrite=False, format='single', initial=True, delay=0.1,
                         show_step=False, show_encoding=False, mark_func=None):
         """Show the operation of the Enigma machine as a series of configurations.
@@ -998,7 +999,7 @@ class EnigmaConfig(object):
         for a specified number of `steps`.
 
         Args:
-            message (unicode): A message to encode. Characters that are not letters will be replaced with
+            message (str): A message to encode. Characters that are not letters will be replaced with
                 standard *Kriegsmarine* substitutions or be removed (see `make_message`).
                 Each character will be used as a `letter` in the `config_string` specified by the `format`.
             steps (int, optional): A number of steps to run; if omitted when a `message` is provided,
@@ -1142,7 +1143,7 @@ class EnigmaConfig(object):
                 continue
             print_config_string(cfg.config_string(letter, format=format, show_encoding=show_encoding, mark_func=mark_func))
 
-    @require_unicode('message')
+    #@require_unicode('message')
     def print_operation_internal(self, message, mark_func=None):
         """
         .. deprecated:: 0.0.2
@@ -1151,11 +1152,11 @@ class EnigmaConfig(object):
         self.print_operation(message, format='internal', mark_func=mark_func)
 
     @staticmethod
-    @require_unicode('msg')
+    #@require_unicode('msg')
     def _postprocess(msg):
         return '\n'.join(chunk_of(' '.join(chunk_of(msg, 4)), 60))
 
-    @require_unicode('message')
+    #@require_unicode('message')
     def print_encoding(self, message):
         """Show the conventionally formatted encoding of a message.
 
@@ -1163,7 +1164,7 @@ class EnigmaConfig(object):
         blocks of four characters.
 
         Args:
-            message (unicode): A message to encode. Characters that are not letters will be replaced with
+            message (str): A message to encode. Characters that are not letters will be replaced with
                 standard *Kriegsmarine* substitutions or be removed (see `make_message`).
 
         Examples:

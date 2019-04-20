@@ -10,13 +10,14 @@ This is a supporting module that defines the components used to construct an Eni
 It will not generally be used directly.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 from enum import Enum
 
 from itertools import cycle, islice
-from cachetools import cached
+#from cachetools import cached
 
 from .cypher import *
+from functools import reduce
 
 
 # REV - Additional performance improvements
@@ -58,7 +59,7 @@ class Component(object):
         "outside of" an `~.machine.EnigmaConfig` can be :ref:`examined using <component_getting>` `component`.
         """
         # Should never happen if correct constructor has been used.
-        assert name not in _comps.keys()
+        assert name not in list(_comps.keys())
 
         self._name = name
         self._wiring = Mapping(wiring)
@@ -75,7 +76,7 @@ class Component(object):
         (or almost anything that isn't a valid plugboard spec).
 
         Returns:
-            unicode: A string uniquely specifying a `Component`.
+            str: A string uniquely specifying a `Component`.
 
         """
         return self._name
@@ -94,14 +95,14 @@ class Component(object):
 
             >>> cmp = component('V')
             >>> cmp.wiring
-            u'VZBRGITYUPSDNHLXAWMJQOFECK'
+            'VZBRGITYUPSDNHLXAWMJQOFECK'
             >>> component('VI').wiring
-            u'JPGVOUMFYQBENHZRDKASXLICTW'
+            'JPGVOUMFYQBENHZRDKASXLICTW'
 
             For plugboards, it is established by the specified connections:
 
             >>> component('AZ.BY').wiring
-            u'ZYCDEFGHIJKLMNOPQRSTUVWXBA'
+            'ZYCDEFGHIJKLMNOPQRSTUVWXBA'
 
         """
         return self._wiring
@@ -111,7 +112,7 @@ class Component(object):
         """The turnover positions for a rotor.
 
         Returns:
-            unicode: The letters on a rotor's ring that appear at the window (see `~.machine.EnigmaConfig.windows`)
+            str: The letters on a rotor's ring that appear at the window (see `~.machine.EnigmaConfig.windows`)
                 when the ring is in the turnover position.
                 Not applicable (and empty) for the plugboard and for reflectors.
                 (See `~.machine.EnigmaConfig.step`.)
@@ -120,27 +121,27 @@ class Component(object):
             Only "full-width" rotors have turnovers:
 
             >>> component('V').turnovers
-            u'Z'
+            'Z'
             >>> component('VI').turnovers
-            u'ZM'
+            'ZM'
             >>> component('I').turnovers
-            u'Q'
+            'Q'
 
             Reflectors, "half-width" rotors, and the plugboard never do:
 
             >>> component('B').turnovers
-            u''
+            ''
             >>> component('β').turnovers
-            u''
+            ''
             >>> component('AG.OI.LM.ER.KU').turnovers
-            u''
+            ''
 
 
         """
         return self._turnovers
 
     # Caching here is essential; see general note on caching.
-    @cached({})
+    #@cached({})
     def mapping(self, position, direction=Direction.FWD):
         """The mapping performed by a component based on its rotational position.
 
@@ -188,11 +189,11 @@ class Component(object):
         else:
             return Mapping(''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)]))
 
-    def __unicode__(self):
+    def __str__(self):
         return "{0} {1} {2}".format(self._name, self._wiring, self._turnovers)
 
-    def __str__(self):
-        return unicode(self).encode('utf-8')
+    # def __str__(self):
+    #     return str(self).encode('utf-8')
 
 
 # REV - Better way to initialize and store these as constants? <<<
@@ -230,17 +231,17 @@ _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 #: The list of valid (non-reflector) rotor names.
 #:
 #: >>> rotors # doctest: +SKIP
-#: [u'I', u'II', u'III', u'IV', u'V', u'VI', u'VII', u'VIII', u'β', u'γ']
+#: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'β', 'γ']
 rotors = sorted(_rots.keys())
 
 #: The list of valid reflector rotor names
 #:
 #: >>> reflectors
-#: [u'A', u'B', u'C', u'b', u'c']
+#: ['A', 'B', 'C', 'b', 'c']
 reflectors = sorted(_refs.keys())
 
 
-@require_unicode('name')
+#@require_unicode('name')
 def component(name):
     """Retrieve a specified component.
 
@@ -268,7 +269,7 @@ def component(name):
         else:
             return letters
 
-    if name not in _comps.keys():
+    if name not in list(_comps.keys()):
         _comps[name] = Component(name, ''.join(reduce(plug, name.split('.'), list(LETTERS))), '')
     assert sorted(_comps[name].wiring) == list(LETTERS)
     assert all([t in _comps[name].wiring for t in _comps[name].turnovers])

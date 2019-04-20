@@ -12,7 +12,7 @@ Description
     Any additional note.
 """
 
-from __future__ import (absolute_import, print_function, division, unicode_literals)
+#from __future__ import (absolute_import, print_function, division, unicode_literals)
 
 if __name__ == '__main__':
     print("This script has been replaced with 'enigma.py', and will be removed from future versions of this package!")
