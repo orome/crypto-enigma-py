@@ -3,7 +3,7 @@ crypto-enigma
 
 |Python Programming Language| |PyPi| |Development Status| |BSD3 License| |PyPi Build Status| |Waffle| |Gitter|
 
-An Enigma machine simulator with state and encoding display for Python 2.7.
+An Enigma machine simulator with state and encoding display for Python 3.6 and 3.7.
 
 Currently support is only provided for those `machine models`_ in most
 widespread general use during the war years: the `I`_, `M3`_, and `M4`_.

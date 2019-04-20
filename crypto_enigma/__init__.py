@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-"""An Enigma machine simulator with rich textual display functionality for Python 2.7.
+"""An Enigma machine simulator with rich textual display functionality for Python 3.6 and 3.7.
 
 Currently support is only provided for those `machine models`_ in most
 widespread general use during the war years: the `I`_, `M3`_, and `M4`_.
