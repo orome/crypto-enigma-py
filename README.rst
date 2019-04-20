@@ -124,7 +124,7 @@ Watch the machine as it runs for 500 steps:
 
 .. parsed-literal::
 
-    $ |script| run
+    $ |script|  run  "c-β-VIII-VII-VI QMLI 'UX.MO.AY 01.13.04.11" -s 500 -t -f internal -o
 
 .. _documentation:
 
