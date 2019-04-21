@@ -16,6 +16,7 @@ several utility functions, which support examination of its state
 # The mark_func argument should take a single character and return a string representing that character, "marked" to
 # highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
 #from __future__ import (absolute_import, print_function, division, unicode_literals)
+from __future__ import unicode_literals
 
 from unicodedata import combining
 

@@ -1,22 +1,47 @@
-language: python
+language: python            # this works for Linux but is an error on macOS or Windows
 
-python:
-  - "3.6"
+matrix:
+  include:
+    - name: "Python 3.7"
+      python: 3.7           # this works for Linux but is ignored on macOS or Windows
+      dist: xenial          # required for Python >= 3.7
+      env: PYTHON=python3 PIP=pip3  # Unnecessary on Lunix
+    - name: "Python 3.6"
+      python: 3.6           # this works for Linux but is ignored on macOS or Windows
+      dist: trusty
+      env: PYTHON=python3 PIP=pip3  # Unnecessary on Lunix
+    - name: "Python 3.7 (macOS)"
+      os: osx
+      osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
+      language: shell       # 'language: python' is an error on Travis CI macOS
+      env: PYTHON=python3 PIP=pip3  # 'python' points to Python 2.7, pip to pip2 on macOS
+    - name: "Python 3.7 (Windows)"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      env: PYTHON="py -3" PIP=pip3 PATH=/c/Python37:/c/Python37/Scripts:$PATH # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
+      before_install: choco install python
+      after_install: $PYTHON $PIP install win-unicode-console
 
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
-  - pip install pytest
+  - $PIP install --upgrade pip  # all three OSes agree about 'pip3'
+  - $PIP install -r requirements.txt
+  - $PIP install pytest
 
 # command to run tests
+# script: python3 my_app.py || python my_app.py
 script:
+  - $PYTHON --version
+  - $PIP --version
+  - if test $TRAVIS_OS_NAME -eq "windows"; then RUN='run'; else RUN=''; fi
+  #- if [[ "$TRAVIS_OS_NAME" == "windows" ]]; RUN=run ; else RUN='' ; fi
   - py.test -v --color=yes --exitfirst --showlocals --durations=5
-  - python enigma.py -?
-  - python enigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H "()"
-  - python enigma.py run "A-I-IV-I RXQ UX.MO.AY.NE 13.04.11" -s 20 -t
+  - $PYTHON $RUN enigma.py -?
+  - $PYTHON $RUN enigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H "()"
+  - $PYTHON $RUN enigma.py run "A-I-IV-I RXQ UX.MO.AY.NE 13.04.11" -s 20 -t
 
 after_success:
-  - python enigma.py version
+  - $PYTHON $RUN enigma.py version
 
 notifications:
   webhooks:

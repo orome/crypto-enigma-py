@@ -163,7 +163,7 @@ before any code that uses the API, or confiure IPython (in :code:`ipython_config
 
    c.InteractiveShellApp.exec_lines += ["from __future__ import unicode_literals"]
 
-or explicitly suppply Unicode strings (e.g., as in the examples above with :code:`u'TESTING'`).
+or explicitly supply Unicode strings (e.g., as in the examples above with :code:`u'TESTING'`).
 
 Alternatives
 ~~~~~~~~~~~~
