@@ -15,12 +15,12 @@ matrix:
       osx_image: xcode10.2  # Python 3.7.2 running on macOS 10.14.3
       language: shell       # 'language: python' is an error on Travis CI macOS
       env: PYTHON=python3 PIP=pip3  # 'python' points to Python 2.7, pip to pip2 on macOS
-    - name: "Python 3.7 (Windows)"
-      os: windows           # Windows 10.0.17134 N/A Build 17134
-      language: shell       # 'language: python' is an error on Travis CI Windows
-      env: PYTHON="py -3" PIP=pip3 PATH=/c/Python37:/c/Python37/Scripts:$PATH # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
-      before_install: choco install python
-      after_install: $PYTHON $PIP install win-unicode-console
+#    - name: "Python 3.7 (Windows)"
+#      os: windows           # Windows 10.0.17134 N/A Build 17134
+#      language: shell       # 'language: python' is an error on Travis CI Windows
+#      env: PYTHON="py -3" PIP=pip3 PATH=/c/Python37:/c/Python37/Scripts:$PATH # 'python3' is a 'command not found' error on Windows but 'py' works on Windows only
+#      before_install: choco install python
+#      after_install: $PYTHON $PIP install win-unicode-console
 
 # command to install dependencies
 install:
@@ -33,8 +33,8 @@ install:
 script:
   - $PYTHON --version
   - $PIP --version
+  # REV - Hack to get running on Windows: https://pypi.org/project/win_unicode_console/ ; https://travis-ci.community/t/unicode-on-windows/3109 <<<
   - if test $TRAVIS_OS_NAME -eq "windows"; then RUN='run'; else RUN=''; fi
-  #- if [[ "$TRAVIS_OS_NAME" == "windows" ]]; RUN=run ; else RUN='' ; fi
   - py.test -v --color=yes --exitfirst --showlocals --durations=5
   - $PYTHON $RUN enigma.py -?
   - $PYTHON $RUN enigma.py run "B-I-III-I EMO UX.MO.AY 13.04.11" -m "TESTING" -t -H "()"
