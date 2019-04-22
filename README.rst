@@ -147,10 +147,20 @@ Limitations
 Note that the correct display of some characters used to represent
 components (thin Naval rotors) assumes support for Unicode, while some
 aspects of the display of machine state depend on support for combining
-Unicode. This is a `known
-limitation <https://github.com/orome/crypto-enigma-py/issues/1>`__ that
-requres some `console configuration <https://pypi.org/project/win_unicode_console/>`__
-changes when used on (some versions) of Windows.
+Unicode. This is a `known imitation <https://github.com/orome/crypto-enigma-py/issues/1>`__
+that requres `setting <https://docs.python.org/3/using/cmdline.html#envvar-PYTHONIOENCODING>`__
+
+.. parsed-literal::
+
+   PYTHONIOENCODING=utf8
+
+and `possibly also <https://docs.python.org/3/using/cmdline.html#envvar-PYTHONLEGACYWINDOWSSTDIO>`__
+
+.. parsed-literal::
+
+   PYTHONLEGACYWINDOWSSTDIO=1
+
+on (some versions of) Windows.
 
 Alternatives
 ~~~~~~~~~~~~
