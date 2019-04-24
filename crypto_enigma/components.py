@@ -11,6 +11,7 @@ It will not generally be used directly.
 """
 
 #from __future__ import (absolute_import, print_function, division, unicode_literals)
+from typing import *
 from enum import Enum
 
 from itertools import cycle, islice
@@ -27,7 +28,7 @@ from functools import reduce
 # And because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
 
 
-LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 class Direction(Enum):
@@ -52,7 +53,7 @@ class Component(object):
     """
 
     # REV - Have this raise a more infomative error if used? -- http://stackoverflow.com/a/26025786/656912
-    def __init__(self, name, wiring, turnovers):
+    def __init__(self, name: str, wiring: str, turnovers: str):
         """
         There is no reason to construct a component directly, and no directly instantiated component
         can  be used in an `~.machine.EnigmaConfig`. The properties of components
@@ -66,7 +67,7 @@ class Component(object):
         self._turnovers = turnovers
 
     @property
-    def name(self):
+    def name(self) -> str:
         """The specification a component of an Enigma machine.
 
         For rotors (including the reflector) this is one of the conventional letter or Roman numeral designations
@@ -82,7 +83,7 @@ class Component(object):
         return self._name
 
     @property
-    def wiring(self):
+    def wiring(self) -> Mapping:
         """The physical wiring of a component, expressed as a |mapping|.
 
         Returns:
@@ -108,7 +109,7 @@ class Component(object):
         return self._wiring
 
     @property
-    def turnovers(self):
+    def turnovers(self) -> str:
         """The turnover positions for a rotor.
 
         Returns:
@@ -142,7 +143,7 @@ class Component(object):
 
     # Caching here is essential; see general note on caching.
     #@cached({})
-    def mapping(self, position, direction=Direction.FWD):
+    def mapping(self, position: int, direction: Direction = Direction.FWD) -> str:
         """The mapping performed by a component based on its rotational position.
 
         The |mapping| performed by a `Component` as a function of its position (see `~.machine.EnigmaConfig.positions`)
@@ -189,7 +190,7 @@ class Component(object):
         else:
             return Mapping(''.join([rot_map(LETTERS, -steps)[num_A0(c)] for c in rot_map(self._wiring, steps)]))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0} {1} {2}".format(self._name, self._wiring, self._turnovers)
 
     # def __str__(self):
@@ -197,10 +198,10 @@ class Component(object):
 
 
 # REV - Better way to initialize and store these as constants? <<<
-_comps = dict()
+_comps: Dict[str, Component] = dict()
 
 # Rotors
-_rots = dict()
+_rots: Dict[str, Component] = dict()
 _comps['I'] = _rots['I'] = Component('I', 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', 'Q')
 _comps['II'] = _rots['II'] = Component('II', 'AJDKSIRUXBLHWTMCQGZNPYFVOE', 'E')
 _comps['III'] = _rots['III'] = Component('III', 'BDFHJLCPRTXVZNYEIWGAKMUSQO', 'V')
@@ -214,7 +215,7 @@ _comps['β'] = _rots['β'] = Component('β', 'LEYJVCNIXWPBQMDRTAKZGFUHOS', '')
 _comps['γ'] = _rots['γ'] = Component('γ', 'FSOKANUERHMBTIYCWLQPZXVGJD', '')
 
 # Reflectors
-_refs = dict()
+_refs: Dict[str, Component] = dict()
 _comps['A'] = _refs['A'] = Component('A', 'EJMZALYXVBWFCRQUONTSPIKHGD', '')
 _comps['B'] = _refs['B'] = Component('B', 'YRUHQSLDPXNGOKMIEBFZCWVJAT', '')
 _comps['C'] = _refs['C'] = Component('C', 'FVPJIAOYEDRZXWGCTKUQSBNMHL', '')
@@ -223,7 +224,7 @@ _comps['b'] = _refs['b'] = Component('b', 'ENKQAUYWJICOPBLMDXZVFTHRGS', '')
 _comps['c'] = _refs['c'] = Component('c', 'RDOBJNTKVEHMLFCWZAXGYIPSUQ', '')
 
 # The (standard) keyboard as a "component", for reference
-_kbd = dict()
+_kbd: Dict[str, Component] = dict()
 _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 
 
@@ -232,17 +233,17 @@ _comps[''] = _kbd[''] = Component('', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '')
 #:
 #: >>> rotors # doctest: +SKIP
 #: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'β', 'γ']
-rotors = sorted(_rots.keys())
+rotors: List[str] = sorted(_rots.keys())
 
 #: The list of valid reflector rotor names
 #:
 #: >>> reflectors
 #: ['A', 'B', 'C', 'b', 'c']
-reflectors = sorted(_refs.keys())
+reflectors: List[str] = sorted(_refs.keys())
 
 
 #@require_unicode('name')
-def component(name):
+def component(name: str) -> Component:
     """Retrieve a specified component.
 
     Args:

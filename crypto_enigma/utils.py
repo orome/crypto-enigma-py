@@ -19,7 +19,7 @@ import sys
 
 
 # TBD - Generalize to other platforms; test?
-def print_over(s, backup=True, delay=0.2):
+def print_over(s: str, backup: bool = True, delay: float = 0.2) -> None:
     if backup:
         print('', end='\r')
         print("\033[F" * (s.count('\n')+2))
@@ -28,11 +28,11 @@ def print_over(s, backup=True, delay=0.2):
     time.sleep(delay)
 
 
-
 def ordering(items):
     return [i[1] for i in sorted(zip(items, list(range(0, len(items)))))]
 
 
+# TBD - Remove <<<
 # scan, because it's missing from Python; implemented to anticipate Python 3
 def accumulate(l, f):
     it = iter(l)
