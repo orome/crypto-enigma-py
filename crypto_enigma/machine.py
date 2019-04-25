@@ -509,7 +509,7 @@ class EnigmaConfig(object):
                  zip(self._components, self._positions)][:-1][::-1])
 
     # REV - Caching here isn't needed
-    def enigma_mapping_list(self):
+    def enigma_mapping_list(self) -> List[str]:
         """The list of progressive mappings of an Enigma machine at each stage.
 
         The list of |mappings| an `EnigmaConfig` has performed by each stage:
@@ -562,7 +562,7 @@ class EnigmaConfig(object):
         """
         return list(accumulate(self.stage_mapping_list(), lambda s, m: Mapping(m.encode_string(s))))
 
-    def enigma_mapping(self):
+    def enigma_mapping(self) -> str:
         """The mapping used by an Enigma machine for encoding.
 
         The |mapping| used by an `EnigmaConfig` to encode a letter entered at the keyboard.
@@ -582,7 +582,7 @@ class EnigmaConfig(object):
         return self.enigma_mapping_list()[-1]
 
     #@require_unicode('message')
-    def enigma_encoding(self, message):
+    def enigma_encoding(self, message) -> str:
         """Encode a message using the machine configuration.
 
         Encode a string, interpreted as a message (see `make_message`), using the
@@ -637,7 +637,7 @@ class EnigmaConfig(object):
                         (letter, step_config) in zip(message, self.step().stepped_configs())])
 
     # ASK - Equvalent to Haskell read (if this is like show, or is _repr_ show; eval(repr(obj)) )? <<<
-    def __str__(self):
+    def __str__(self) -> str:
         return "{0} {1} {2} {3}".format('-'.join(self._components[1:][::-1]),
                                         self.windows(),
                                         self._components[0],
@@ -646,10 +646,11 @@ class EnigmaConfig(object):
     # def __str__(self):
     #     return str(self).encode('utf-8')
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{0} ({1})'.format(object.__repr__(self), str(self))
 
-    def __eq__(self, cfg):
+    # ASK - Can't annotate __eq__ with self's class <<<
+    def __eq__(self, cfg: object) -> bool:
         return all([self.components == cfg.components, self.positions == cfg.positions,  self.rings == cfg.rings])
 
     @staticmethod

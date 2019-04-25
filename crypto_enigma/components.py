@@ -63,9 +63,9 @@ class Component(object):
         # Should never happen if correct constructor has been used.
         assert name not in list(_comps.keys())
 
-        self._name = name
-        self._wiring = Mapping(wiring)
-        self._turnovers = turnovers
+        self._name: str = name
+        self._wiring: Mapping = Mapping(wiring)
+        self._turnovers: str = turnovers
 
     @property
     def name(self) -> str:
@@ -180,7 +180,7 @@ class Component(object):
         assert direction in [Direction.FWD, Direction.REV]
 
         # REV - Smarter handling of edge cases and bounds?
-        def rot_map(mp, st):
+        def rot_map(mp: str, st: int) -> List[str]:
             st %= 26
             return list(islice(cycle(mp), st, 26 + st))
 
