@@ -13,10 +13,10 @@ See also:
 
 * (`First stable release`_.)
 
-(0.2.1b3)
+(0.3.1b1)
 ~~~~~~~~~
 
-* (Possible testing-only release.)
+* (Python 3 migration.)
 
 
 `0.2.1b2`_

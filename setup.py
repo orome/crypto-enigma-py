@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf8
 
-# Copyright (C) 2016 by Roy Levien.
+# Copyright (C) 2019 by Roy Levien.
 # This file is part of crypto-enigma, an Enigma Machine simulator.
 # released under the BSD-3 License (see LICENSE.txt).
 
@@ -51,6 +51,7 @@ setup(name=b'crypto-enigma',
       # scripts=['test.py'],
       classifiers=['Development Status :: {}'.format('4 - Beta'),
                    'Programming Language :: Python',
+                   'Programming Language :: Python :: 3.6',
                    'Programming Language :: Python :: 3.7',
                    'Environment :: Console',
                    'Intended Audience :: End Users/Desktop',
