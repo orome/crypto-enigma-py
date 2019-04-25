@@ -33,14 +33,13 @@ def ordering(items):
 
 
 # TBD - Remove <<<
-# scan, because it's missing from Python; implemented to anticipate Python 3
-def accumulate(l, f):
-    it = iter(l)
-    total = next(it)
-    yield total
-    for element in it:
-        total = f(total, element)
-        yield total
+# def accumulate(l, f):
+#     it = iter(l)
+#     total = next(it)
+#     yield total
+#     for element in it:
+#         total = f(total, element)
+#         yield total
 
 
 # also missing from Python
@@ -57,7 +56,7 @@ def chunk_of(it, n):
 #         def modified(*args, **kwargs):
 #             arg_names = list(_func_.__code__.co_varnames[:_func_.__code__.co_argcount])
 #             if len(given_arg_names) == 0:
-#                 # ASK - Where should this be; it should really happen when the decorator is applied <<<
+#                 # ASK - Where should this be; it should really happen when the decorator is applied
 #                 raise TypeError('No arguments provided to require_unicode decorator.')
 #                 #unicode_arg_names = arg_names
 #             else:

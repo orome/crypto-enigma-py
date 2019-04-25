@@ -19,6 +19,7 @@ several utility functions, which support examination of its state
 from __future__ import unicode_literals
 
 from unicodedata import combining
+from itertools import accumulate
 
 from .components import *
 from .exceptions import *
