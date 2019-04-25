@@ -21,11 +21,11 @@ from .utils import *
 
 
 # TBD - Fix encapsulation here; sould not be used by other modules (e.g., reversed encoding should start with mapping) <<<
-def num_A0(c):
+def num_A0(c: str) -> int:
     return ord(c) - ord('A')
 
 
-def chr_A0(n):
+def chr_A0(n: int) -> str:
     return chr(n + ord('A'))
 
 
@@ -43,7 +43,7 @@ class Mapping(str):
 
     """
 
-    def __init__(self, str):
+    def __init__(self, str: str):
         """Mappings are  expressed as a string of letters indicating the mapped-to letter
         for the letter at that position in the alphabet — i.e., as a permutation of the alphabet.
         For example, the mapping **EKMFLGDQVZNTOWYHXUSPAIBRCJ** encodes
@@ -66,7 +66,7 @@ class Mapping(str):
         self._len = len(self)
 
     # standard simple-substitution cypher encoding
-    def encode_char(self, ch):
+    def encode_char(self, ch: str) -> str:
         """Encode a single character using the mapping.
 
         Args:
@@ -101,7 +101,7 @@ class Mapping(str):
         else:
             return ' '
 
-    def encode_string(self, string):
+    def encode_string(self, string: str) -> str:
         """Encode a string using the mapping.
 
         Args:
