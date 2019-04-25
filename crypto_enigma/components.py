@@ -15,17 +15,18 @@ from typing import *
 from enum import Enum
 
 from itertools import cycle, islice
-#from cachetools import cached
+from functools import lru_cache
 
 from .cypher import *
 from functools import reduce
 
 
 # REV - Additional performance improvements
-# A note on the use of caching (cachetools):
+# A note on the use of caching (using functools.lru_cache):
 # A large speed improvement comes from caching the encodings of rotors when first computed for a given position.
 # This is effective because upper rotors don't change frequently so such cached mappings are reused many times.
 # And because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
+# Caching can be optimized by profiling (for example the test script).
 
 
 LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -141,8 +142,8 @@ class Component(object):
         """
         return self._turnovers
 
-    # Caching here is essential; see general note on caching.
-    #@cached({})
+    # Cach here is essential; see general note on caching.
+    @lru_cache(maxsize=1000)
     def mapping(self, position: int, direction: Direction = Direction.FWD) -> str:
         """The mapping performed by a component based on its rotational position.
 
@@ -243,6 +244,7 @@ reflectors: List[str] = sorted(_refs.keys())
 
 
 #@require_unicode('name')
+@lru_cache(maxsize=1000)
 def component(name: str) -> Component:
     """Retrieve a specified component.
 

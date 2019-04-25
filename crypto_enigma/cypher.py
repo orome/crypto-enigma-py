@@ -11,6 +11,7 @@ encode messages. It will not generally be used directly.
 """
 
 #from __future__ import (absolute_import, print_function, division, unicode_literals)
+from functools import lru_cache
 
 from .utils import *
 
@@ -19,12 +20,13 @@ from .utils import *
 # Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the
 # loss of clarity and correspondence to the underlying math.
 
-
 # TBD - Fix encapsulation here; sould not be used by other modules (e.g., reversed encoding should start with mapping) <<<
+@lru_cache(maxsize=1000)
 def num_A0(c: str) -> int:
     return ord(c) - ord('A')
 
 
+@lru_cache(maxsize=1000)
 def chr_A0(n: int) -> str:
     return chr(n + ord('A'))
 
@@ -66,6 +68,7 @@ class Mapping(str):
         self._len = len(self)
 
     # standard simple-substitution cypher encoding
+    @lru_cache(maxsize=2000)
     def encode_char(self, ch: str) -> str:
         """Encode a single character using the mapping.
 

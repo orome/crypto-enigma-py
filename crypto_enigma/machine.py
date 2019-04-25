@@ -427,8 +427,7 @@ class EnigmaConfig(object):
             yield cur_config
             cur_step += 1
 
-    # REV - Caching here isn't really needed
-    #@cached({})
+    # REV - Caching here isn't needed
     def stage_mapping_list(self):
         """The list of mappings for each stage of an Enigma machine.
 
@@ -509,8 +508,7 @@ class EnigmaConfig(object):
                 [component(comp).mapping(pos, Direction.REV) for (comp, pos) in
                  zip(self._components, self._positions)][:-1][::-1])
 
-    # REV - Caching here isn't really needed
-    #@cached({})
+    # REV - Caching here isn't needed
     def enigma_mapping_list(self):
         """The list of progressive mappings of an Enigma machine at each stage.
 
