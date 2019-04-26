@@ -14,6 +14,7 @@ encode messages. It will not generally be used directly.
 from functools import lru_cache
 
 from .utils import *
+from .exceptions import *
 
 
 LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -68,6 +69,11 @@ class Mapping(str):
         """
         super(Mapping, self).__init__()
         self._len = len(self)
+
+        # TBD - Add to tests
+        if not sorted(self) == list(LETTERS):
+            raise EnigmaValueError('Bad configuration: invalid mapping, {0}'.format(self))
+
 
     # standard simple-substitution cypher encoding
     @lru_cache(maxsize=2000)
