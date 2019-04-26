@@ -2,10 +2,10 @@ language: python            # this works for Linux but is an error on macOS or W
 
 matrix:
   include:
-#    - name: "Python 3.8 dev"
-#      python: 3.8-dev
-#      dist: trusty
-#      env: PYTHON=python3 PIP=pip3  # Unnecessary on Lunix
+    - name: "Python 3.8 dev"
+      python: 3.8-dev
+      dist: xenial
+      env: PYTHON=python3 PIP=pip3  # Unnecessary on Lunix
     - name: "Python 3.7"
       python: 3.7           # this works for Linux but is ignored on macOS or Windows
       dist: xenial          # required for Python >= 3.7
