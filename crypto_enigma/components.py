@@ -29,8 +29,6 @@ from functools import reduce
 # Caching can be optimized by profiling (for example the test script).
 
 
-LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 
 class Direction(Enum):
     """The direction that a signal flows through a component.

@@ -16,6 +16,8 @@ from functools import lru_cache
 from .utils import *
 
 
+LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 # A note on the use of string indexing to implement encryption:
 # Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the
 # loss of clarity and correspondence to the underlying math.
