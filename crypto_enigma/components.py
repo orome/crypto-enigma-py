@@ -11,6 +11,8 @@ It will not generally be used directly.
 """
 
 #from __future__ import (absolute_import, print_function, division, unicode_literals)
+from __future__ import annotations  # REV - This allows self reference to class in annotations within class
+
 from typing import *
 from enum import Enum
 
@@ -52,7 +54,7 @@ class Component(object):
     """
 
     # REV - Have this raise a more infomative error if used? -- http://stackoverflow.com/a/26025786/656912
-    def __init__(self, name: str, wiring: str, turnovers: str):
+    def __init__(self, name: str, wiring: str, turnovers: str) :
         """
         There is no reason to construct a component directly, and no directly instantiated component
         can  be used in an `~.machine.EnigmaConfig`. The properties of components
@@ -60,6 +62,8 @@ class Component(object):
         """
         # Should never happen if correct constructor has been used.
         assert name not in list(_comps.keys())
+        # TBD - Raise exception on sorted(wiring) != list(LETTERS)
+        # TBD - Add to tests
 
         self._name: str = name
         self._wiring: Mapping = Mapping(wiring)
@@ -142,7 +146,7 @@ class Component(object):
 
     # Cach here is essential; see general note on caching.
     @lru_cache(maxsize=1000)
-    def mapping(self, position: int, direction: Direction = Direction.FWD) -> str:
+    def mapping(self, position: int, direction: Direction = Direction.FWD) -> Mapping:
         """The mapping performed by a component based on its rotational position.
 
         The |mapping| performed by a `Component` as a function of its position (see `~.machine.EnigmaConfig.positions`)
@@ -175,6 +179,7 @@ class Component(object):
 
         """
 
+        # TBD - Add to tests
         assert direction in [Direction.FWD, Direction.REV]
 
         # REV - Smarter handling of edge cases and bounds?

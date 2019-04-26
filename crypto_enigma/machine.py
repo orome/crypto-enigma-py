@@ -17,6 +17,7 @@ several utility functions, which support examination of its state
 # highlight it in a the string representing a mapping. Ideally, the number of added printed characters should be even.
 #from __future__ import (absolute_import, print_function, division, unicode_literals)
 from __future__ import unicode_literals
+from __future__ import annotations  # REV - This allows self reference to class in annotations within class
 
 from unicodedata import combining
 from itertools import accumulate
@@ -309,7 +310,7 @@ class EnigmaConfig(object):
         return ''.join([self._window_letter(st) for st in self._stages][1:-1][::-1])
         # return ''.join([self._window_letter(st) for st in self._stages][-2:0:-1])
 
-    def step(self):
+    def step(self) -> EnigmaConfig:
         """Step the Enigma machine to a new machine configuration.
 
         Step the Enigma machine by rotating the rightmost (first) rotor one position, and other rotors as
@@ -365,10 +366,10 @@ class EnigmaConfig(object):
                 c-γ-V-I-II LXZT UX.MO.KZ.AY.EF.PL 03.17.04.01
 
         """
-        def is_turn(stg):
+        def is_turn(stg: int) -> bool:
             return self._window_letter(stg) in component(self.components[stg]).turnovers
 
-        def pos_inc(stg):
+        def pos_inc(stg: int) -> int:
             if stg == 0:
                 return 0
             elif stg > 3:
@@ -509,7 +510,7 @@ class EnigmaConfig(object):
                  zip(self._components, self._positions)][:-1][::-1])
 
     # REV - Caching here isn't needed
-    def enigma_mapping_list(self) -> List[str]:
+    def enigma_mapping_list(self) -> List[Mapping]:
         """The list of progressive mappings of an Enigma machine at each stage.
 
         The list of |mappings| an `EnigmaConfig` has performed by each stage:
@@ -562,7 +563,7 @@ class EnigmaConfig(object):
         """
         return list(accumulate(self.stage_mapping_list(), lambda s, m: Mapping(m.encode_string(s))))
 
-    def enigma_mapping(self) -> str:
+    def enigma_mapping(self) -> Mapping:
         """The mapping used by an Enigma machine for encoding.
 
         The |mapping| used by an `EnigmaConfig` to encode a letter entered at the keyboard.
@@ -672,7 +673,7 @@ class EnigmaConfig(object):
 
     # TBD - Add assertions to all that they get Unicode <<<
     @staticmethod
-    def _locate_letter(mapping, letter, string):
+    def _locate_letter(mapping: Mapping, letter, string):
 
         # locate the index of the encoding with mapping of letter, in string
         # REV - Use of out of bounds index (-1) as failure return value; callers must check bounds (see above) <<<
