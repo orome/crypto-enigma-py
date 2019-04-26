@@ -45,7 +45,7 @@ class Mapping(str):
 
     """
 
-    def __init__(self, str: str):
+    def __init__(self, string: str):
         """Mappings are  expressed as a string of letters indicating the mapped-to letter
         for the letter at that position in the alphabet — i.e., as a permutation of the alphabet.
         For example, the mapping **EKMFLGDQVZNTOWYHXUSPAIBRCJ** encodes
