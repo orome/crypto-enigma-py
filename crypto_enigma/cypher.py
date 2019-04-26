@@ -74,6 +74,8 @@ class Mapping(str):
         if not sorted(self) == list(LETTERS):
             raise EnigmaValueError('Bad configuration: invalid mapping, {0}'.format(self))
 
+    def __new__(cls, value: str):
+        return super().__new__(cls, value.upper())
 
     # standard simple-substitution cypher encoding
     @lru_cache(maxsize=2000)
