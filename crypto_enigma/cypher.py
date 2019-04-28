@@ -17,8 +17,6 @@ from .utils import *
 from .exceptions import *
 
 
-LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 # A note on the use of string indexing to implement encryption:
 # Improvements from implementing mappings as lists of numbers rather than strings are negligible and not worth the
 # loss of clarity and correspondence to the underlying math.
@@ -69,10 +67,6 @@ class Mapping(str):
         """
         super(Mapping, self).__init__()
         self._len = len(self)
-
-        # TBD - Add to tests
-        if not sorted(self) == list(LETTERS):
-            raise EnigmaValueError('Bad configuration: invalid mapping, {0}'.format(self))
 
     def __new__(cls, value: str):
         return super().__new__(cls, value.upper())
