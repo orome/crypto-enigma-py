@@ -15,6 +15,7 @@ from __future__ import annotations  # REV - This allows self reference to class 
 
 from typing import *
 from enum import Enum
+import pytest
 
 from itertools import cycle, islice
 from functools import lru_cache
@@ -30,6 +31,8 @@ from functools import reduce
 # And because even the lower rotors will assume a maximum of 26 distinct positions, the cache will always be small.
 # Caching can be optimized by profiling (for example the test script).
 
+
+LETTERS: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 class Direction(Enum):
@@ -60,14 +63,17 @@ class Component(object):
         can  be used in an `~.machine.EnigmaConfig`. The properties of components
         "outside of" an `~.machine.EnigmaConfig` can be :ref:`examined using <component_getting>` `component`.
         """
-        # Should never happen if correct constructor has been used.
-        assert name not in list(_comps.keys())
-        # TBD - Raise exception on sorted(wiring) != list(LETTERS)
-        # TBD - Add to tests
-
         self._name: str = name
         self._wiring: Mapping = Mapping(wiring)
         self._turnovers: str = turnovers
+
+        # REV - Needs to be after assignment to avoid missing value errors that obscure following
+        assert name not in list(_comps.keys())  # Should never happen if correct constructor has been used.
+        if not sorted(wiring) == list(LETTERS):
+            raise EnigmaValueError('Bad comonent argument: invalid mapping, {0}; '
+                                   'mapping must uniquely map all letters'.format(self))
+
+
 
     @property
     def name(self) -> str:

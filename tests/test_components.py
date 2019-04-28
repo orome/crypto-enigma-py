@@ -62,3 +62,10 @@ def test_component_equality():
     assert cfg_a == EnigmaConfig(cfg_a.components, cfg_a.positions, cfg_a.rings)
     assert cfg_b == EnigmaConfig.config_enigma_from_string(' '.join(args_b))
     assert cfg_b == EnigmaConfig.config_enigma_from_string(' '.join(args_a))
+
+
+def test_component_validity():
+    with pytest.raises(EnigmaValueError) as e:
+        cmp = Component('y', 'PQR', 'Q')
+    with pytest.raises(AssertionError) as e:
+        cmp = Component('I', 'PQR', 'Q')
