@@ -7,7 +7,7 @@
 # See - http://www.python.org/dev/peps/pep-0440/
 # See - http://semver.org
 __author__ = 'Roy Levien'
-__copyright__ = '(c) 2014-2019 Roy Levien'
+__copyright__ = '(c) 2014-2021 Roy Levien'
 __release__ = '0.3.1'  # N(.N)*
 __pre_release__ = 'b1'  # aN | bN | cN |
 __suffix__ = '.dev1'  # .devN | | .postN
