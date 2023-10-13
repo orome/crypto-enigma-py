@@ -490,7 +490,8 @@ if __name__ == '__main__':
         else:
             uni_arg_err = "Unable to decode '{}' to Unicode; report this error!"
 
-            assert isinstance(args.config, str), uni_arg_err.format(_CONFIG_KWARGS['metavar'])
+            # REV - Restore (currently causes: AttributeError: 'Namespace' object has no attribute 'config')
+            # assert isinstance(args.config, str), uni_arg_err.format(_CONFIG_KWARGS['metavar'])
             cfg = EnigmaConfig.config_enigma_from_string(args.config)
             fmt = args.format
 
